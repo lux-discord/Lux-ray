@@ -1,0 +1,124 @@
+{
+	"action":{
+		"set_lang":"設置語言為 \"{lang}\"",
+		"set_prefix":"設置前綴為 \"{prefix}\"",
+		"loaded_ext":"已載入{extension_name}擴充模組",
+		"unloaded_ext":"已卸載{extension_name}擴充模組",
+		"reloaded_ext":"已重載{extension_name}擴充模組",
+		"reloaded_all_ext":"已重載所有擴充模組",
+		"channel_set":"設置{channel_name}為{channel_type}"
+	},
+	"permission":{
+		"manage_channels":"管理頻道",
+		"manage_messages":"管理訊息"
+	},
+	"error":{
+		"missing_permissions_bot_owner":"權限不足，本指令限開發人員使用",
+		"missing_permissions_server_admin":"權限不足，本指令限管理員使用",
+		"missing_permissions":"權限不足，你需要擁有 \"{permission_name}\" 權限",
+		"lang_not_found":"找不到 \"{lang}\" 語言",
+		"lang_not_change":"請選擇另一種語言",
+		"no_channel_mentioned":"請至少標記一個頻道",
+		"too_many_channels_mentions":"標記過多頻道，這個指令只需要一個頻道",
+		"option_not_found":"沒有 \"{option_name}\" 選項",
+		"invalid_channel_id":"頻道ID無效",
+		"invalid_link":"連結無效",
+		"invalid_message_id":"訊息ID無效",
+		"invalid_server_id":"伺服器ID無效",
+		"invalid_value":"{context_message}\n不支援的內容，請先確認支援的類型",
+		"invoked_none":"請從下方列表中選擇一種子指令\n{subcommand_list}"
+	},
+	"info":{
+		"success_del_mes":"已刪除{num}則訊息",
+		"member_num":"這個伺服器有{member_num}個成員",
+		"create_category":"已建立分類 {category_name}",
+		"create_text_channel":"已建立文字頻道 {channel_name}",
+		"create_voice_channel":"已建立語音頻道 {channel_name}",
+		"delete_category":"已刪除分類 {category_name}",
+		"delete_text_channel":"已刪除文字頻道 {channel_name}",
+		"delete_voice_channel":"已刪除語音頻道 {channel_name}",
+		"pinned_message":"成功釘選訊息",
+		"unpinned_message":"成功取消釘選訊息"
+	},
+	"channel_type":{
+		"member_join":"成員加入訊息頻道",
+		"member_leave":"成員離開訊息頻道"
+	},
+	"help":{
+		"category":{
+			"admin_channel":"限管理員使用！\n建立、刪除、編輯頻道，或設定功能性頻道",
+			"admin_config":"限管理員使用！\n查看或修改機器人在這伺服器的設定",
+			"admin_message":"釘選、取消釘選訊息或其他操作\n*註：刪除訊息功能限管理員使用",
+			"develop_extension":"開發人員專用指令",
+			"sundries":"給一般用戶使用的指令，通常不需要什麼特殊權限"
+		},
+		"command":{
+			"create":"建立分類、文字或語音頻道，並可在建立頻道時選擇要放在哪個分類下(可不選)",
+			"delete":"刪除文字或語音頻道",
+			"edit":"編輯頻道的名字、緩速、權限等設定",
+			"set_channel":"指定功能性頻道，如成員加入訊息、成員離開訊息、訊息刪除提醒",
+			
+			"config":"顯示一或多個設定值",
+			"set_lang":"設定機器人使用的語言",
+			"set_prefix":"設定機器人使用的前綴",
+			"switch":"切換指定功能的開或關",
+			
+			"del_mes":"刪除指定數量的訊息，至多100則",
+			"pin_message":"釘選訊息\n\n須在該頻道有管理訊息權限",
+			"unpin_message":"取消釘選訊息\n\n須在該頻道有管理訊息權限",
+			
+			"load":"載入擴充模組",
+			"reload":"重載擴充模組",
+			"reload_all":"重載所有擴充模組",
+			"unload":"卸載擴充模組",
+			
+			"help":"顯示幫助訊息",
+			"member_num":"顯示這個伺服器有多少成員"
+		}
+	},
+	"exception":{
+		"ConversionError":"",
+		"MissingRequiredArgument":"",
+		"TooManyArguments":"",
+		"MessageNotFound":"",
+		"MemberNotFound":"",
+		"UserNotFound":"",
+		"ChannelNotFound":"",
+		"ChannelNotReadable":"",
+		"RoleNotFound":"",
+		"EmojiNotFound":"",
+		"PartialEmojiConversionFailure":"",
+		"BadBoolArgument":"",
+		"BadUnionArgument":"",
+		"UnexpectedQuoteError":"",
+		"InvalidEndOfQuotedStringError":"",
+		"ExpectedClosingQuoteError":"",
+		"CommandNotFound":"沒有 \"{command_name}\" 指令",
+		"CheckAnyFailure":"",
+		"PrivateMessageOnly":"",
+		"NoPrivateMessage":"",
+		"NotOwner":"",
+		"MissingPermissions":"",
+		"BotMissingPermissions":"",
+		"MissingRole":"",
+		"BotMissingRole":"",
+		"MissingAnyRole":"",
+		"BotMissingAnyRole":"",
+		"NSFWChannelRequired":"",
+		"CommandInvokeError":"",
+		"DisabledCommand":"",
+		"CommandOnCooldown":"",
+		"MaxConcurrencyReached":"",
+		"ExtensionAlreadyLoaded":"",
+		"ExtensionNotLoaded":"",
+		"NoEntryPointError":"",
+		"ExtensionFailed":"",
+		"ExtensionNotFound":"",
+		"CommandRegistrationError":""
+	},
+	"reason":{
+		"create_category":"由 {user_name} 使用指令 {command_name} 建立",
+		"pinned_message":"由 {user_name} 使用指令 {command_name} 釘選",
+		"unpinned_message":"由 {user_name} 使用指令 {command_name} 取消釘選"
+	}
+}

@@ -1,0 +1,113 @@
+{
+	"action":{
+		"set_lang":"Set language to {lang}",
+		"set_prefix":"Set prefix to {prefix}",
+		"create_category":"Category {category_name} created",
+		"create_text_channel":"Text channel {channel_name} created",
+		"create_voice_channel":"Voice channel {channel_name} created",
+		"loaded_ext":"Loaded {extension_name}",
+		"unloaded_ext":"Unloaded {extension_name",
+		"reloaded_ext":"Reloaded {extension_name}",
+		"reloaded_all_ext":"Reloaded all extensions",
+		"channel_set":"{channel_name} is {channel_type} now",
+		"pinned_message":"Success pinned message",
+		"unpinned_message":"Success unpinned message"
+	},
+	"error":{
+		"permission_too_low_bot_owner":"Insufficient permissions, your permission is too low to use this command.(need bot owner)",
+		"permission_too_low_server_admin":"Insufficient permissions, your permission is too low to use this command.(need server admin)",
+		"permission_too_low_server_sundries":"Insufficient permissions, your permission is too low to use this command.(need {permission})",
+		"lang_not_found":"Language {lang} not found",
+		"no_channel_mentioned":"Please mention at least one channel",
+		"too_many_channels_mentions":"Too many channels mentioned, this command just need one channel",
+		"option_not_found":"Don't hava {option_name} option",
+		"invalid_value":"Invalid value! Please enter again"
+	},
+	"permission":{
+		"manage_channels":"manage channels"
+	},
+	"info":{
+		"success_del_mes":"Success delete {num} message(s)",
+		"lang_not_change":"Language not change",
+		"member_num":"This server hava {member_num} people"
+	},
+	"channel_type":{
+		"member_join":"member join message channel",
+		"member_leave":"member leava message channel"
+	},
+	"help":{
+		"title":"",
+		"description":{
+			"category":{
+				"admin_channel":"Admin only, create, delete, edit category, channel or set functional channel",
+				"admin_config":"Admin only, show or configuration server settings",
+				"admin_message":"Message pin, unpin, or other operate except delete. (delete option need admin permission)",
+				"develop_extension":"Developer only",
+				"sundries":"For normal member, usually don't need any special permission to use, that command belong here"
+			},
+			"command":{
+				"create":"Create category, text channel, voice channel. You can choose with category that text or voice channel belong(optional)\n\nNeed admin permission",
+				"delete":"Delete text channel or voice channel.\n\nNeed admin permission",
+				"edit":"Edit category or channel's settings.\n\nNeed admin permission",
+				"set_channel":"Set the channel of member join message, member leave message, delete message notice or other similar channel's setting.\n\nNeed admin permission",
+				
+				"config":"Show all or specific config settings.\n\nNeed admin permission",
+				"set_lang":"Set what language bot use.\n\nNeed admin permission",
+				"set_prefix":"Set what prefix bot use.\n\nNeed admin permission",
+				"switch":"Switch whether specific functions is enabled or not.\n\nNeed admin permission",
+				
+				"del_mes":"Delete the specified number of messages, up to 100 messages.\n\nNeed admin permission",
+				"pin_message":"Pin a message on the channel.\n\nNeed manage channels permission",
+				"unpin_message":"Unpin a message on the channel.\n\nNeed manage channels permission",
+				
+				"load":"Load extension",
+				"reload":"Reload extension",
+				"reload_all":"Reload all extensions",
+				"unload":"Unload extension",
+				
+				"help":"Show help message",
+				"member_num":"Show how many member that this server have now"
+			}
+		}
+	},
+	"exception":{
+		"ConversionError":"",
+		"MissingRequiredArgument":"{argument_name} is a required argument that is missing.",
+		"TooManyArguments":"",
+		"MessageNotFound":"",
+		"MemberNotFound":"",
+		"UserNotFound":"",
+		"ChannelNotFound":"",
+		"ChannelNotReadable":"",
+		"RoleNotFound":"",
+		"EmojiNotFound":"",
+		"PartialEmojiConversionFailure":"",
+		"BadBoolArgument":"",
+		"BadUnionArgument":"",
+		"UnexpectedQuoteError":"",
+		"InvalidEndOfQuotedStringError":"",
+		"ExpectedClosingQuoteError":"",
+		"CommandNotFound":"Command {command_name} not found",
+		"CheckAnyFailure":"",
+		"PrivateMessageOnly":"",
+		"NoPrivateMessage":"",
+		"NotOwner":"",
+		"MissingPermissions":"",
+		"BotMissingPermissions":"",
+		"MissingRole":"",
+		"BotMissingRole":"",
+		"MissingAnyRole":"",
+		"BotMissingAnyRole":"",
+		"NSFWChannelRequired":"",
+		"CommandInvokeError":"",
+		"DisabledCommand":"",
+		"CommandOnCooldown":"",
+		"MaxConcurrencyReached":"",
+		"ExtensionAlreadyLoaded":"",
+		"ExtensionNotLoaded":"",
+		"NoEntryPointError":"",
+		"ExtensionFailed":"",
+		"ExtensionNotFound":"",
+		"CommandRegistrationError":""
+	}
+}
