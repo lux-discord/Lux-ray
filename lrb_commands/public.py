@@ -12,7 +12,9 @@ class Public(Inited_cog):
 	@commands.command()
 	@commands.has_permissions(administrator = True)
 	async def test(self, ctx):
-		print(ctx.channel.category.changed_roles)
+		webhooks = await ctx.guild.webhooks()
+		
+		await ctx.send(webhooks[1].url)
 
 def setup(bot):
 	bot.add_cog(Public(bot))

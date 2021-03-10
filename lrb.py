@@ -41,6 +41,7 @@ intents = discord.Intents.default()
 intents.guilds = True
 intents.members = True
 lrb = commands.Bot(command_prefix = get_prefix, owner_id = int(owner_id), intents = intents)
+setattr(lrb, 'indev', indev)
 
 #load ext
 print("Loading extensions...")

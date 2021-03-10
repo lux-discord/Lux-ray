@@ -27,16 +27,21 @@ class Developer(Inited_cog):
 	
 	@commands.command()
 	async def reload(self, ctx, *extension_name):
+		if len(extension_name) == 1 and extension_name[0] == 'all':
+			for file in self.file_list:
+				self.bot.reload_extension(file)
+			await ctx.send(load_lang(ctx.guild.id)['action']['reloaded_all_ext'])
+			return
+		
 		for ext_name in extension_name:
 			for file in self.file_list:
 				if ext_name in file:
 					self.bot.reload_extension(file)
 					await ctx.send(load_lang(ctx.guild.id)['action']['reloaded_ext'].format(extension_name = f"'{ext_name}'"))
-	
+	'''
 	@commands.command()
-	async def reload_all(self, ctx):
-		for file in self.file_list:
-			self.bot.reload_extension(file)
+	async def self_test(self, ctx):
+	'''	
 
 def setup(bot):
 	bot.add_cog(Developer(bot))

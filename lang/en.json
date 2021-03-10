@@ -14,9 +14,9 @@
 		"unpinned_message":"Success unpinned message"
 	},
 	"error":{
-		"permission_too_low_bot_owner":"Insufficient permissions, your permission is too low to use this command.(need bot owner)",
-		"permission_too_low_server_admin":"Insufficient permissions, your permission is too low to use this command.(need server admin)",
-		"permission_too_low_server_sundries":"Insufficient permissions, your permission is too low to use this command.(need {permission})",
+		"permission_denied_bot_developer":"Permission denied, this command can only be used by the bot developer",
+		"permission_denied_server_admin":"Permission denied, this command can only be used by the server admin",
+		"permission_denied_server_permission":"Permission denied, this command requires the '{permission}' permission to use",
 		"lang_not_found":"Language {lang} not found",
 		"no_channel_mentioned":"Please mention at least one channel",
 		"too_many_channels_mentions":"Too many channels mentioned, this command just need one channel",
@@ -29,6 +29,7 @@
 	"info":{
 		"success_del_mes":"Success delete {num} message(s)",
 		"lang_not_change":"Language not change",
+		"prefix_not_change": "The Prefix of this server is already {prefix}",
 		"member_num":"This server hava {member_num} people"
 	},
 	"channel_type":{
