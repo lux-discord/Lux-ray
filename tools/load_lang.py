@@ -1,5 +1,8 @@
 from json import load
+
 from .run_here import run_here
+
+from exceptions import raise_ssnfe
 
 __all__ = [
 	'load_lang'
@@ -12,12 +15,11 @@ def load_lang(server_id = None, *token):
 			lang_file = load(internal_lang_file)
 	else:
 		try:
-			server_id = int(server_id)
 			with open(f"settings/server/{server_id}.json", 'r', encoding = 'UTF-8') as server_setting_file:
-				with open(f"lang/{load(server_setting_file)['lang']}.json", "r", encoding = "UTF-8") as lang_file:
+				with open(f"lang/{load(server_setting_file)['config']['lang']}.json", "r", encoding = "UTF-8") as lang_file:
 					lang_file = load(lang_file)
-		except ValueError:
-			raise ValueError(f"the 'server_id' must be int or 'internal', not {server_id}({server_id.__class__.__name__})")
+		except FileNotFoundError:
+			raise_ssnfe(server_id)
 	
 	if not token:
 		return lang_file

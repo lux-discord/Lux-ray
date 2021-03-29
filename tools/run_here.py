@@ -1,5 +1,6 @@
 from os import getcwd, chdir
 from os.path import split
+import inspect
 from inspect import currentframe, stack
 
 __all__ = [
@@ -17,19 +18,27 @@ class run_here():
 		else:
 			raise TypeError(f"the 'target' must be function or str, not '{target_type}'")
 		
-		self.orig_path = getcwd()
 		self.func_path = split(currentframe().f_back.f_globals['__file__'])[0]
 	
 	def __call__(self, *args, **kargs):
 		if hasattr(self, 'dire_offset'):
 			def result(*arg, **karg):
+				orig_path = getcwd()
+				
 				chdir(self.func_path)
 				chdir(self.dire_offset)
-				func_result = args[0](*arg, **karg)
-				return func_result
+				
+				f_result = args[0](*arg, **karg)
+				
+				chdir(orig_path)
+				return f_result
 		else:
+			orig_path = getcwd()
+			
 			chdir(self.func_path)
+			
 			result = self.func(*args, **kargs)
+			
+			chdir(orig_path)
 		
-		chdir(self.orig_path)
 		return result

@@ -24,8 +24,8 @@ def get_prefix(client, message):
 	
 	try:
 		with open(server_setting_path, 'r', encoding = 'UTF-8') as server_setting:
-			prefix = json.load(server_setting)[prefix_use]
-			return prefix + ' ', prefix
+			prefix = json.load(server_setting)['config'][prefix_use]
+			return prefix + ' '
 	except FileNotFoundError:
 		with open(default_server_setting_path, 'r', encoding = 'UTF-8') as default_server_setting:
 			default_server_setting = json.load(default_server_setting)

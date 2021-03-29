@@ -6,21 +6,22 @@
 		"create_text_channel":"Text channel {channel_name} created",
 		"create_voice_channel":"Voice channel {channel_name} created",
 		"loaded_ext":"Loaded {extension_name}",
-		"unloaded_ext":"Unloaded {extension_name",
+		"unloaded_ext":"Unloaded {extension_name}",
 		"reloaded_ext":"Reloaded {extension_name}",
 		"reloaded_all_ext":"Reloaded all extensions",
 		"channel_set":"{channel_name} is {channel_type} now",
 		"pinned_message":"Success pinned message",
-		"unpinned_message":"Success unpinned message"
+		"unpinned_message":"Success unpinned message",
+		"sync_server_setting_to_default": "All server settings has been synced with the default settings"
 	},
 	"error":{
 		"permission_denied_bot_developer":"Permission denied, this command can only be used by the bot developer",
 		"permission_denied_server_admin":"Permission denied, this command can only be used by the server admin",
 		"permission_denied_server_permission":"Permission denied, this command requires the '{permission}' permission to use",
-		"lang_not_found":"Language {lang} not found",
+		"lang_not_found":"Language '{lang}' not found",
 		"no_channel_mentioned":"Please mention at least one channel",
 		"too_many_channels_mentions":"Too many channels mentioned, this command just need one channel",
-		"option_not_found":"Don't hava {option_name} option",
+		"option_not_found":"Don't hava '{option}' option",
 		"invalid_value":"Invalid value! Please enter again"
 	},
 	"permission":{

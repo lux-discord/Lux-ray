@@ -1,7 +1,12 @@
-from basic_import import *
-from basic_cmd_import import *
+import discord
+from discord.ext import commands
+
+from inited_cog import Inited_cog
+from tools import load_lang
 
 class Error(Inited_cog):
+	pass
+	'''
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
 		if hasattr(ctx.command, 'on_error'):
@@ -17,6 +22,7 @@ class Error(Inited_cog):
 		else:
 			await ctx.send(error_type)
 			await ctx.send(error)
+	'''
 
 def setup(bot):
 	bot.add_cog(Error(bot))

@@ -1,5 +1,9 @@
-from basic_import import *
-from basic_cmd_import import *
+import discord
+from discord.ext import commands
+
+from inited_cog import Inited_cog
+
+from tools import load_lang
 
 async def fetch_message_and_check_permission(ctx, positions: list):
 	if ctx.guild.id != int(positions[0]):
@@ -69,12 +73,12 @@ class Manage_messages(Inited_cog):
 				await ctx.send(lang['error']['invalid_link'], delete_after = 5)
 	
 	@commands.command()
+	@commands.has_permissions(manage_messages = True)
 	async def delete_message(self, ctx, num: int):
-		if ctx.author.permissions_in(ctx.channel).administrator:
-			await ctx.channel.purge(limit = num+1)
-			await ctx.send(lang["info"]["success_del_mes"].format(num = str(num)), delete_after = 3)
-		else:
-			await ctx.send(lang["error"]["permission_too_low_server_admin"])
+		guild_id = ctx.guild.id
+		
+		await ctx.channel.purge(limit = num+1)
+		await ctx.send(load_lang(guild_id, "info.success_del_mes").format(num = str(num)), delete_after = 3)
 
 def setup(bot):
 	bot.add_cog(Manage_messages(bot))

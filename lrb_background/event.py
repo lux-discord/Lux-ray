@@ -1,9 +1,13 @@
-from basic_import import *
-from basic_cmd_import import *
+import discord
+from discord.ext import commands
 
-from tools.server_setting import server_setting
+from tools import server_setting, load_lang
 
-class Event(Inited_cog):
+class Event(commands.Cog):
+	def __init__(self, bot):
+		self.bot = bot
+		self.running = False
+	
 	@commands.Cog.listener()
 	async def on_member_join(self, member):
 		ss = server_setting(member.guild.id)
@@ -22,8 +26,10 @@ class Event(Inited_cog):
 		
 	@commands.Cog.listener()
 	async def on_ready(self):
-		ready_message = load_lang('internal')['bot_ready'].format(bot_name = str(self.bot.user)[:-5])
-		print(ready_message)
+		if not self.running:
+			print(load_lang('internal', 'bot_ready').format(bot_name = str(self.bot.user)[:-5]))
+		
+		self.running = True
 
 def setup(bot):
 	bot.add_cog(Event(bot))

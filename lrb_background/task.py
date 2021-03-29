@@ -1,5 +1,7 @@
-from basic_import import *
-from basic_cmd_import import *
+import discord
+from discord.ext import commands
+
+from inited_cog import Inited_cog
 
 class Task(Inited_cog):
 	def __init__(self, *args, **kargs):
