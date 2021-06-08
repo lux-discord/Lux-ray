@@ -1,0 +1,42 @@
+{
+	"audit_log": {
+		"reason": {
+			"pin_message": "Pinned by \"{user}\" using command {command_name}",
+			"unpin_message": "Unpinned by \"{user}\" using command {command_name}"
+		}
+	},
+	"error": {
+		"lang_not_found": "'{language}' language not found",
+		"lang_not_change": "Didn't change language, please choose another language",
+		"prefix_not_change": "Didn't change prefix, please enter a different prefix",
+		"no_refernace_message": "No refernace message, please reply a existing message before send command",
+		"no_stickers": "The message does not have any stickers"
+	},
+	"info": {
+		"command": {
+			"loaded_cmd": "Loaded '{cog_name}' command cog",
+			"unloaded_cmd": "Unloaded '{cog_name}' command cog",
+			"reloaded_cmd": "Reloaded '{cog_name}' command cog",
+			"reloaded_all_cmd": "Reloaded all command cogs"
+		},
+		"extension": {
+			"loaded_ext": "Loaded '{cog_name}' extension",
+			"unloaded_ext": "Unloaded '{cog_name}' extension",
+			"reloaded_ext": "Reloaded '{cog_name}' extension",
+			"reloaded_all_ext": "Reloaded all extensions"
+		},
+		"message": {
+			"deleted_message": "{deleted_number} message deleted",
+			"pinned_message": "Pinned message",
+			"unpinned_message": "Unpinned message"
+		},
+		"server": {
+			"set_lang": "Use {language} language",
+			"set_prefix":"Set command prefix to '{prefix}'"
+		}
+	},
+	"message": {
+		"member_join_message": "{member} joined server",
+		"member_leave_message": "{member} left server"
+	}
+}

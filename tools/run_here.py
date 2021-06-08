@@ -1,7 +1,6 @@
 from os import getcwd, chdir
 from os.path import split
-import inspect
-from inspect import currentframe, stack
+from inspect import currentframe
 
 __all__ = [
 	'run_here'

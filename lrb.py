@@ -1,68 +1,38 @@
 import discord
-from discord.ext import commands
-import json
-import os
-from config import load_config
+from discord.ext.commands import Bot
 
-#dev setting
-indev = True
+from tools.prefix import load_prefixes, get_prefix
+from tools.load import load_internal
 
-if indev:
-	prefix_use = 'prefix_dev'
-	token_use = 'token_dev'
-else:
-	import keep_alive
-	prefix_use = 'prefix'
-	token_use = 'token'
+from global_object import stable
+from cog import cog_folders, cog_folder_loader
 
-#bot setting
-print("Setting bot parameters...")
+#prepare internal data
+internal_data = load_internal()
+token = internal_data["token"]
+message = internal_data["message"]
 
-def get_prefix(client, message):
-	server_setting_path = f"settings/server/{message.guild.id}.json"
-	default_server_setting_path = "settings/default_server_setting.json"
-	
-	try:
-		with open(server_setting_path, 'r', encoding = 'UTF-8') as server_setting:
-			prefix = json.load(server_setting)['config'][prefix_use]
-			return prefix + ' '
-	except FileNotFoundError:
-		with open(default_server_setting_path, 'r', encoding = 'UTF-8') as default_server_setting:
-			default_server_setting = json.load(default_server_setting)
-			prefix = default_server_setting[prefix_use]
-			
-			with open(server_setting_path, 'w', encoding = 'UTF-8') as server_setting:
-				json.dump(default_server_setting , server_setting, indent = '\t')
-			
-			return prefix + ' ', prefix
+#set up bot
+print(message["set_up"])
+load_prefixes()
+intent = discord.Intents.all()
+lrb = Bot(command_prefix = get_prefix, owner_id = internal_data["owner"], intents = intent)
 
-owner_id, token = load_config('owner_id', token_use)
-intents = discord.Intents.default()
-intents.guilds = True
-intents.members = True
-lrb = commands.Bot(command_prefix = get_prefix, owner_id = int(owner_id), intents = intents)
-setattr(lrb, 'indev', indev)
+#load cog
+load_cog_message_keys = [
+	"load_be",
+	"load_cmd",
+	"load_ext"
+]
 
-#load ext
-print("Loading extensions...")
+for folder, message_key in zip(cog_folders, load_cog_message_keys):
+	print(message[message_key])
+	cog_folder_loader(lrb, folder)
 
-for folder in os.listdir('.'):
-	if os.path.isdir(folder) and folder.startswith('lrb'):
-		print(f"  {folder}")
-		
-		for file in os.listdir(folder):
-			if os.path.isfile and file.endswith('.py'):
-				file = file[:-3]
-				
-				print(f"    {file}")
-				
-				lrb.load_extension(f"{folder}.{file}")
+#start bot
+print(message["start_bot"])
+if stable:
+	from keep_alive import keep_alive
+	keep_alive()
 
-#start run
-if __name__ == '__main__':
-	print("Starting bot")
-	
-	if not indev:
-		keep_alive.keep_alive()
-	
-	lrb.run(token)
+lrb.run(token["main"] if stable else token["indev"])

@@ -1,5 +1,10 @@
+.vs/
 .vscode/
-settings/
+bot-env/
+server_setting/
 
 *.pyc
-config.json
+internal.json
+keep_alive.py
+
+!server_setting/default_server_setting.json

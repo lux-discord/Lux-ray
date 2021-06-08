@@ -1,0 +1,42 @@
+{
+	"audit_log": {
+		"reason": {
+			"pin_message": "由 \"{user}\" 使用指令{command_name}釘選",
+			"unpin_message": "由 \"{user}\" 使用指令{command_name}取消釘選"
+		}
+	},
+	"error": {
+		"lang_not_found": "沒有{language}語檔",
+		"lang_not_change": "未更換使用語檔，請選擇其他語言",
+		"prefix_not_change": "未更改指令前綴，請輸入與原先不同的前綴",
+		"no_refernace_message": "找不到回覆的訊息，請確保送出指令前正在回覆現有的訊息",
+		"no_stickers": "該則訊息沒有任何貼圖"
+	},
+	"info": {
+		"command": {
+			"loaded_cmd": "已載入{cog_name}指令集",
+			"unloaded_cmd": "已卸載{cog_name}指令集",
+			"reloaded_cmd": "已重新載入{cog_name}指令集",
+			"reloaded_all_cmd": "已重新載入所有指令集"
+		},
+		"extension": {
+			"loaded_ext": "已載入{cog_name}擴充模組",
+			"unloaded_ext": "已卸載{cog_name}擴充模組",
+			"reloaded_ext": "已重新載入{cog_name}擴充模組",
+			"reloaded_all_ext": "已重新載入所有擴充模組"
+		},
+		"message": {
+			"deleted_message": "已刪除{deleted_number}則訊息",
+			"pinned_message": "已釘選訊息",
+			"unpinned_message": "已取消釘選訊息"
+		},
+		"server": {
+			"set_lang": "使用{language}語檔",
+			"set_prefix":"設置指令前綴為 \"{prefix}\""
+		}
+	},
+	"message": {
+		"member_join_message": "{member}加入了伺服器",
+		"member_leave_message": "{member}離開了伺服器"
+	}
+}
