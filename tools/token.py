@@ -1,6 +1,12 @@
-from posixpath import split
 from typing import Any
 
+__all__ = [
+	"Token",
+	"token_get_data",
+	"token_edit_data",
+	"token_add_key",
+	"token_del_key"
+]
 
 class Token():
 	def __init__(self, token: str, delimiter: str = '.'):
@@ -14,21 +20,30 @@ class Token():
 	def __str__(self):
 		return self.str
 
-def get_data_with_token(data: dict, token: Token) -> Any:
+def token_get_data(data: dict, token: Token) -> Any:
 	for key in token.split():
 		data = data[key.str]
 	
 	return data
 
-def edit_data_with_token(data: dict, token: Token, value):
-	def edit(data: dict, token: Token, value):
+def token_edit_data(data: dict, token: Token, value, *, allow_add_key = False):
+	def edit(data: dict, token: Token, value, overwrite):
 		if token.has_delimiter:
 			root, token = token.split(1)
+			root = root.str
 			
-			data[root.str] = edit(data[root.str], token, value)
+			if (root in overwrite) or (root not in data and overwrite):
+				data[root] = edit(data, token, value, overwrite)
+			else:
+				raise KeyError(f"Not allow add key({root})")
 		else:
-			data[token.str] = value
+			token = token.str
+			
+			if (token in data) or (token not in data and overwrite):
+				data[token] = value
+			else:
+				raise KeyError(f"Not allow add key({token})")
 
 		return data
 	
-	return edit(data, token, value)
+	return edit(data, token, value, allow_add_key)

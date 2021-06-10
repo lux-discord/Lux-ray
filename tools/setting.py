@@ -1,57 +1,100 @@
+from pathlib import Path
 from typing import Any, Dict
+
+from cog import cog_folder_abbr_to_fullname
 from .json_open import json_load, json_dump
 from .run_here import run_here
-from .token import Token, get_data_with_token, edit_data_with_token
+from .token import Token, token_get_data, token_edit_data
+
+'''
+abbr:
+	df -> default
+	ext -> extension
+	stg -> setting
+	svr -> server
+	
+suffix:
+	folder -> folder
+	file -> file
+	path -> folder + file
+'''
 
 __all__ = [
-	"create_server_setting",
-	"load_default_server_setting",
-	"load_server_setting",
-	"request_server_setting",
-	"edit_server_setting"
+	#global variable
+	"svr_stg_folder",
+	"svr_stg_file",
+	"df_svr_stg_file",
+	
+	"ext_folder",
+	"ext_svr_stg_folder",
+	
+	"svr_stg_path",
+	"df_svr_stg_path",
+	
+	"ext_svr_stg_path",
+	"ext_df_svr_stg_path",
+	#class
+	"Setting",
+	"ServerSetting",
+	"ExtServerSetting"
 ]
 
-#global variable
-default_server_setting_file_path = "../server_setting/_default_server_setting.json"
+svr_stg_folder = "../server_setting/"
+svr_stg_file = "{svr_id}.json"
+df_svr_stg_file = "_default_server_setting.json"
 
-#global function
-def format_server_setting_file_path(server_id):
-	return f"../server_setting/{server_id}.json"
+ext_folder = f"../{cog_folder_abbr_to_fullname['ext']}/"
+ext_svr_stg_folder = ext_folder + "{ext_file_name}/server_setting/"
+#ext class name may not same with file name, and ext's folder use file name, so use "{ext_file_name}" here
 
-#server setting
-@run_here
-def create_server_setting(server_id) -> dict:
-	default_server_setting = load_default_server_setting()
+svr_stg_path = svr_stg_folder + svr_stg_file
+df_svr_stg_path = svr_stg_folder + df_svr_stg_file
+
+ext_svr_stg_path = ext_svr_stg_folder + svr_stg_file
+ext_df_svr_stg_path = ext_svr_stg_folder + df_svr_stg_file
+
+class Setting:
+	def __init__(self, id):
+		self.id = id
+
+class ServerSettingBase:
+	def create(self):
+		df_svr_stg: dict = json_load(self._default_server_setting_path)
+		self.data = df_svr_stg
+
+		json_dump(df_svr_stg, self.path)
+
+		return df_svr_stg
 	
-	json_dump(default_server_setting, format_server_setting_file_path(server_id))
+	def load(self):
+		return self.data if hasattr(self, "data") else self.create()
 	
-	return default_server_setting
-
-@run_here
-def load_default_server_setting() -> dict:
-	return json_load(default_server_setting_file_path)
-
-@run_here
-def load_server_setting(server_id) -> dict:
-	"""
-	Return ALL the server setting data with gived server_id
-	"""
-	try:
-		return json_load(format_server_setting_file_path(server_id))
-	except FileNotFoundError:
-		return create_server_setting(server_id)
-
-@run_here
-def request_server_setting(server_id, *tokens: str):
-	server_setting_data: dict = load_server_setting(server_id)
+	def request(self, *tokens):
+		return token_get_data(self.load(), Token(tokens[0])) if len(tokens) == 1 else [token_get_data(self.load(), Token(token)) for token in tokens]
 	
-	return get_data_with_token(server_setting_data, Token(tokens[0])) if len(tokens) == 1 else [get_data_with_token(server_setting_data, Token(token)) for token in tokens]
+	def edit(self, settings: Dict[str, Any], allow_add_key = False):
+		if not hasattr(self, "data"):
+			self.create()
+		
+		for token, value in settings.items():
+			self.data = token_edit_data(self.data, Token(token), value, allow_add_key = allow_add_key)
+		
+		json_dump(self.data, self.path, overwrite = True)
 
-@run_here
-def edit_server_setting(server_id, settings: Dict[str, Any]):
-	server_setting = load_server_setting(server_id)
-	
-	for token, value in settings.items():
-		server_setting = edit_data_with_token(server_setting, Token(token), value)
-	
-	json_dump(server_setting, format_server_setting_file_path(server_id))
+class ServerSetting(Setting, ServerSettingBase):
+	def __init__(self, id):
+		super().__init__(id)
+		self.path = Path(svr_stg_path.format(svr_id = self.id))
+		self._default_server_setting_path = Path(df_svr_stg_path)
+
+class ExtServerSetting(Setting, ServerSettingBase):
+	def __init__(self, id, ext_file_name):
+		"""
+		Hint
+		----
+		ext_file_name is recommended to pass in "__file__" of main ext_file
+		"""
+		super().__init__(id)
+		ext_file_name = Path(ext_file_name).stem
+		self.path = Path(ext_svr_stg_path.format(ext_file_name = ext_file_name, svr_id = self.id))
+		self._default_server_setting_path = Path(ext_df_svr_stg_path.format(ext_file_name = ext_file_name))

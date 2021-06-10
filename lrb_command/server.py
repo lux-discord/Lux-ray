@@ -4,7 +4,7 @@ from global_object import Inited_cog
 from language.language import languages
 from tools.load import load_lang
 from tools.prefix import request_prefix, edit_prefix
-from tools.setting import edit_server_setting, request_server_setting
+from tools.setting import ServerSetting
 
 
 @has_permissions(administrator = True)
@@ -12,16 +12,17 @@ class Server(Inited_cog):
 	@command()
 	async def set_lang(self, ctx, language):
 		server_id = ctx.guild.id
+		server_setting = ServerSetting(server_id)
 		
 		if language not in languages:
 			return await ctx.send(load_lang(server_id, "error.lang_not_found"))
 		
-		server_lang = request_server_setting(ctx.guild.id, "config.language")
+		server_lang = server_setting.request("config.language")
 		
 		if language == server_lang:
 			return await ctx.send(load_lang(server_id, "error.lang_not_change"))
 		
-		edit_server_setting(server_id, {"config.language": language})
+		server_setting.edit({"config.language": language})
 		await ctx.send(load_lang(server_id, "info.server.set_lang").format(language = languages[language]))
 	
 	@command()
