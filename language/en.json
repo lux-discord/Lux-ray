@@ -1,8 +1,10 @@
 {
 	"audit_log": {
 		"reason": {
-			"pin_message": "Pinned by \"{user}\" using command {command_name}",
-			"unpin_message": "Unpinned by \"{user}\" using command {command_name}"
+			"message": {
+				"pin_message": "Pinned by \"{user}\" using command {command_name}",
+				"unpin_message": "Unpinned by \"{user}\" using command {command_name}"
+			}
 		}
 	},
 	"error": {
@@ -13,6 +15,9 @@
 		"no_stickers": "The message does not have any stickers"
 	},
 	"info": {
+		"channel": {
+			"create_text_channel": "Created {channel_name} channel"
+		},
 		"command": {
 			"loaded_cmd": "Loaded '{cog_name}' command cog",
 			"unloaded_cmd": "Unloaded '{cog_name}' command cog",

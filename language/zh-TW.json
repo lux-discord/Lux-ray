@@ -1,8 +1,10 @@
 {
 	"audit_log": {
 		"reason": {
-			"pin_message": "由 \"{user}\" 使用指令{command_name}釘選",
-			"unpin_message": "由 \"{user}\" 使用指令{command_name}取消釘選"
+			"message": {
+				"pin_message": "由 \"{user}\" 使用指令{command_name}釘選",
+				"unpin_message": "由 \"{user}\" 使用指令{command_name}取消釘選"
+			}
 		}
 	},
 	"error": {
@@ -13,6 +15,9 @@
 		"no_stickers": "該則訊息沒有任何貼圖"
 	},
 	"info": {
+		"channel": {
+			"create_text_channel": "已建立頻道 {channel_name}"
+		},
 		"command": {
 			"loaded_cmd": "已載入{cog_name}指令集",
 			"unloaded_cmd": "已卸載{cog_name}指令集",

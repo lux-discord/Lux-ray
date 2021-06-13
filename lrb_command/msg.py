@@ -21,7 +21,7 @@ class Message(Inited_cog):
 		message = ctx.message
 		author = message.author
 		refernace = message.refernace
-		audit_log_Reason_Pin_message, info_Message_Pinned_message = load_lang(message.guild.id, "audit_log.reason.pin_message", "info.message.pinned_message")
+		audit_log_Reason_Pin_message, info_Message_Pinned_message = load_lang(message.guild.id, "audit_log.reason.message.pin_message", "info.message.pinned_message")
 		await message.delete() #delete command message on discord
 		message = refernace_or_last_existing_message(ctx, refernace) #overwrite message with target that wait for pin
 		pinned = message.pinned #save pin status
@@ -39,7 +39,7 @@ class Message(Inited_cog):
 		message = ctx.message
 		author = message.author
 		refernace = message.refernace
-		audit_log_Reason_Unpin_message, info_Message_Unpinned_message = load_lang(message.guild.id, "audit_log.reason.unpin_message", "info.message.unpinned_message")
+		audit_log_Reason_Unpin_message, info_Message_Unpinned_message = load_lang(message.guild.id, "audit_log.reason.message.unpin_message", "info.message.unpinned_message")
 		await message.delete()
 		message = refernace_or_last_existing_message(ctx, refernace)
 		pinned = message.pinned
