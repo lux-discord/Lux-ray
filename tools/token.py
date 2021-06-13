@@ -32,8 +32,8 @@ def token_edit_data(data: dict, token: Token, value, *, allow_add_key = False):
 			root, token = token.split(1)
 			root = root.str
 			
-			if (root in overwrite) or (root not in data and overwrite):
-				data[root] = edit(data, token, value, overwrite)
+			if (root in data) or (root not in data and overwrite):
+				data[root] = edit(data[root], token, value, overwrite)
 			else:
 				raise KeyError(f"Not allow add key({root})")
 		else:
