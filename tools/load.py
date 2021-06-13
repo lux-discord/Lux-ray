@@ -14,7 +14,7 @@ def load_internal():
 
 @run_here("..")
 def load_lang(server_ID, *tokens: str):
-	server_lang = ServerSetting(server_ID).request("config.language")
+	server_lang = ServerSetting(server_ID).request(Token("config.language"))
 	lang_data = json_load(f"language/{server_lang}.json")
 	
 	if not tokens:
