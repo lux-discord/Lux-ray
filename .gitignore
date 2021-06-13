@@ -2,9 +2,11 @@
 .vscode/
 bot-env/
 server_setting/*.json
+**/server_setting/*.json
 
 *.pyc
 internal.json
 keep_alive.py
 
 !server_setting/_default_server_setting.json
+!**/server_setting/_default_server_setting.json
