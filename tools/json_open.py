@@ -5,7 +5,7 @@ __all__ = [
 	"json_dump"
 ]
 
-def json_load(file_path):
+def json_load(file_path) -> dict:
 	with open(file_path, "r", encoding = "UTF-8") as file:
 		return load(file)
 
