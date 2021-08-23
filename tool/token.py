@@ -2,29 +2,47 @@ from typing import Any
 
 __all__ = [
 	"Token",
-	"token_get_data",
-	"token_edit_data",
-	"token_add_key",
-	"token_del_key"
+	"token_edit_data"
 ]
 
 class Token():
 	def __init__(self, token: str, delimiter: str = '.'):
-		self.str = token
-		self.delimiter = delimiter
+		if isinstance(token, str):
+			self.str = token
+		else:
+			raise TypeError(f"the token must be string, not {token.__class__.__name__}")
+		
+		if isinstance(delimiter, str):
+			self.delimiter = delimiter
+		else:
+			raise TypeError(f"the delimiter must be string, not {delimiter.__class__.__name__}")
+		
 		self.has_delimiter = True if delimiter in token else False
 	
-	def split(self, maxsplit: int = None):
-		return [Token(token) for token in self.str.split(self.delimiter, maxsplit)] if maxsplit else [Token(token) for token in self.str.split(self.delimiter)]
+	def split(self, maxsplit: int = 0):
+		"""split Token like str.split()
+		
+		Parameter
+		---------
+		maxsplit:
+			Maximum number of splits to do. 0 (the default value) means no limit.
+		"""
+		return [Token(token) for token in str(self).split(self.delimiter, maxsplit - 1)]
+	
+	def split_to_str(self, maxsplit: int=0):
+		return self.str.split(self.delimiter, maxsplit - 1)
+	
+	def get(self, source: dict):
+		for key in self.split_to_str():
+			try:
+				data = data[key]
+			except NameError:
+				data = source[key]
+		
+		return data
 	
 	def __str__(self):
 		return self.str
-
-def token_get_data(data: dict, token: Token) -> Any:
-	for key in token.split():
-		data = data[key.str]
-	
-	return data
 
 def token_edit_data(data: dict, token: Token, value, *, allow_add_key = False):
 	def edit(data: dict, token: Token, value, overwrite):

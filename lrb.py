@@ -1,24 +1,21 @@
-import discord
+from discord import Intents
 from discord.ext.commands import Bot
 
-from tools.prefix import load_prefixes, get_prefix
-from tools.load import load_internal
+from core.cog import cog_folder_loader, cog_folders
+from core.prefix import get_prefix
+from core.start_up import get_bot_data, start_up_message
 
-from global_object import stable
-from cog import cog_folders, cog_folder_loader
+# set up bot
+print(start_up_message["set_up"])
+stable = False
+status = "stable" if stable else "indev"
+bot_data = get_bot_data(status)
+intent = Intents.all()
+lrb = Bot(command_prefix = get_prefix, owner_id = bot_data["owner"], intents = intent)
+setattr(lrb, "status", status)
+setattr(lrb, "is_running", False)
 
-#prepare internal data
-internal_data = load_internal()
-token = internal_data["token"]
-message = internal_data["message"]
-
-#set up bot
-print(message["set_up"])
-load_prefixes()
-intent = discord.Intents.all()
-lrb = Bot(command_prefix = get_prefix, owner_id = internal_data["owner"], intents = intent)
-
-#load cog
+# load cog
 load_cog_message_keys = [
 	"load_be",
 	"load_cmd",
@@ -26,13 +23,13 @@ load_cog_message_keys = [
 ]
 
 for folder, message_key in zip(cog_folders, load_cog_message_keys):
-	print(message[message_key])
+	print(start_up_message[message_key])
 	cog_folder_loader(lrb, folder)
 
-#start bot
-print(message["start_bot"])
+# start bot
+print(start_up_message["start_bot"])
 if stable:
 	from keep_alive import keep_alive
 	keep_alive()
 
-lrb.run(token["main"] if stable else token["indev"])
+lrb.run(bot_data["token"])

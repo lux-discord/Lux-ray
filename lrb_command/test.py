@@ -1,11 +1,14 @@
-from discord.ext.commands import command
+from core import InitedCog
+from discord.ext.commands.core import command
 
-from global_object import Inited_cog
 
-class Test(Inited_cog):
+class Test(InitedCog):
 	@command()
 	async def test(self, ctx):
-		pass
+		t = await ctx.channel.fetch_message(879400364498108417)
+		await ctx.send(t)
 
 def setup(bot):
 	bot.add_cog(Test(bot))
+879400364498108417
+879401671757819934

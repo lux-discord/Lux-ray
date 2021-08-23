@@ -1,16 +1,15 @@
+from tool.token import Token
+from core import InitedCog, Server
 from discord.ext.commands import Cog
 
-from global_object import Inited_cog
 
-from tools.load import load_lang
-
-class Error(Inited_cog):
+class Error(InitedCog):
 	@Cog.listener()
 	async def on_command_error(self, ctx, error):
-		command = ctx.command
-		
-		if not command:
-			await ctx.send(error)
+		# command not exist
+		if not ctx.command:
+			server = Server(ctx)
+			return await ctx.send(server.lang_request(Token("error.invalid_command.command_not_exist")).format(command_name=ctx.invoked_with))
 		
 		if ctx.command.has_error_handler():
 			return

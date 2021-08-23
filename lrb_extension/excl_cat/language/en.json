@@ -1,9 +1,0 @@
-{
-	"info": {
-		"channel": {
-			"create_private_channel": "Private channel {channel_name} has been created",
-			"public_private_channel": "This private channel has been made public",
-			"make_private_channel": "This public channel has been made private"
-		}
-	}
-}

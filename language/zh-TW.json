@@ -8,26 +8,36 @@
 		}
 	},
 	"error": {
-		"lang_not_found": "沒有{language}語檔",
-		"lang_not_change": "未更換使用語檔，請選擇其他語言",
-		"prefix_not_change": "未更改指令前綴，請輸入與原先不同的前綴",
-		"no_refernace_message": "找不到回覆的訊息，請確保送出指令前正在回覆現有的訊息",
-		"no_stickers": "該則訊息沒有任何貼圖"
+		"lang": {
+			"lang_not_found": "沒有`{language}`語檔",
+			"lang_not_change": "未更換使用語檔，請選擇其他語言"
+		},
+		"prefix": {
+			"prefix_not_change": "未更改指令前綴，請輸入與原先不同的前綴"
+		},
+		"role": {
+			"role_not_change": "未更改{role_type}身分組，請選擇與原先不同的身分組",
+			"role_not_found": "找不到`{role_name}`身分組，請重新輸入正確的身分組名稱"
+		},
+		"message": {
+			"no_refernace_message": "找不到回覆的訊息，請確保送出指令前正在回覆現有的訊息",
+			"no_stickers": "該則訊息沒有任何貼圖"
+		}
 	},
 	"info": {
 		"channel": {
-			"create_text_channel": "已建立頻道 {channel_name}"
+			"create_text_channel": "已建立頻道`{channel_name}`"
 		},
 		"command": {
-			"loaded_cmd": "已載入{cog_name}指令集",
-			"unloaded_cmd": "已卸載{cog_name}指令集",
-			"reloaded_cmd": "已重新載入{cog_name}指令集",
+			"loaded_cmd": "已載入`{cog_name}`指令集",
+			"unloaded_cmd": "已卸載`{cog_name}`指令集",
+			"reloaded_cmd": "已重新載入`{cog_name}`指令集",
 			"reloaded_all_cmd": "已重新載入所有指令集"
 		},
 		"extension": {
-			"loaded_ext": "已載入{cog_name}擴充模組",
-			"unloaded_ext": "已卸載{cog_name}擴充模組",
-			"reloaded_ext": "已重新載入{cog_name}擴充模組",
+			"loaded_ext": "已載入`{cog_name}`擴充模組",
+			"unloaded_ext": "已卸載`{cog_name}`擴充模組",
+			"reloaded_ext": "已重新載入`{cog_name}`擴充模組",
 			"reloaded_all_ext": "已重新載入所有擴充模組"
 		},
 		"message": {
@@ -36,8 +46,9 @@
 			"unpinned_message": "已取消釘選訊息"
 		},
 		"server": {
-			"set_lang": "使用{language}語檔",
-			"set_prefix":"設置指令前綴為 \"{prefix}\""
+			"set_lang": "使用`{language}`語檔",
+			"set_prefix": "設置指令前綴為 `{prefix}`",
+			"set_auto_role": "設置自動身分組為{roles}"
 		}
 	},
 	"message": {

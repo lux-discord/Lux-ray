@@ -8,27 +8,37 @@
 		}
 	},
 	"error": {
-		"lang_not_found": "'{language}' language not found",
-		"lang_not_change": "Didn't change language, please choose another language",
-		"prefix_not_change": "Didn't change prefix, please enter a different prefix",
-		"no_refernace_message": "No refernace message, please reply a existing message before send command",
-		"no_stickers": "The message does not have any stickers"
+		"invalid_argument": {
+			"lang_not_suppot": "Not suppot `{language}` language",
+			"role_not_found": "Role `{role_name}` not found. Please input a existing role",
+			"invalid_emoji": "`{invalid_emoji_text}` is not a valid emoji",
+			"invalid_message_link": "Invalid message link: `{message_link}`"
+		},
+		"missing_argument": {
+			
+		},
+		"target_not_found": {
+			"reference_message_has_no_emoji": "Reference message has no emoji",
+			"no_emoji_input": "No emoji input, please input some emoji or reply message",
+			"no_reference_message": "No reference message was found. Please reply to the message before sending this command"
+		},
+		"invalid_command": {
+			"command_not_exist": "Command `{command_name}` not exist"
+		}
+	},
+	"warning": {
+		"value_not_chanege": {
+			"lang_not_change": "Didn't change language. Please choose another language",
+			"prefix_not_change": "Didn't change prefix. Please enter a different prefix",
+			"role_not_change": "Didn't change role of {role_type}. Please choose a different role"
+		}
 	},
 	"info": {
-		"channel": {
-			"create_text_channel": "Created {channel_name} channel"
-		},
-		"command": {
-			"loaded_cmd": "Loaded '{cog_name}' command cog",
-			"unloaded_cmd": "Unloaded '{cog_name}' command cog",
-			"reloaded_cmd": "Reloaded '{cog_name}' command cog",
-			"reloaded_all_cmd": "Reloaded all command cogs"
-		},
 		"extension": {
-			"loaded_ext": "Loaded '{cog_name}' extension",
-			"unloaded_ext": "Unloaded '{cog_name}' extension",
-			"reloaded_ext": "Reloaded '{cog_name}' extension",
-			"reloaded_all_ext": "Reloaded all extensions"
+			"load": "Loaded `{cog_name}` extension",
+			"unload": "Unloaded `{cog_name}` extension",
+			"reload": "Reloaded `{cog_name}` extension",
+			"reload_all": "Reloaded all extensions"
 		},
 		"message": {
 			"deleted_message": "{deleted_number} message deleted",
@@ -36,8 +46,9 @@
 			"unpinned_message": "Unpinned message"
 		},
 		"server": {
-			"set_lang": "Use {language} language",
-			"set_prefix":"Set command prefix to '{prefix}'"
+			"set_lang": "Use `{language}` language",
+			"set_prefix":"Set command prefix to `{prefix}`",
+			"set_auto_role": "Set auto roles to {roles}"
 		}
 	},
 	"message": {

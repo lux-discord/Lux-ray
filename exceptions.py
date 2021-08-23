@@ -1,17 +1,57 @@
 class LRBError(Exception):
-	"""Base Exception of Lux-ray bot"""
 	pass
 
-class ParameterError(LRBError):
+class EmojiError(LRBError):
 	pass
 
-class NoTokenInputError(ParameterError):
-	def __str__(self):
-		return "No token input"
+class InvalidEmojiError(EmojiError):
+	def __init__(self, raw_emoji) -> None:
+		self.raw_emoji = raw_emoji
+	
+	def __str__(self) -> str:
+		return f"'{self.raw_emoji}' is not a valid emoji"
 
-class LanguageNotSuppot(LookupError):
-	def __init__(self, language):
-		self.language = language
+class PrefixError(LRBError):
+	pass
+
+class PrefixNotChange(PrefixError):
+	pass
+
+class PrefixInvalid(PrefixError):
+	def __init__(self, prefix):
+		self.prefix = prefix
+	
+	def __str__(self) -> str:
+		return f"Invalid prefix '{self.prefix}'"
+
+class RoleError(LRBError):
+	pass
+
+class RoleNotChange(RoleError):
+	pass
+
+class RoleTypeInvalid(RoleError):
+	pass
+
+class LanguageError(LRBError):
+	pass
+
+class LanguageNotChange(LanguageError):
+	pass
+
+class LanguageNotSupport(LanguageError):
+	def __init__(self, lang_code):
+		self.lang_code = lang_code
 	
 	def __str__(self):
-		return f"{self.language} not suppot"
+		return f"language(code) '{self.lang_code}' not suppot"
+
+class InvalidArgument(LRBError):
+	pass
+
+class InvalidMessageLink(InvalidArgument):
+	def __init__(self, link) -> None:
+		self.link = link
+	
+	def __str__(self) -> str:
+		return f"Invalid message link: '{self.link}'"
