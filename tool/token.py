@@ -17,7 +17,7 @@ class Token():
 		else:
 			raise TypeError(f"the delimiter must be string, not {delimiter.__class__.__name__}")
 		
-		self.has_delimiter = True if delimiter in token else False
+		self.has_delimiter = delimiter in token
 	
 	def split(self, maxsplit: int = 0):
 		"""split Token like str.split()

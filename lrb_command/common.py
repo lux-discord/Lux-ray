@@ -64,7 +64,7 @@ class Common(InitedCog):
 				return await send_error(ctx,
 					server.lang_request(Token("error.invalid_argument.invalid_emoji")).format(invalid_emoji_text=error.args[0]))
 			return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
-		elif refer_mes := ctx.message.reference:
+		if refer_mes := ctx.message.reference:
 			if emojis := emoji_regex.findall(refer_mes.resolved.content):
 				emojis: set[list[str, str]] = {tuple(emoji.split(":")) for emoji in emojis}
 				return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
