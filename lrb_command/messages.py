@@ -100,8 +100,46 @@ class Messages(InitedCog):
 			await send_info(ctx, server.lang_request("info.message.pinned"))
 	
 	@command()
-	async def unpin(self, ctx, message_url: str=None):
-		pass
+	async def unpin(self, ctx, message_link: str=None):
+		ctx_message = ctx.message
+		ctx_channel = ctx.channel
+		server = Server(ctx)
+		
+		async def unpin_message(message, channel):
+			await message.unpin(reason=server.lang_request("audit_log.reason.message.unpin_message"))
+			
+			# delete system message
+			async for message in channel.history(limit=7):
+				if not message.content:
+					await message.delete()
+					break
+		
+		await ctx_message.delete()
+		
+		if message_link:
+			async def process(channel: TextChannel, message: Message):
+				if not channel.permissions_for(ctx.author).manage_messages:
+					raise InvalidMessageLink(message_link)
+				
+				if message.pinned:
+					await unpin_message(message, channel)
+				
+				await send_info(ctx, server.lang_request("info.message.unpinned"))
+			
+			await self.process_message_link(message_link, process, ctx, server)
+		elif refer_mes := ctx_message.reference:
+			refer_mes = refer_mes.resolved
+			
+			if refer_mes.pinned:
+				await unpin_message(refer_mes, ctx_channel)
+			
+			await send_info(ctx, server.lang_request("info.message.unpinned"))
+		else:
+			async for message in ctx_channel.history(limit=1):
+				if message.pinned:
+					await unpin_message(message, ctx_channel)
+			
+			await send_info(ctx, server.lang_request("info.message.unpinned"))
 	
 	@command(aliases = ["del_mes", "del_msg", "purge"])
 	async def delete_message(self, ctx, delete_num=1):
