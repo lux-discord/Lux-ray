@@ -12,7 +12,7 @@ from .language import Language
 server_coll = bot_db["server"]
 
 class ServerBasic():
-	def _update(self, properties: dict):
+	def _update(self, **properties):
 		self.data |= properties
 		server_coll.update_one({"server_id": self.id}, properties)
 	
@@ -28,7 +28,7 @@ class ServerBasic():
 		
 		self.language = Language(lang_code)
 		self.lang_code = lang_code
-		self._update({"lang_code": lang_code})
+		self._update(lang_code=lang_code)
 
 class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
@@ -67,4 +67,4 @@ class Server(ServerBasic):
 		else:
 			raise RoleNotChange
 		
-		self._update({"roles": {"auto_role": self.roles}})
+		self._update(roles={"auto_role": self.roles})
