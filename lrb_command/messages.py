@@ -89,13 +89,13 @@ class Messages(InitedCog):
 			refer_mes = refer_mes.resolved
 			
 			if not refer_mes.pinned:
-				await pin_message(refer_mes, ctx_channel)
+				await pin_message(ctx, refer_mes, ctx_channel)
 			
 			await send_info(ctx, server.lang_request("info.message.pinned"))
 		else:
 			async for message in ctx_channel.history(limit=1):
 				if not message.pinned:
-					await pin_message(message, ctx_channel)
+					await pin_message(ctx, message, ctx_channel)
 			
 			await send_info(ctx, server.lang_request("info.message.pinned"))
 	
@@ -122,7 +122,7 @@ class Messages(InitedCog):
 					raise InvalidMessageLink(message_link)
 				
 				if message.pinned:
-					await unpin_message(message, channel)
+					await unpin_message(ctx, message, channel)
 				
 				await send_info(ctx, server.lang_request("info.message.unpinned"))
 			
@@ -131,13 +131,13 @@ class Messages(InitedCog):
 			refer_mes = refer_mes.resolved
 			
 			if refer_mes.pinned:
-				await unpin_message(refer_mes, ctx_channel)
+				await unpin_message(ctx, refer_mes, ctx_channel)
 			
 			await send_info(ctx, server.lang_request("info.message.unpinned"))
 		else:
 			async for message in ctx_channel.history(limit=1):
 				if message.pinned:
-					await unpin_message(message, ctx_channel)
+					await unpin_message(ctx, message, ctx_channel)
 			
 			await send_info(ctx, server.lang_request("info.message.unpinned"))
 	

@@ -25,7 +25,7 @@ class Admin(InitedCog):
 		server = Server(ctx)
 		
 		try:
-			server.update_prefix(prefix)
+			server.update_prefix(self.bot.status, prefix)
 			await ctx.send(server.lang_request(Token("info.server.set_prefix")))
 		except PrefixNotChange:
 			await ctx.send(server.lang_request(Token("error.prefix.prefix_not_change")))
