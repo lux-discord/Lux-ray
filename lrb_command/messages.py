@@ -72,11 +72,11 @@ class Messages(InitedCog):
 				
 				await send_info(ctx, server.lang_request("info.message.pinned"))
 			except InvalidMessageLink as error:
-				return await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_link").format(message_link=error.args[0]))
+				await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_link").format(message_link=error.args[0]))
 			except InvalidChannelID as error:
-				return await send_error(ctx, server.lang_request("error.invalid_argument.invalid_channel_id").format(channel_id=error.args[0]))
+				await send_error(ctx, server.lang_request("error.invalid_argument.invalid_channel_id").format(channel_id=error.args[0]))
 			except InvalidMessageID as error:
-				return await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_id").format(message_id=error.args[0]))
+				await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_id").format(message_id=error.args[0]))
 		elif refer_mes := ctx_message.reference:
 			refer_mes = refer_mes.resolved
 			
