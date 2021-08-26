@@ -5,7 +5,7 @@ from discord.role import Role
 from exceptions import LanguageNotChange, LanguageNotSupport, PrefixNotChange, RoleNotChange
 
 
-@has_guild_permissions(administrator = True)
+@has_guild_permissions(administrator=True)
 class Admin(InitedCog):
 	@command()
 	async def lang(self, ctx, language: str):

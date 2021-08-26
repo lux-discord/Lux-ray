@@ -12,7 +12,7 @@ stable = False
 status = "stable" if stable else "indev"
 bot_data = get_bot_data(status)
 intent = Intents.all()
-lrb = Bot(command_prefix = get_prefix, owner_id = bot_data["owner"], intents = intent)
+lrb = Bot(command_prefix=get_prefix, owner_id=bot_data["owner"], intents=intent)
 setattr(lrb, "status", status)
 setattr(lrb, "is_running", False)
 

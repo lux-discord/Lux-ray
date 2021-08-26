@@ -47,6 +47,7 @@ def find_prefixes(server_id):
 		prefixes_cache[server_id] = prefixes
 		
 		return prefixes
+	return None
 
 def update_prefix(server_id, status, prefix):
 	# won't happen KeyError, because this function must call by discord command that will add prefixes to cache

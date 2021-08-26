@@ -7,7 +7,7 @@ from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 from tool.message import send_error, send_info
 
 
-@has_permissions(manage_messages = True)
+@has_permissions(manage_messages=True)
 class Messages(InitedCog):
 	async def message_link_parser(self, message_link: str):
 		"""
@@ -144,7 +144,7 @@ class Messages(InitedCog):
 			
 			await send_info(ctx, server.lang_request("info.message.unpinned"))
 	
-	@command(aliases = ["del_mes", "del_msg", "purge"])
+	@command(aliases=["del_mes", "del_msg", "purge"])
 	async def delete_message(self, ctx, delete_num=1):
 		await ctx.channel.purge(limit=delete_num + 1)
 		await send_info(ctx, Server(ctx).lang_request("info.message.deleted_message").format(deleted_number=delete_num))

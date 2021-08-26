@@ -12,4 +12,3 @@ class Event(InitedCog):
 
 def setup(bot):
 	bot.add_cog(Event(bot))
-

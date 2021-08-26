@@ -42,7 +42,7 @@ class Token():
 	def __str__(self):
 		return self.str
 
-def token_edit_data(data: dict, token: Token, value, *, allow_add_key = False):
+def token_edit_data(data: dict, token: Token, value, *, allow_add_key=False):
 	def edit(data: dict, token: Token, value, overwrite):
 		if token.has_delimiter:
 			root, token = token.split(1)

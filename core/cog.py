@@ -37,4 +37,3 @@ def cog_folder_loader(bot, folder):
 	for file, cog in cog_dict.items():
 		print(f"    {file}")
 		bot.load_extension(cog)
-
