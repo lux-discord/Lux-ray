@@ -12,7 +12,9 @@
 			"lang_not_suppot": "Not suppot `{language}` language",
 			"role_not_found": "Role `{role_name}` not found. Please input a existing role",
 			"invalid_emoji": "`{invalid_emoji_text}` is not a valid emoji",
-			"invalid_message_link": "Invalid message link: `{message_link}`"
+			"invalid_message_link": "Invalid message link: `{message_link}`",
+			"invalid_channel_id": "Invalid channel id `{channel_id}`",
+			"invalid_message_id": "Invalid message id `{message_id}`"
 		},
 		"missing_argument": {
 			
@@ -41,9 +43,9 @@
 			"reload_all": "Reloaded all extensions"
 		},
 		"message": {
-			"deleted_message": "{deleted_number} message deleted",
-			"pinned_message": "Pinned message",
-			"unpinned_message": "Unpinned message"
+			"deleted": "{deleted_number} message deleted",
+			"pinned": "Pinned message",
+			"unpinned": "Unpinned message"
 		},
 		"server": {
 			"set_lang": "Use `{language}` language",
