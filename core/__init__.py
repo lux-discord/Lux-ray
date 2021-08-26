@@ -1,4 +1,4 @@
 from .cog import InitedCog
 from .db import bot_db
 from .server import Server
-from .extensions import ExtensionServer
+from .extension.server import ExtensionServer
