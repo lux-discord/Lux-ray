@@ -1,5 +1,3 @@
-from typing import Any
-
 __all__ = [
 	"Token",
 	"token_edit_data"
