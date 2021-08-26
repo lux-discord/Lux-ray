@@ -18,7 +18,7 @@ class Messages(InitedCog):
 		
 		Raise
 		-----
-		InvalidMessageLink: when `message_link` not contain one of `guild_id`, `channel_id` or `message_id`
+		InvalidMessageLink: when `message_link` is incomplete
 		InvalidChannelID: when chennel is not exist
 		InvalidMessageID: when channel is not readable for bot or message doesn't exist
 		"""
@@ -32,12 +32,13 @@ class Messages(InitedCog):
 				message: Message = await channel.fetch_message(int(message_id))
 				return channel, message
 			except ValueError:
+				# `message_link` is incomplete
 				raise InvalidMessageLink(message_link)
 			except AttributeError:
-				# 'NoneType' object has no 'fetch_message' attribute -> channel_id doesn't exist
+				# 'NoneType' object has no 'fetch_message' attribute -> channel doesn't exist
 				raise InvalidChannelID(channel_id)
 			except HTTPException:
-				# channel not readable, message doesn't exist
+				# channel not readable or message doesn't exist
 				raise InvalidMessageID(message_id)
 		else:
 			raise InvalidMessageLink(message_link)
