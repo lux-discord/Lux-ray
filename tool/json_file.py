@@ -1,8 +1,8 @@
 from json import load, dump
 
 __all__ = [
-	"json_load",
-	"json_dump"
+	"load_file",
+	"dump_file"
 ]
 
 def load_file(file_path) -> dict:
