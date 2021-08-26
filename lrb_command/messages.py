@@ -1,7 +1,9 @@
-from discord.errors import HTTPException
 from core import InitedCog, Server
+from discord.channel import TextChannel
+from discord.errors import HTTPException
 from discord.ext.commands.core import command, has_permissions
-from exceptions import InvalidMessageLink
+from discord.message import Message
+from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 from tool.message import send_error, send_info
 
 
@@ -16,6 +18,28 @@ def message_link_parser(message_link: str):
 
 @has_permissions(manage_messages = True)
 class Messages(InitedCog):
+	async def message_link_parser(self, message_link: str):
+		link_prefix = "https://discord.com/channels/"
+		
+		if link_prefix in message_link:
+			try:
+				channel_id, message_id = message_link.removeprefix("https://discord.com/channels/").split("/")[1:]
+				
+				channel: TextChannel = self.bot.get_channel(int(channel_id))
+				message: Message = await channel.fetch_message(int(message_id))
+				return channel, message
+			except IndexError:
+				# split message_link fail
+				raise InvalidMessageLink(message_link)
+			except AttributeError:
+				# 'NoneType' object has no 'fetch_message' attribute -> channel_id doesn't exist
+				raise InvalidChannelID(channel_id)
+			except HTTPException:
+				# channel not readable, message doesn't exist
+				raise InvalidMessageID(message_id)
+		else:
+			raise InvalidMessageLink(message_link)
+	
 	@command()
 	async def pin(self, ctx, message_link: str=None):
 		ctx_message = ctx.message
