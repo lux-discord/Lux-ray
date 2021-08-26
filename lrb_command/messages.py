@@ -43,6 +43,17 @@ class Messages(InitedCog):
 		else:
 			raise InvalidMessageLink(message_link)
 	
+	async def process_message_link(self, message_link, process, ctx, server: Server):
+		try:
+			channel, message = await self.message_link_parser(message_link)
+			await process(channel, message)
+		except InvalidMessageLink as error:
+			await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_link").format(message_link=error.args[0]))
+		except InvalidChannelID as error:
+			await send_error(ctx, server.lang_request("error.invalid_argument.invalid_channel_id").format(channel_id=error.args[0]))
+		except InvalidMessageID as error:
+			await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_id").format(message_id=error.args[0]))
+	
 	@command()
 	async def pin(self, ctx, message_link: str=None):
 		ctx_message = ctx.message
