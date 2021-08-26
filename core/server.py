@@ -1,6 +1,6 @@
 from typing import Union
-from discord.ext.commands import Context
 
+from discord.ext.commands import Context
 from exceptions import LanguageNotChange, PrefixInvalid, RoleNotChange
 from pymongo.collection import Collection
 from tool.token import Token
@@ -36,12 +36,14 @@ class ServerBasic():
 
 class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
+		super().__init__(server_coll)
+		
 		if not isinstance(ctx, Context):
 			raise TypeError(f"ctx must be discord.ext.commands.Context, not {ctx.__class__.__name__}")
 		
 		id = ctx.guild.id
 		
-		if not (server_data := server_coll.find_one({"server_id": id})):
+		if not (server_data := self.server_coll.find_one({"server_id": id})):
 			server_data = {
 				"server_id": id,
 				"lang_code": "en",
@@ -50,7 +52,7 @@ class Server(ServerBasic):
 				},
 				"able_ext": []
 			}
-			server_coll.insert_one(server_data)
+			self.server_coll.insert_one(server_data)
 		
 		self.id = id
 		self.data = server_data
