@@ -3,9 +3,10 @@ from discord.ext.commands import Bot
 
 from core.cog import cog_folder_loader, cog_folders
 from core.prefix import get_prefix
-from core.start_up import get_bot_data, start_up_message
+from core.start_up import get_bot_data, load_start_up_message
 
 # set up bot
+start_up_message = load_start_up_message()
 print(start_up_message["set_up"])
 stable = False
 status = "stable" if stable else "indev"
