@@ -22,7 +22,7 @@ class Messages(InitedCog):
 		InvalidChannelID: when chennel is not exist
 		InvalidMessageID: when channel is not readable for bot or message doesn't exist
 		"""
-		link_prefix = "https://discord.com/channels/" 
+		link_prefix = "https://discord.com/channels/"
 		
 		if link_prefix in message_link:
 			try:
@@ -105,8 +105,11 @@ class Messages(InitedCog):
 		ctx_channel = ctx.channel
 		server = Server(ctx)
 		
-		async def unpin_message(message, channel):
-			await message.unpin(reason=server.lang_request("audit_log.reason.message.unpin_message"))
+		async def unpin_message(ctx, message, channel):
+			await message.unpin(reason=server.lang_request("audit_log.reason.message.unpin_message").format(
+				user=f"{ctx.author.name}(ID: {ctx.author.id})",
+				command_name=ctx.invoked_with)
+			)
 			
 			# delete system message
 			async for message in channel.history(limit=7):
