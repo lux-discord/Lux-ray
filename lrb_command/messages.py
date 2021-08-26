@@ -91,13 +91,13 @@ class Messages(InitedCog):
 			if not refer_mes.pinned:
 				await pin_message(refer_mes, ctx_channel)
 			
-			await send_info(ctx, server.lang_request("info.message.pinned_message"))
+			await send_info(ctx, server.lang_request("info.message.pinned"))
 		else:
 			async for message in ctx_channel.history(limit=1):
 				if not message.pinned:
 					await pin_message(message, ctx_channel)
 			
-			await send_info(ctx, server.lang_request("info.message.pinned_message"))
+			await send_info(ctx, server.lang_request("info.message.pinned"))
 	
 	@command()
 	async def unpin(self, ctx, message_url: str=None):
