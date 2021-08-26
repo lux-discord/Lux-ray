@@ -12,14 +12,14 @@ class ExtensionServer(ServerBasic):
 		if not isinstance(ctx, Context):
 			raise TypeError(f"ctx must be discord.ext.commands.Context, not {ctx.__class__.__name__}")
 		
-		id = ctx.guild.id
 		extension_name: str = ctx.invoked_parents[0]
-		extension_data: dict = extension_coll.find_one({"name": extension_name})
 		extension_server_coll = extension_server_db[extension_name]
 		
 		super().__init__(extension_server_coll)
 		
 		id = ctx.guild.id
+		extension_manifest: dict = extension_coll.find_one({"name": extension_name})
+		
 		if not (extension_server_data := self.server_coll.find_one({"server_id": id})):
 			extension_server_data = {
 				"server_id": id,
@@ -31,10 +31,10 @@ class ExtensionServer(ServerBasic):
 		self.id = id
 		self.data = extension_server_data
 		self.lang_code = extension_server_data["lang_code"]
-		self.language = Language(self.lang_code, extension_data["support_language"], "/".join([
+		self.language = Language(self.lang_code, extension_manifest["support_language"], "/".join([
 			cog_folder_abbr_to_fullname["ext"],
 			extension_name,
-			extension_data.get("lang_file_path", LANG_FILE_PATH)
+			extension_manifest.get("lang_file_path", LANG_FILE_PATH)
 		]))
 	
 	def MainServer(self):
