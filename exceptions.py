@@ -54,4 +54,18 @@ class InvalidMessageLink(InvalidArgument):
 		self.link = link
 	
 	def __str__(self) -> str:
-		return f"Invalid message link: '{self.link}'"
+		return f"Invalid message link '{self.link}'"
+
+class InvalidChannelID(InvalidArgument):
+	def __init__(self, id):
+		self.id = id
+	
+	def __str__(self):
+		return f"Invalid channel ID '{self.id}'"
+
+class InvalidMessageID(InvalidArgument):
+	def __init__(self, id):
+		self.id = id
+	
+	def __str__(self):
+		return f"Invalid message ID '{self.id}'"
