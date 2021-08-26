@@ -60,8 +60,11 @@ class Messages(InitedCog):
 		ctx_channel = ctx.channel
 		server = Server(ctx)
 		
-		async def pin_message(message, channel):
-			await message.pin(reason=server.lang_request("audit_log.reason.message.pin_message"))
+		async def pin_message(ctx, message, channel):
+			await message.pin(reason=server.lang_request("audit_log.reason.message.pin_message").format(
+				user=f"{ctx.author.name}(ID: {ctx.author.id})",
+				command_name=ctx.invoked_with)
+			)
 			
 			async for message in channel.history(limit=7):
 				if not message.content:
