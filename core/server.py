@@ -2,6 +2,7 @@ from typing import Union
 from discord.ext.commands import Context
 
 from exceptions import LanguageNotChange, PrefixInvalid, RoleNotChange
+from pymongo.collection import Collection
 from tool.token import Token
 
 from core.prefix import update_prefix as _update_prefix
@@ -12,9 +13,12 @@ from .language import Language
 server_coll = bot_db["server"]
 
 class ServerBasic():
+	def __init__(self, server_coll: Collection) -> None:
+		self.server_coll = server_coll
+	
 	def _update(self, **properties):
 		self.data |= properties
-		server_coll.update_one({"server_id": self.id}, properties)
+		self.server_coll.update_one({"server_id": self.id}, properties)
 	
 	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
 		return self.language.request(token)
