@@ -31,8 +31,7 @@ class Messages(InitedCog):
 				channel: TextChannel = self.bot.get_channel(int(channel_id))
 				message: Message = await channel.fetch_message(int(message_id))
 				return channel, message
-			except IndexError:
-				# split message_link fail
+			except ValueError:
 				raise InvalidMessageLink(message_link)
 			except AttributeError:
 				# 'NoneType' object has no 'fetch_message' attribute -> channel_id doesn't exist
