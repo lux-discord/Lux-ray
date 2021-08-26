@@ -7,15 +7,6 @@ from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 from tool.message import send_error, send_info
 
 
-def message_link_parser(message_link: str):
-	link_prefix = "https://discord.com/channels/"
-	
-	if link_prefix in message_link:
-		try:
-			return message_link.removeprefix("https://discord.com/channels/").split("/")[1:]
-		except IndexError:
-			raise InvalidMessageLink(message_link)
-
 @has_permissions(manage_messages = True)
 class Messages(InitedCog):
 	async def message_link_parser(self, message_link: str):
@@ -31,7 +22,7 @@ class Messages(InitedCog):
 		InvalidChannelID: when chennel is not exist
 		InvalidMessageID: when channel is not readable for bot or message doesn't exist
 		"""
-		link_prefix = "https://discord.com/channels/"
+		link_prefix = "https://discord.com/channels/" 
 		
 		if link_prefix in message_link:
 			try:
