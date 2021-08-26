@@ -39,7 +39,7 @@ class Admin(InitedCog):
 		# type and exist check
 		for role in roles:
 			if role_type := type(role) not in {str, Role}:
-				raise TypeError(f"role in rules must be str or discord.role.Role")
+				raise TypeError(f"role in rules must be str or discord.role.Role, not {role_type}")
 			
 			role_name = role if role_type is str else role.name
 			
