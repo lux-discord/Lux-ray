@@ -11,7 +11,26 @@ from .language import Language
 
 server_coll = bot_db["server"]
 
-class Server():
+class ServerBasic():
+	def _update(self, properties: dict):
+		self.data |= properties
+		server_coll.update_one({"server_id": self.id}, properties)
+	
+	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
+		return self.language.request(token)
+	
+	def lang_request_many(self, *tokens: Union[Token, str]) -> list[str, dict]:
+		return self.language.request_many(*tokens)
+	
+	def update_lang(self, lang_code):
+		if lang_code == self.lang_code:
+			raise LanguageNotChange
+		
+		self.language = Language(lang_code)
+		self.lang_code = lang_code
+		self._update({"lang_code": lang_code})
+
+class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
 		if not isinstance(ctx, Context):
 			raise TypeError(f"ctx must be discord.ext.commands.Context, not {ctx.__class__.__name__}")
@@ -35,24 +54,6 @@ class Server():
 		self.roles = server_data["roles"]
 		self.able_ext = server_data["able_ext"]
 		self.language = Language(self.lang_code)
-	
-	def _update(self, properties: dict):
-		self.data |= properties
-		server_coll.update_one({"server_id": self.id}, properties)
-	
-	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
-		return self.language.request(token)
-	
-	def lang_request_many(self, *tokens: Union[Token, str]) -> list[str, dict]:
-		return self.language.request_many(*tokens)
-	
-	def update_lang(self, lang_code):
-		if lang_code == self.lang_code:
-			raise LanguageNotChange
-		
-		self.language = Language(lang_code)
-		self.lang_code = lang_code
-		self._update({"lang_code": lang_code})
 	
 	def update_prefix(self, status, prefix):
 		try:
