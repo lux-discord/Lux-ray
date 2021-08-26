@@ -6,7 +6,6 @@ from discord.ext.commands.core import command
 from exceptions import InvalidEmojiError
 from tool.embed import bot_color, embed_setup
 from tool.message import send_error
-from tool.token import Token
 
 emoji_regex = compile(r"<a?:(.+?:[0-9]{15,21})>")
 
@@ -62,14 +61,14 @@ class Common(InitedCog):
 				emojis = parse_raw_emojis(*emojis)
 			except InvalidEmojiError as error:
 				return await send_error(ctx,
-					server.lang_request(Token("error.invalid_argument.invalid_emoji")).format(invalid_emoji_text=error.args[0]))
+					server.lang_request("error.invalid_argument.invalid_emoji").format(invalid_emoji_text=error.args[0]))
 			return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
 		if refer_mes := ctx.message.reference:
 			if emojis := emoji_regex.findall(refer_mes.resolved.content):
 				emojis: set[list[str, str]] = {tuple(emoji.split(":")) for emoji in emojis}
 				return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
-			return await send_error(ctx, server.lang_request(Token("error.target_not_found.reference_message_has_no_emoji")))
-		await send_error(ctx, server.lang_request(Token("error.target_not_found.no_emoji_input")))
+			return await send_error(ctx, server.lang_request("error.target_not_found.reference_message_has_no_emoji"))
+		await send_error(ctx, server.lang_request("error.target_not_found.no_emoji_input"))
 	
 	@command(aliases=["mes_link", "msg_link"])
 	async def message_link(self, ctx):
