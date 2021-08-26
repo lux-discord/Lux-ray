@@ -74,23 +74,17 @@ class Messages(InitedCog):
 		await ctx_message.delete()
 		
 		if message_link:
-			try:
-				channel, message = await self.message_link_parser(message_link)
-				
+			async def process(channel: TextChannel, message: Message):
 				if not channel.permissions_for(ctx.author).manage_messages:
 					raise InvalidMessageLink(message_link)
 				
 				# message not pinned
 				if not message.pinned:
-					await pin_message(message, channel)
+					await pin_message(ctx, message, channel)
 				
 				await send_info(ctx, server.lang_request("info.message.pinned"))
-			except InvalidMessageLink as error:
-				await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_link").format(message_link=error.args[0]))
-			except InvalidChannelID as error:
-				await send_error(ctx, server.lang_request("error.invalid_argument.invalid_channel_id").format(channel_id=error.args[0]))
-			except InvalidMessageID as error:
-				await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_id").format(message_id=error.args[0]))
+			
+			await self.process_message_link(message_link, process, ctx, server)
 		elif refer_mes := ctx_message.reference:
 			refer_mes = refer_mes.resolved
 			
