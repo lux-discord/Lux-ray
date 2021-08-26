@@ -17,12 +17,15 @@ class ExtensionServer(ServerBasic):
 		extension_data: dict = extension_coll.find_one({"name": extension_name})
 		extension_server_coll = extension_server_db[extension_name]
 		
-		if not (extension_server_data := extension_server_coll.find_one({"server_id": id})):
+		super().__init__(extension_server_coll)
+		
+		id = ctx.guild.id
+		if not (extension_server_data := self.server_coll.find_one({"server_id": id})):
 			extension_server_data = {
 				"server_id": id,
 				"lang_code": "en"
 			}
-			extension_server_coll.insert_one(extension_server_data)
+			self.server_coll.insert_one(extension_server_data)
 		
 		self.__ctx = ctx
 		self.id = id
