@@ -70,29 +70,22 @@ class Messages(InitedCog):
 		
 		if message_link:
 			try:
-				channel_id, message_id = message_link_parser(message_link) # may raise InvalidMessageLink
+				channel, message = await self.message_link_parser(message_link)
 				
-				# channel exist
-				if channel := self.bot.get_channel(int(channel_id)):
-					# have permission in target channel
-					if channel.permissions_for(ctx.author).manage_messages:
-						# message exist
-						try:
-							message = await channel.fetch_message(int(message_id))
-						except HTTPException:
-							raise InvalidMessageLink(message_link)
-					else:
-						raise InvalidMessageLink(message_link)
-				else:
+				if not channel.permissions_for(ctx.author).manage_messages:
 					raise InvalidMessageLink(message_link)
 				
 				# message not pinned
 				if not message.pinned:
 					await pin_message(message, channel)
 				
-				await send_info(ctx, server.lang_request("info.message.pinned_message"))
+				await send_info(ctx, server.lang_request("info.message.pinned"))
 			except InvalidMessageLink as error:
 				return await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_link").format(message_link=error.args[0]))
+			except InvalidChannelID as error:
+				return await send_error(ctx, server.lang_request("error.invalid_argument.invalid_channel_id").format(channel_id=error.args[0]))
+			except InvalidMessageID as error:
+				return await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_id").format(message_id=error.args[0]))
 		elif refer_mes := ctx_message.reference:
 			refer_mes = refer_mes.resolved
 			
