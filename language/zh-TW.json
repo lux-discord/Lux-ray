@@ -22,7 +22,7 @@
 		"target_not_found": {
 			"reference_message_has_no_emoji": "Reference message has no emoji",
 			"no_emoji_input": "",
-			"no_refernace_message": "找不到回覆的訊息，請確保送出指令前正在回覆現有的訊息"
+			"no_reference_message": "找不到回覆的訊息，請確保送出指令前正在回覆現有的訊息"
 		},
 		"invalid_command": {
 			"command_not_exist": "Command `{command_name}` not exist"
