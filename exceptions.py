@@ -69,3 +69,10 @@ class InvalidMessageID(InvalidArgument):
 	
 	def __str__(self):
 		return f"Invalid message ID '{self.id}'"
+
+class InvalidExtension(LRBError):
+	def __init__(self, extension_name):
+		self.extension_name = extension_name
+	
+	def __str__(self) -> str:
+		return f"Invalid extnesion '{self.extension_name}'"
