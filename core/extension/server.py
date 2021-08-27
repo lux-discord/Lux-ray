@@ -15,20 +15,17 @@ class ExtensionServer(ServerBasic):
 		extension_name: str = ctx.invoked_parents[0]
 		extension_server_coll = extension_server_db[extension_name]
 		
-		super().__init__(extension_server_coll)
+		super().__init__(ctx, extension_server_coll)
 		
-		id = ctx.guild.id
 		extension_manifest: dict = extension_coll.find_one({"name": extension_name})
 		
-		if not (extension_server_data := self.server_coll.find_one({"server_id": id})):
+		if not (extension_server_data := self.server_coll.find_one({"server_id": self.id})):
 			extension_server_data = {
-				"server_id": id,
+				"server_id": self.id,
 				"lang_code": "en"
 			}
 			self.server_coll.insert_one(extension_server_data)
 		
-		self.__ctx = ctx
-		self.id = id
 		self.data = extension_server_data
 		self.lang_code = extension_server_data["lang_code"]
 		self.language = Language(self.lang_code, extension_manifest["support_language"], "/".join([
@@ -38,4 +35,4 @@ class ExtensionServer(ServerBasic):
 		]))
 	
 	def MainServer(self):
-		return Server(self.__ctx)
+		return Server(self.ctx)

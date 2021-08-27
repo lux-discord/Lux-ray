@@ -51,16 +51,14 @@ class ServerBasic():
 
 class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
-		super().__init__(server_coll)
-		
 		if not isinstance(ctx, Context):
 			raise TypeError(f"ctx must be discord.ext.commands.Context, not {ctx.__class__.__name__}")
 		
-		id = ctx.guild.id
+		super().__init__(ctx, server_coll)
 		
-		if not (server_data := self.server_coll.find_one({"server_id": id})):
+		if not (server_data := self.server_coll.find_one({"server_id": self.id})):
 			server_data = {
-				"server_id": id,
+				"server_id": self.id,
 				"lang_code": "en",
 				"roles": {
 					"auto_roles": []
@@ -69,7 +67,6 @@ class Server(ServerBasic):
 			}
 			self.server_coll.insert_one(server_data)
 		
-		self.id = id
 		self.data = server_data
 		self.lang_code = server_data["lang_code"]
 		self.roles = server_data["roles"]
