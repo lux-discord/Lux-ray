@@ -8,7 +8,7 @@ from core.start_up import get_bot_data, load_start_up_message
 # set up bot
 start_up_message = load_start_up_message()
 print(start_up_message["set_up"])
-stable = False
+stable = True
 status = "stable" if stable else "indev"
 bot_data = get_bot_data(status)
 intent = Intents.all()

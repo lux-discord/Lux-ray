@@ -15,7 +15,7 @@ class Admin(InitedCog):
 			server.update_lang(language)
 			await ctx.send(server.lang_request("info.server.set_lang").format(language=SUPPORT_LANGUAGE[language]))
 		except LanguageNotChange:
-			await ctx.send(server.lang_request("error.lang.lang_not_change"))
+			await ctx.send(server.lang_request("warning.value_not_change.lang_not_change"))
 		except LanguageNotSupport:
 			await ctx.send(server.lang_request("error.lang.lang_not_found"))
 	

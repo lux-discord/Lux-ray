@@ -1,0 +1,2 @@
+language = "python3"
+run = ".bot-env/bin/python3.9 lrb.py"

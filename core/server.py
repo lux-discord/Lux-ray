@@ -39,6 +39,7 @@ class Server():
 	def _update(self, properties: dict):
 		self.data |= properties
 		server_coll.update_one({"server_id": self.id}, properties)
+		print(properties)
 	
 	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
 		return self.language.request(token)

@@ -31,7 +31,7 @@ class Language():
 			self.name = support_lang[lang_code]
 		else:
 			raise LanguageNotSupport(lang_code)
-		
+    
 		self.data = load_file(lang_file_path.format(lang_code=lang_code))
 	
 	def request(self, token: Union[Token, str], *, delimiter: str=None) -> Union[str, dict]:
