@@ -16,6 +16,9 @@ class ServerBasic():
 	def __init__(self, server_coll: Collection) -> None:
 		self.server_coll = server_coll
 	
+	def _server_coll_update_one(self, update):
+		return self.server_coll.update_one({"server_id": self.id}, update)
+	
 	def _update(self, properties: dict):
 		self.data |= properties
 		self.server_coll.update_one({"server_id": self.id}, {"$set": properties})
