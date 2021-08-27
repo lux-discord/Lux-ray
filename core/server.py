@@ -3,7 +3,7 @@ from typing import Union
 from discord.ext.commands import Context
 from exceptions import LanguageNotChange, PrefixInvalid, RoleNotChange
 from pymongo.collection import Collection
-from tool.token import Token
+from tool import Token, send_error, send_warning, send_info
 
 from core.prefix import update_prefix as _update_prefix
 
@@ -13,7 +13,9 @@ from .language import Language
 server_coll = bot_db["server"]
 
 class ServerBasic():
-	def __init__(self, server_coll: Collection) -> None:
+	def __init__(self, ctx: Context, server_coll: Collection) -> None:
+		self.id = ctx.guild.id
+		self.ctx = ctx
 		self.server_coll = server_coll
 	
 	def _server_coll_update_one(self, update):
@@ -37,6 +39,15 @@ class ServerBasic():
 		self.language = Language(lang_code)
 		self.lang_code = lang_code
 		self._update({"lang_code":lang_code})
+	
+	async def send_error(self, message):
+		return await send_error(self.ctx, message)
+	
+	async def send_warning(self, message):
+		return await send_warning(self.ctx, message)
+	
+	async def send_info(self, message):
+		return await send_info(self.ctx, message)
 
 class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
