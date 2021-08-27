@@ -67,12 +67,6 @@ class Common(InitedCog):
 				return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
 			return await server.send_error("error.target_not_found.reference_message_has_no_emoji")
 		await server.send_error("error.target_not_found.no_emoji_input")
-	
-	@command(aliases=["mes_link", "msg_link"])
-	async def message_link(self, ctx):
-		if refer_mes := ctx.message.reference:
-			return await ctx.send(refer_mes.jump_url)
-		await Server(ctx).send_error("error.target_not_found.no_reference_message")
 
 def setup(bot):
 	bot.add_cog(Common(bot))

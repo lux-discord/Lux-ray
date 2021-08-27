@@ -52,6 +52,11 @@ class Admin(InitedCog):
 			await ctx.send(server.lang_request("info.server.set_auto_role").format(roles=", ".join(auto_rules)))
 		except RoleNotChange:
 			await ctx.send(server.lang_request("warning.value_not_change.role"))
+	
+	@command(aliases=["del_mes", "del_msg", "purge"])
+	async def delete_message(self, ctx, delete_num=1):
+		await ctx.channel.purge(limit=delete_num + 1)
+		await Server(ctx).send_info("info.message.deleted", deleted_number=delete_num)
 
 def setup(bot):
 	bot.add_cog(Admin(bot))

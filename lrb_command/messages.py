@@ -143,10 +143,11 @@ class Messages(InitedCog):
 			
 			await server.send_info("info.message.unpinned")
 	
-	@command(aliases=["del_mes", "del_msg", "purge"])
-	async def delete_message(self, ctx, delete_num=1):
-		await ctx.channel.purge(limit=delete_num + 1)
-		await Server(ctx).send_info("info.message.deleted", deleted_number=delete_num)
+	@command(aliases=["mes_link", "msg_link"])
+	async def message_link(self, ctx):
+		if refer_mes := ctx.message.reference:
+			return await ctx.send(refer_mes.jump_url)
+		await Server(ctx).send_error("error.target_not_found.no_reference_message")
 
 def setup(bot):
 	bot.add_cog(Messages(bot))
