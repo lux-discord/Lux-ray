@@ -8,7 +8,7 @@ class Dev(InitedCog):
 	@command()
 	async def reload(self, ctx, cog_name):
 		self.bot.reload_extension(cog_name)
-		await ctx.send(Server(ctx).lang_request("info.extension.reload").format(cog_name=cog_name))
+		await Server(ctx).send_info("info.extension.reload", cog_name=cog_name)
 
 def setup(bot):
 	bot.add_cog(Dev(bot))

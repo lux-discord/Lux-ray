@@ -4,7 +4,6 @@ from discord.errors import HTTPException
 from discord.ext.commands.core import command, has_permissions
 from discord.message import Message
 from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
-from tool.message import send_error, send_info
 
 
 @has_permissions(manage_messages=True)
@@ -43,16 +42,16 @@ class Messages(InitedCog):
 		else:
 			raise InvalidMessageLink(message_link)
 	
-	async def process_message_link(self, message_link, process, ctx, server: Server):
+	async def process_message_link(self, message_link, process, server: Server):
 		try:
 			channel, message = await self.message_link_parser(message_link)
 			await process(channel, message)
 		except InvalidMessageLink as error:
-			await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_link").format(message_link=error.args[0]))
+			await server.send_error("error.invalid_argument.invalid_message_link", message_link=error.args[0])
 		except InvalidChannelID as error:
-			await send_error(ctx, server.lang_request("error.invalid_argument.invalid_channel_id").format(channel_id=error.args[0]))
+			await server.send_error("error.invalid_argument.invalid_channel_id", channel_id=error.args[0])
 		except InvalidMessageID as error:
-			await send_error(ctx, server.lang_request("error.invalid_argument.invalid_message_id").format(message_id=error.args[0]))
+			await server.send_error("error.invalid_argument.invalid_message_id", message_id=error.args[0])
 	
 	@command()
 	async def pin(self, ctx, message_link: str=None):
@@ -82,22 +81,22 @@ class Messages(InitedCog):
 				if not message.pinned:
 					await pin_message(ctx, message, channel)
 				
-				await send_info(ctx, server.lang_request("info.message.pinned"))
+				await server.send_info("info.message.pinned")
 			
-			await self.process_message_link(message_link, process, ctx, server)
+			await self.process_message_link(message_link, process, server)
 		elif refer_mes := ctx_message.reference:
 			refer_mes = refer_mes.resolved
 			
 			if not refer_mes.pinned:
 				await pin_message(ctx, refer_mes, ctx_channel)
 			
-			await send_info(ctx, server.lang_request("info.message.pinned"))
+			await server.send_info("info.message.pinned")
 		else:
 			async for message in ctx_channel.history(limit=1):
 				if not message.pinned:
 					await pin_message(ctx, message, ctx_channel)
 			
-			await send_info(ctx, server.lang_request("info.message.pinned"))
+			await server.send_info("info.message.pinned")
 	
 	@command()
 	async def unpin(self, ctx, message_link: str=None):
@@ -127,28 +126,27 @@ class Messages(InitedCog):
 				if message.pinned:
 					await unpin_message(ctx, message, channel)
 				
-				await send_info(ctx, server.lang_request("info.message.unpinned"))
+				await server.send_info("info.message.unpinned")
 			
-			await self.process_message_link(message_link, process, ctx, server)
+			await self.process_message_link(message_link, process, server)
 		elif refer_mes := ctx_message.reference:
 			refer_mes = refer_mes.resolved
 			
 			if refer_mes.pinned:
 				await unpin_message(ctx, refer_mes, ctx_channel)
 			
-			await send_info(ctx, server.lang_request("info.message.unpinned"))
+			await server.send_info("info.message.unpinned")
 		else:
 			async for message in ctx_channel.history(limit=1):
 				if message.pinned:
 					await unpin_message(ctx, message, ctx_channel)
 			
-			await send_info(ctx, server.lang_request("info.message.unpinned"))
+			await server.send_info("info.message.unpinned")
 	
 	@command(aliases=["del_mes", "del_msg", "purge"])
 	async def delete_message(self, ctx, delete_num=1):
 		await ctx.channel.purge(limit=delete_num + 1)
-		await send_info(ctx, Server(ctx).lang_request("info.message.deleted_message").format(deleted_number=delete_num))
-
+		await Server(ctx).send_info("info.message.deleted", deleted_number=delete_num)
 
 def setup(bot):
 	bot.add_cog(Messages(bot))

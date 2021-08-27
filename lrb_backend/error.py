@@ -6,8 +6,7 @@ class Error(InitedCog):
 	async def on_command_error(self, ctx, error):
 		# command not exist
 		if not ctx.command:
-			server = Server(ctx)
-			return await ctx.send(server.lang_request("error.invalid_command.command_not_exist").format(command_name=ctx.invoked_with))
+			return await Server(ctx).send_error("error.invalid_command.command_not_exist", command_name=ctx.invoked_with)
 		
 		if ctx.command.has_error_handler():
 			return
