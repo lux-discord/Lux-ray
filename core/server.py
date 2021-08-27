@@ -20,8 +20,9 @@ class ServerBasic():
 		return self.server_coll.update_one({"server_id": self.id}, update)
 	
 	def _update(self, properties: dict):
+		self._server_coll_update_one({"$set": properties})
 		self.data |= properties
-		self.server_coll.update_one({"server_id": self.id}, {"$set": properties})
+		return self.data
 	
 	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
 		return self.language.request(token)
