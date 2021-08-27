@@ -40,13 +40,16 @@ class ServerBasic():
 		self.lang_code = lang_code
 		self._update({"lang_code":lang_code})
 	
-	async def send_error(self, message):
+	async def send_error(self, token: Union[Token, str], **format):
+		message = self.lang_request(token).format(**format)
 		return await send_error(self.ctx, message)
 	
-	async def send_warning(self, message):
+	async def send_warning(self, token: Union[Token, str], **format):
+		message = self.lang_request(token).format(**format)
 		return await send_warning(self.ctx, message)
 	
-	async def send_info(self, message):
+	async def send_info(self, token: Union[Token, str], **format):
+		message = self.lang_request(token).format(**format)
 		return await send_info(self.ctx, message)
 
 class Server(ServerBasic):
