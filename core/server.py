@@ -16,7 +16,7 @@ class ServerBasic():
 	def __init__(self, server_coll: Collection) -> None:
 		self.server_coll = server_coll
 	
-	def _update(self, **properties):
+	def _update(self, properties: dict):
 		self.data |= properties
 		self.server_coll.update_one({"server_id": self.id}, {"$set": properties})
 	
@@ -32,7 +32,7 @@ class ServerBasic():
 		
 		self.language = Language(lang_code)
 		self.lang_code = lang_code
-		self._update(lang_code=lang_code)
+		self._update({"lang_code":lang_code})
 
 class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
@@ -73,4 +73,4 @@ class Server(ServerBasic):
 		else:
 			raise RoleNotChange
 		
-		self._update(roles={"auto_role": self.roles})
+		self._update({"roles": {"auto_role": self.roles}})
