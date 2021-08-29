@@ -3,6 +3,9 @@ __all__ = [
 	"token_edit_data"
 ]
 
+from exceptions import InvalidToken
+
+
 class Token():
 	def __init__(self, token: str, delimiter: str = '.'):
 		if isinstance(token, str):
@@ -16,50 +19,28 @@ class Token():
 			raise TypeError(f"the delimiter must be string, not {delimiter.__class__.__name__}")
 		
 		self.has_delimiter = delimiter in token
-	
-	def split(self, maxsplit: int = 0):
-		"""split Token like str.split()
-		
-		Parameter
-		---------
-		maxsplit:
-			Maximum number of splits to do. 0 (the default value) means no limit.
-		"""
-		return [Token(token) for token in str(self).split(self.delimiter, maxsplit - 1)]
-	
-	def split_to_str(self, maxsplit: int=0):
-		return self.str.split(self.delimiter, maxsplit - 1)
+		self.parts = self.str.split(self.delimiter) if self.has_delimiter else [self.str]
 	
 	def get(self, source: dict):
-		for key in self.split_to_str():
+		if isinstance(source, dict):
+			root, *keys = self.parts
+			
 			try:
-				data = data[key]
-			except NameError:
-				data = source[key]
-		
-		return data
+				value = source[root]
+			except KeyError:
+				raise InvalidToken(self.str.replace(root, f"   -> {root} <-   ", 1))
+			
+			if len(keys) != 0:
+				for index, key in enumerate(keys):
+					try:
+						value = value[key]
+					except KeyError:
+						keys[index] = f"   -> {key} <-   "
+						raise InvalidToken(self.delimiter.join([root, *keys]))
+			
+			return value
+		else:
+			raise TypeError(f"source must be dictionary, not {source.__class__.__name__}")
 	
 	def __str__(self):
 		return self.str
-
-def token_edit_data(data: dict, token: Token, value, *, allow_add_key=False):
-	def edit(data: dict, token: Token, value, overwrite):
-		if token.has_delimiter:
-			root, token = token.split(1)
-			root = root.str
-			
-			if (root in data) or (root not in data and overwrite):
-				data[root] = edit(data[root], token, value, overwrite)
-			else:
-				raise KeyError(f"Not allow add key({root})")
-		else:
-			token = token.str
-			
-			if (token in data) or (token not in data and overwrite):
-				data[token] = value
-			else:
-				raise KeyError(f"Not allow add key({token})")
-
-		return data
-	
-	return edit(data, token, value, allow_add_key)
