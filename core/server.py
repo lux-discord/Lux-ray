@@ -3,7 +3,7 @@ from typing import Union
 from discord.ext.commands import Context
 from exceptions import LanguageNotChange, PrefixInvalid, RoleNotChange
 from pymongo.collection import Collection
-from tool import Token, send_error, send_warning, send_info
+from tool import Token
 
 from core.prefix import update_prefix as _update_prefix
 
@@ -42,15 +42,15 @@ class ServerBasic():
 	
 	async def send_error(self, token: Union[Token, str], **format):
 		message = self.lang_request(token).format(**format)
-		return await send_error(self.ctx, message)
+		return await self.ctx.send(message, delete_after=5)
 	
 	async def send_warning(self, token: Union[Token, str], **format):
 		message = self.lang_request(token).format(**format)
-		return await send_warning(self.ctx, message)
+		return await self.ctx.send(message, delete_after=10)
 	
 	async def send_info(self, token: Union[Token, str], **format):
 		message = self.lang_request(token).format(**format)
-		return await send_info(self.ctx, message)
+		return await self.ctx.send(message, delete_after=3)
 
 class Server(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
