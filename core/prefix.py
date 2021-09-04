@@ -25,18 +25,20 @@ def get_prefix(bot, message):
 	return prefix + " ", prefix
 
 def insert_prefixes(server_id, prefixes: dict=None):
-	if prefixes:
-		prefixes_coll.insert_one({
-			"server_id": server_id,
-			"prefixes": prefixes
-		})
-	else:
+	if not prefixes:
 		prefixes_coll.insert_one({
 			"server_id": server_id,
 			"prefixes": default_prefix
 		})
+		
+		return default_prefix
 	
-	return prefixes_cache[server_id]
+	prefixes_coll.insert_one({
+		"server_id": server_id,
+		"prefixes": prefixes
+	})
+	
+	return prefixes
 
 def find_prefixes(server_id):
 	prefixes = prefixes_coll.find_one({"server_id": server_id})
