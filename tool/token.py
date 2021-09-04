@@ -1,6 +1,5 @@
 __all__ = [
-	"Token",
-	"token_edit_data"
+	"Token"
 ]
 
 from exceptions import InvalidToken
