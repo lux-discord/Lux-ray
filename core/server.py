@@ -70,9 +70,9 @@ class Server(ServerBasic):
 			self.server_coll.insert_one(server_data)
 		
 		self.data = server_data
-		self.lang_code = server_data["lang_code"]
-		self.roles = server_data["roles"]
-		self.able_ext = server_data["able_ext"]
+		self.lang_code: str = server_data["lang_code"]
+		self.roles: dict = server_data["roles"]
+		self.able_ext: list = server_data["able_ext"]
 		self.language = Language(self.lang_code)
 	
 	def update_prefix(self, status, prefix):
