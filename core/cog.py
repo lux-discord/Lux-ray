@@ -6,7 +6,7 @@ from exceptions import InvalidExtension
 
 from .extension.loader import extension_cog_loader
 
-cog_folders = [
+default_cog_folders = [
 	"lrb_backend",
 	"lrb_command",
 	"lrb_extension"
@@ -16,7 +16,7 @@ cog_folder_abbr = [
 	"cmd",
 	"ext"
 ]
-cog_folder_abbr_to_fullname = dict(zip(cog_folder_abbr, cog_folders))
+cog_folder_abbr_to_fullname = dict(zip(cog_folder_abbr, default_cog_folders))
 
 class InitedCog(Cog):
 	def __init__(self, bot: Bot) -> None:
