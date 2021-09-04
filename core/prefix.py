@@ -7,8 +7,8 @@ prefixes_coll = bot_db["prefixes"]
 prefixes_cache = {}
 default_prefix_delimiter = ";"
 default_prefix = {
-	"stable": "l",
-	"indev": "r"
+	"stable": "l" + default_prefix_delimiter,
+	"indev": "r" + default_prefix_delimiter
 }
 
 def get_prefix(bot, message):
@@ -22,7 +22,7 @@ def get_prefix(bot, message):
 		else:
 			prefix = prefixes[bot.status]
 	
-	return prefix + ": "
+	return prefix
 
 def insert_prefixes(server_id, prefixes: dict=None):
 	if prefixes:
