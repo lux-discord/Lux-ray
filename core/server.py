@@ -70,14 +70,18 @@ class Server(ServerBasic):
 			self.server_coll.insert_one(server_data)
 		
 		self.data = server_data
+		# add shortcut of value in server_data
 		self.lang_code: str = server_data["lang_code"]
 		self.roles: dict = server_data["roles"]
 		self.able_ext: list = server_data["able_ext"]
+		# create Language instance and assign
 		self.language = Language(self.lang_code)
 	
 	def update_prefix(self, status, prefix):
 		try:
 			update_prefix(self.id, status, prefix)
+			# because prefix don't in attrs, server_coll and self.data
+			# so don't need use self._update at end
 		except PrefixInvalid:
 			raise PrefixInvalid(prefix)
 	
