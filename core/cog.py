@@ -50,3 +50,12 @@ def cog_folder_loader(bot, folder):
 		for file, cog in cog_dict.items():
 			print(f"    {file}")
 			bot.load_extension(cog)
+
+def load_cog_folders(bot, folders: list, *, loading_messages: list=None):
+	if loading_messages:
+		for folder, loading_message in zip(folders, loading_messages):
+			print(loading_message)
+			cog_folder_loader(bot, folder)
+	else:
+		for folder in folders:
+			cog_folder_loader(bot, folder)
