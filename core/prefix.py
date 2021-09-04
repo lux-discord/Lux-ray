@@ -49,10 +49,6 @@ def find_prefix(server_id, bot_status):
 	return None
 
 def update_prefix(server_id, status, prefix):
-	# won't happen KeyError, because this function must call by discord command that will add prefixes to cache
-	if prefix == prefixes_cache[server_id][status]:
-		raise PrefixNotChange
-	
 	try:
 		prefixes_coll.update_one({"server_id": server_id}, {"prefixes": {status: prefix}})
 		prefixes_cache[server_id][status] = prefix
