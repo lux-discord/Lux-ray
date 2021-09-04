@@ -23,6 +23,10 @@ class ServerBasic():
 	def _set(self, properties: dict):
 		self._update_one({"$set": properties})
 		self.data |= properties
+		
+		for attr, value in properties.items():
+			setattr(self, attr, value)
+		
 		return self.data
 	
 	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
