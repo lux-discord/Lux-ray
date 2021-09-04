@@ -7,10 +7,9 @@ from tool import Token
 
 from core.prefix import update_prefix as _update_prefix
 
-from .db import bot_db
+from .db import server_coll
 from .language import Language
 
-server_coll = bot_db["server"]
 
 class ServerBasic():
 	def __init__(self, ctx: Context, server_coll: Collection) -> None:
