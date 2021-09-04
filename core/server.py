@@ -42,8 +42,7 @@ class ServerBasic():
 			raise LanguageNotChange
 		
 		self.language = Language(lang_code)
-		self.lang_code = lang_code
-		self._update({"lang_code":lang_code})
+		self._set({"lang_code": lang_code})
 	
 	async def send_error(self, token: Union[Token, str], **format):
 		message = self.lang_request(token).format(**format)
