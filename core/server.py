@@ -93,10 +93,10 @@ class Server(ServerBasic):
 		except PrefixInvalid:
 			raise PrefixInvalid(prefix)
 	
-	def update_auto_role(self, *roles_id):
-		if roles_id := list(roles_id) != self.roles:
-			self.roles = roles_id
+	def update_auto_role(self, role_names):
+		if (role_names := sorted(role_names)) != self.roles["auto_roles"]:
+			self.roles["auto_roles"] = role_names
 		else:
 			raise RoleNotChange
 		
-		self._update({"roles": {"auto_role": self.roles}})
+		self._set({"roles.auto_roles": role_names})
