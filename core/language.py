@@ -11,7 +11,7 @@ SUPPORT_LANGUAGE = {
 LANG_FILE_PATH = "language/{lang_code}.json"
 
 class Language():
-	def __init__(self, lang_code: str, support_lang: dict=SUPPORT_LANGUAGE, lang_file_path: str=LANG_FILE_PATH) -> None:
+	def __init__(self, lang_code: str, support_lang: dict=None, lang_file_path: str=None) -> None:
 		"""
 		Parameter
 		---------
@@ -26,6 +26,12 @@ class Language():
 			
 			default: `language/{lang_code}.json`
 		"""
+		if not support_lang:
+			support_lang = SUPPORT_LANGUAGE
+		
+		if not lang_file_path:
+			lang_file_path = LANG_FILE_PATH
+		
 		if lang_code in support_lang:
 			self.code = lang_code
 			self.name = support_lang[lang_code]
