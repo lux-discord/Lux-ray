@@ -21,7 +21,7 @@ class Event(InitedCog):
 			auto_roles: list = server_data["roles"]["auto_roles"]
 			
 			if auto_roles:
-				[await member.add_roles(get(member.guild.roles, name=role)) for role in auto_roles]
+				_ = [await member.add_roles(get(member.guild.roles, name=role)) for role in auto_roles]
 		
 		await auto_role()
 
