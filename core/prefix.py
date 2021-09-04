@@ -13,14 +13,13 @@ default_prefix = {
 
 def get_prefix(bot, message):
 	server_id: int = message.guild.id
+	bot_status = bot.status
 	
 	try:
-		prefix = prefixes_cache[server_id][bot.status]
+		prefix = prefixes_cache[server_id][bot_status]
 	except KeyError:
-		if not (prefixes := find_prefixes(server_id)):
-			prefix = insert_prefixes(server_id)[bot.status]
-		else:
-			prefix = prefixes[bot.status]
+		if not (prefix := find_prefix(server_id, bot_status)):
+			prefix = insert_prefixes(server_id)[bot_status]
 	
 	return prefix + " ", prefix
 
