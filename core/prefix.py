@@ -6,7 +6,7 @@ from .db import bot_db
 prefixes_coll = bot_db["prefixes"]
 prefixes_cache = {}
 default_prefix_delimiter = ";"
-default_prefix = {
+default_prefixes = {
 	"stable": "l" + default_prefix_delimiter,
 	"indev": "r" + default_prefix_delimiter
 }
@@ -27,10 +27,10 @@ def insert_prefixes(server_id, prefixes: dict=None):
 	if not prefixes:
 		prefixes_coll.insert_one({
 			"server_id": server_id,
-			"prefixes": default_prefix
+			"prefixes": default_prefixes
 		})
 		
-		return default_prefix
+		return default_prefixes
 	
 	prefixes_coll.insert_one({
 		"server_id": server_id,
