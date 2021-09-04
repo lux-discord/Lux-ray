@@ -21,6 +21,8 @@ class ServerBasic():
 		return self.server_coll.update_one({"server_id": self.id}, update)
 	
 	def _set(self, properties: dict):
+		"""Update attribute data in each place(eg: server_coll, self.data, self.[attr_name], ...)"""
+		
 		self._update_one({"$set": properties})
 		self.data |= properties
 		
