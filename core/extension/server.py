@@ -1,11 +1,10 @@
 from discord.ext.commands.context import Context
 
 from ..cog import cog_folder_abbr_to_fullname
-from ..db import bot_db, extension_server_db
+from ..db import extension_coll, extension_server_db
 from ..language import LANG_FILE_PATH, Language
 from ..server import Server, ServerBasic
 
-extension_coll = bot_db["extension"]
 
 class ExtensionServer(ServerBasic):
 	def __init__(self, ctx: Context) -> None:
