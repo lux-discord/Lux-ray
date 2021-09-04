@@ -1,4 +1,4 @@
-from exceptions import PrefixInvalid, PrefixNotChange
+from exceptions import PrefixInvalid
 from pymongo.errors import CollectionInvalid
 
 from .db import bot_db
@@ -52,4 +52,5 @@ def update_prefix(server_id, status, prefix):
 		prefixes_coll.update_one({"server_id": server_id}, {"prefixes": {status: prefix}})
 		prefix_cache[server_id] = prefix
 	except CollectionInvalid:
+		# raise when stable and indev prefix are same
 		raise PrefixInvalid(prefix)
