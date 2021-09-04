@@ -30,25 +30,12 @@ class Admin(InitedCog):
 			await ctx.send(server.lang_request("warning.value_not_change.prefix"))
 	
 	@command()
-	async def auto_role(self, ctx, *roles):
+	async def auto_role(self, ctx, *roles: Role):
 		server = Server(ctx)
-		guild_roles = ctx.guild.roles
-		role_name_to_id = {role.name: role.id for role in guild_roles}
-		auto_rules = []
-		
-		# type and exist check
-		for role in roles:
-			if role_type := type(role) not in {str, Role}:
-				raise TypeError(f"role in rules must be str or discord.role.Role, not {role_type}")
-			
-			role_name = role if role_type is str else role.name
-			
-			if role_name not in role_name_to_id:
-				return await ctx.send(server.lang_request("error.invalid_argument.role_not_found").format(role_name=role_name))
-			auto_rules.append(role_name_to_id[role_name])
+		auto_rules = [role.name for role in roles]
 		
 		try:
-			server.update_auto_role(*auto_rules)
+			server.update_auto_role(auto_rules)
 			await ctx.send(server.lang_request("info.server.set_auto_role").format(roles=", ".join(auto_rules)))
 		except RoleNotChange:
 			await ctx.send(server.lang_request("warning.value_not_change.role"))
@@ -57,6 +44,10 @@ class Admin(InitedCog):
 	async def delete_message(self, ctx, delete_num=1):
 		await ctx.channel.purge(limit=delete_num + 1)
 		await Server(ctx).send_info("info.message.deleted", deleted_number=delete_num)
+	
+	@command()
+	async def role_permission_check(self, ctx):
+		pass
 
 def setup(bot):
 	bot.add_cog(Admin(bot))
