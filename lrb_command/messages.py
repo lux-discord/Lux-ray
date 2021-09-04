@@ -30,7 +30,7 @@ class Messages(InitedCog):
 		
 		if message_link:
 			try:
-				message: Message = await parse_message_link(message_link)
+				message: Message = await parse_message_link(self.bot, message_link)
 				
 				if not message.channel.permissions_for(ctx.author).manage_messages:
 					raise InvalidMessageLink(message_link)
@@ -66,7 +66,7 @@ class Messages(InitedCog):
 		
 		if message_link:
 			try:
-				message: Message = await parse_message_link(message_link)
+				message: Message = await parse_message_link(self.bot, message_link)
 				
 				if not message.channel.permissions_for(ctx.author).manage_messages:
 					raise InvalidMessageLink(message_link)
