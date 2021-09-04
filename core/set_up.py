@@ -6,8 +6,11 @@ def get_loading_message() -> list:
 	with open("loading_message.json", "r", encoding="UTF-8") as f:
 		return load(f)
 
-def get_bot_config(key=None):
-	with open("bot-config.json", "r", encoding="UTF-8") as f:
+def get_bot_config(key=None, *, config_path=None):
+	if not config_path:
+		config_path = "bot-config.json"
+	
+	with open(config_path, "r", encoding="UTF-8") as f:
 		bot_config: dict = load(f)
 	
 	status = "stable" if bot_config["stable"] else "indev"
