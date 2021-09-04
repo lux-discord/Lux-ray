@@ -12,7 +12,7 @@ default_prefix = {
 }
 
 def get_prefix(bot, message):
-	server_id = message.guild.id
+	server_id: int = message.guild.id
 	
 	try:
 		prefix = prefixes_cache[server_id][bot.status]
