@@ -5,7 +5,7 @@ from exceptions import LanguageNotChange, PrefixInvalid, RoleNotChange
 from pymongo.collection import Collection
 from tool import Token
 
-from core.prefix import update_prefix as _update_prefix
+from core.prefix import update_prefix
 
 from .db import server_coll
 from .language import Language
@@ -77,7 +77,7 @@ class Server(ServerBasic):
 	
 	def update_prefix(self, status, prefix):
 		try:
-			_update_prefix(self.id, status, prefix)
+			update_prefix(self.id, status, prefix)
 		except PrefixInvalid:
 			raise PrefixInvalid(prefix)
 	
