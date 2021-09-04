@@ -5,6 +5,7 @@ from .db import bot_db
 
 prefixes_coll = bot_db["prefixes"]
 prefixes_cache = {}
+default_prefix_delimiter = ";"
 default_prefix = {
 	"stable": "l",
 	"indev": "r"
