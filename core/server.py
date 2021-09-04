@@ -17,11 +17,11 @@ class ServerBasic():
 		self.ctx = ctx
 		self.server_coll = server_coll
 	
-	def _server_coll_update_one(self, update):
+	def _update_one(self, update):
 		return self.server_coll.update_one({"server_id": self.id}, update)
 	
-	def _update(self, properties: dict):
-		self._server_coll_update_one({"$set": properties})
+	def _set(self, properties: dict):
+		self._update_one({"$set": properties})
 		self.data |= properties
 		return self.data
 	
