@@ -40,14 +40,12 @@ def insert_prefixes(server_id, prefixes: dict=None):
 	
 	return prefixes
 
-def find_prefixes(server_id):
-	prefixes = prefixes_coll.find_one({"server_id": server_id})
-	
-	if prefixes:
-		prefixes = prefixes["prefixes"]
-		prefixes_cache[server_id] = prefixes
+def find_prefix(server_id, bot_status):
+	if server_data := prefixes_coll.find_one({"_id": server_id}):
+		prefix = server_data["prefixes"][bot_status]
+		prefix_cachees[server_id] = prefix
 		
-		return prefixes
+		return prefix
 	return None
 
 def update_prefix(server_id, status, prefix):
