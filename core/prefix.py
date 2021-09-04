@@ -22,7 +22,7 @@ def get_prefix(bot, message):
 		else:
 			prefix = prefixes[bot.status]
 	
-	return prefix
+	return prefix + " ", prefix
 
 def insert_prefixes(server_id, prefixes: dict=None):
 	if prefixes:
