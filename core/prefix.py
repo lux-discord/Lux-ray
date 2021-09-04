@@ -26,13 +26,11 @@ def get_prefix(bot, message):
 
 def insert_prefixes(server_id, prefixes: dict=None):
 	if prefixes:
-		prefixes_cache[server_id] = prefixes
 		prefixes_coll.insert_one({
 			"server_id": server_id,
 			"prefixes": prefixes
 		})
 	else:
-		prefixes_cache[server_id] = default_prefix
 		prefixes_coll.insert_one({
 			"server_id": server_id,
 			"prefixes": default_prefix
