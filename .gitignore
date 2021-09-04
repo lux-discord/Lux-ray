@@ -2,7 +2,7 @@
 
 *.pyc
 
-core/bot_data.json
+bot-config.json
 keep_alive.py
 **/test.py
 todo.md
