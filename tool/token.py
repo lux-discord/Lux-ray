@@ -20,26 +20,33 @@ class Token():
 		self.has_delimiter = delimiter in token
 		self.parts = self.str.split(self.delimiter) if self.has_delimiter else [self.str]
 	
-	def get(self, source: dict):
-		if isinstance(source, dict):
-			root, *keys = self.parts
-			
-			try:
-				value = source[root]
-			except KeyError:
-				raise InvalidToken(self.str.replace(root, f"   -> {root} <-   ", 1))
-			
-			if len(keys) != 0:
-				for index, key in enumerate(keys):
-					try:
-						value = value[key]
-					except KeyError:
-						keys[index] = f"   -> {key} <-   "
-						raise InvalidToken(self.delimiter.join([root, *keys]))
-			
-			return value
+	def get(self, target: dict[str]):
+		root, *keys = self.parts
+		
+		try:
+			value = target[root]
+		except KeyError:
+			raise InvalidToken(self.str.replace(root, f"   -> {root} <-   ", 1))
+		
+		if len(keys) != 0:
+			for index, key in enumerate(keys):
+				try:
+					value = value[key]
+				except KeyError:
+					keys[index] = f"   -> {key} <-   "
+					raise InvalidToken(self.delimiter.join([root, *keys]))
+		
+		return value
+	
+	def update(self, target: dict[str], value):
+		root, *keys = self.parts
+		
+		if keys:
+			target[root] = Token(".".join(keys)).update(target[root], value)
 		else:
-			raise TypeError(f"source must be dictionary, not {source.__class__.__name__}")
+			target[root] = value
+		
+		return target
 	
 	def __str__(self):
 		return self.str
