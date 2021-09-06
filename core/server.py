@@ -20,7 +20,7 @@ class ServerBasic():
 	def _update_coll(self, update):
 		return self.server_coll.update_one({"server_id": self.id}, update)
 	
-	def _set(self, properties: dict):
+	def _update_each(self, properties: dict):
 		"""Update attribute data in each place(eg: server_coll, self.data, self.[attr_name], ...)"""
 		
 		self._update_one({"$set": properties})
@@ -107,4 +107,4 @@ class Server(ServerBasic):
 		else:
 			raise RoleNotChange
 		
-		self._set({"roles.auto_roles": role_names})
+		self._update_each({"roles.auto_roles": role_names})
