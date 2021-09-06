@@ -25,7 +25,7 @@ class Token():
 		# token may don't have delimiter even it's an Iterable(when len(token) == 1)
 		self.has_delimiter = delimiter in self.str
 	
-	def get(self, target: dict[str]):
+	def dict_get(self, target: dict[str]):
 		try:
 			sub_target = target[self.parts[0]]
 			
@@ -35,7 +35,7 @@ class Token():
 		except KeyError as e:
 			raise InvalidToken(token=self.str, key=e.args[0], delimiter=self.delimiter)
 	
-	def update(self, target: dict[str], value):
+	def dict_update(self, target: dict[str], value):
 		try:
 			sub_target = target[self.parts[0]]
 			
