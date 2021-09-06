@@ -1,24 +1,29 @@
+from typing import Iterable, Union
+
+from exceptions import InvalidToken
+
 __all__ = [
 	"Token"
 ]
 
-from exceptions import InvalidToken
-
-
 class Token():
-	def __init__(self, token: str, delimiter: str = '.'):
+	def __init__(self, token: Union[str, Iterable], delimiter: str = '.'):
 		if isinstance(token, str):
 			self.str = token
+			self.parts = token.split(delimiter)
+		elif isinstance(token, Iterable):
+			self.str = delimiter.join(token)
+			self.parts = token
 		else:
-			raise TypeError(f"the token must be string, not {token.__class__.__name__}")
+			raise TypeError(f"'token' must be string or Iterable, not {token.__class__.__name__}")
 		
 		if isinstance(delimiter, str):
 			self.delimiter = delimiter
 		else:
-			raise TypeError(f"the delimiter must be string, not {delimiter.__class__.__name__}")
+			self.delimiter = str(delimiter)
 		
-		self.has_delimiter = delimiter in token
-		self.parts = self.str.split(self.delimiter) if self.has_delimiter else [self.str]
+		# token may don't have delimiter even it's an Iterable(when len(token) == 1)
+		self.has_delimiter = delimiter in self.str
 	
 	def get(self, target: dict[str]):
 		root, *keys = self.parts
