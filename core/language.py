@@ -22,7 +22,7 @@ class Language():
 			
 			format: `{language_code: language_name}`
 		lang_file_path: `str`
-			Paht to language file
+			Path to language file
 			
 			default: `language/{lang_code}.json`
 		"""
