@@ -17,7 +17,7 @@ class ServerBasic():
 		self.ctx = ctx
 		self.server_coll = server_coll
 	
-	def _update_one(self, update):
+	def _update_coll(self, update):
 		return self.server_coll.update_one({"server_id": self.id}, update)
 	
 	def _set(self, properties: dict):
