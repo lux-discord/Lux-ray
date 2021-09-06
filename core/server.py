@@ -31,6 +31,14 @@ class ServerBasic():
 		
 		return self.data
 	
+	def _update_attr(self, update: dict[str]):
+		for attr_name, value in update.items():
+			if "." in attr_name:
+				attr_name, value_token = attr_name.split(".", 1)
+				setattr(self, attr_name, Token(value_token).dict_update(getattr(self, attr_name), value))
+			else:
+				setattr(self, attr_name, value)
+	
 	def lang_request(self, token: Union[Token, str]) -> Union[str, dict]:
 		return self.language.request(token)
 	
