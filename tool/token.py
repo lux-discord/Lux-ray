@@ -26,22 +26,14 @@ class Token():
 		self.has_delimiter = delimiter in self.str
 	
 	def get(self, target: dict[str]):
-		root, *keys = self.parts
-		
 		try:
-			value = target[root]
-		except KeyError:
-			raise InvalidToken(self.str.replace(root, f"   -> {root} <-   ", 1))
-		
-		if len(keys) != 0:
-			for index, key in enumerate(keys):
-				try:
-					value = value[key]
-				except KeyError:
-					keys[index] = f"   -> {key} <-   "
-					raise InvalidToken(self.delimiter.join([root, *keys]))
-		
-		return value
+			sub_target = target[self.parts[0]]
+			
+			for key in self.parts[1:]:
+				sub_target = sub_target[key]
+			return sub_target
+		except KeyError as e:
+			raise InvalidToken(token=self.str, key=e.args[0], delimiter=self.delimiter)
 	
 	def update(self, target: dict[str], value):
 		root, *keys = self.parts
