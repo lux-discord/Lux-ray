@@ -36,14 +36,16 @@ class Token():
 			raise InvalidToken(token=self.str, key=e.args[0], delimiter=self.delimiter)
 	
 	def update(self, target: dict[str], value):
-		root, *keys = self.parts
-		
-		if keys:
-			target[root] = Token(".".join(keys)).update(target[root], value)
-		else:
-			target[root] = value
-		
-		return target
+		try:
+			sub_target = target[self.parts[0]]
+			
+			for key in self.parts[1:-1]:
+				sub_target = sub_target[key]
+			
+			sub_target[self.parts[-1]] = value
+			return target
+		except KeyError as e:
+			raise InvalidToken(token=self.delimiter.join(self.parts), key=e.args[0], delimiter=self.delimiter)
 	
 	def __str__(self):
 		return self.str
