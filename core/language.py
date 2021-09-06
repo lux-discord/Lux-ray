@@ -42,9 +42,9 @@ class Language():
 	
 	def request(self, token: Union[Token, str], *, delimiter: str=None) -> Union[str, dict]:
 		try:
-			return token.get(self.data)
+			return token.dict_get(self.data)
 		except AttributeError:
-			return Token(token, delimiter).get(self.data) if delimiter else Token(token).get(self.data)
+			return Token(token, delimiter).dict_get(self.data) if delimiter else Token(token).dict_get(self.data)
 	
 	def request_many(self, *tokens: Union[Token, str]) -> list[str, dict]:
 		return [self.request(token) for token in tokens]
