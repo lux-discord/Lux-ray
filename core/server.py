@@ -23,11 +23,9 @@ class ServerBasic():
 	def _update_each(self, properties: dict):
 		"""Update attribute data in each place(eg: server_coll, self.data, self.[attr_name], ...)"""
 		
-		self._update_one({"$set": properties})
+		self._update_coll({"$set": properties})
+		self._update_attr(properties)
 		self.data |= properties
-		
-		for attr, value in properties.items():
-			setattr(self, attr, value)
 		
 		return self.data
 	
