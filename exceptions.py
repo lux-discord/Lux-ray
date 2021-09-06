@@ -54,7 +54,7 @@ class InvalidMessageID(InvalidArgument):
 
 class InvalidExtension(LRBError):
 	def __str__(self) -> str:
-		return f"Invalid extnesion '{self.args[0]}'"
+		return f"Invalid extension '{self.args[0]}'"
 
 class InvalidToken(InvalidArgument):
 	def __str__(self) -> str:
