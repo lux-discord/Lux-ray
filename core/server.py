@@ -37,13 +37,6 @@ class ServerBasic():
 	def lang_request_many(self, *tokens: Union[Token, str]) -> list[str, dict]:
 		return self.language.request_many(*tokens)
 	
-	def update_lang(self, lang_code):
-		if lang_code == self.lang_code:
-			raise LanguageNotChange
-		
-		self.language = Language(lang_code)
-		self._set({"lang_code": lang_code})
-	
 	async def send_error(self, token: Union[Token, str], **format):
 		message = self.lang_request(token).format(**format)
 		return await self.ctx.send(message, delete_after=5)
@@ -92,6 +85,13 @@ class Server(ServerBasic):
 			# so don't need use self._update at end
 		except PrefixInvalid:
 			raise PrefixInvalid(prefix)
+	
+	def update_lang(self, lang_code):
+		if lang_code == self.lang_code:
+			raise LanguageNotChange
+		
+		self._update_attr({"language": Language(lang_code)})
+		self._update_each({"lang_code": lang_code})
 	
 	def update_auto_role(self, role_names):
 		if (role_names := sorted(role_names)) != self.roles["auto_roles"]:
