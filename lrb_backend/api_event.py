@@ -5,7 +5,7 @@ from discord.ext.commands.cog import Cog
 from discord.utils import get
 
 
-class Event(InitedCog):
+class ApiEvent(InitedCog):
 	@Cog.listener()
 	async def on_ready(self):
 		if not self.bot.is_running:
@@ -27,4 +27,4 @@ class Event(InitedCog):
 		await auto_role()
 
 def setup(bot):
-	bot.add_cog(Event(bot))
+	bot.add_cog(ApiEvent(bot))
