@@ -11,19 +11,19 @@ from tool.json_file import dump_file
 
 @group()
 def main():
-	echo("test")
+	pass
 
 @main.command()
 @option("-C", "--config-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default=None, help="Path of config file")
 def run(config_path):
 	lrb = set_up_bot(get_prefix, intent=Intents.all())
 	load_cog_folders(lrb, default_cog_folders, loading_messages=get_loading_message())
-
+	
 	# import keep_alive if bot is stable
 	if lrb.stable:
 		from keep_alive import keep_alive
 		keep_alive()
-
+	
 	bot_token = get_bot_config("token", config_path=config_path)
 	print("Starting bot")
 	lrb.run(bot_token)
