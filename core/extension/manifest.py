@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Union
 
 from exceptions import InvalidExtension
-from tool import load_file
+from utils import load_file
 
 
 class Manifest():

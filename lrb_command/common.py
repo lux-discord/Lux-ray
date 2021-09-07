@@ -4,7 +4,7 @@ from core import InitedCog, Server
 from discord.embeds import Embed
 from discord.ext.commands.core import command
 from exceptions import InvalidEmojiError
-from tool.embed import bot_color, embed_setup
+from utils.embed import bot_color, embed_setup
 
 emoji_regex = compile(r"<a?:(.+?:[0-9]{15,21})>")
 

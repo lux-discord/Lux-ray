@@ -2,7 +2,7 @@ from core import InitedCog, Server
 from discord import Message
 from discord.ext.commands import command, has_permissions
 from exceptions import InvalidArgument, InvalidMessageLink
-from tool.message import parse_message_link, get_last_exist_message
+from utils.message import parse_message_link, get_last_exist_message
 
 
 @has_permissions(manage_messages=True)

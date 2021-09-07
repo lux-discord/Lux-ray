@@ -3,7 +3,7 @@ from typing import Union
 from discord.ext.commands import Context
 from exceptions import LanguageNotChange, PrefixInvalid, PrefixNotChange, RoleNotChange
 from pymongo.collection import Collection
-from tool import Token
+from utils import Token
 
 from core.prefix import update_prefix
 

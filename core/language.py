@@ -1,8 +1,8 @@
 from typing import Union
 
 from exceptions import LanguageNotSupport
-from tool.json_file import load_file
-from tool.token import Token
+from utils.json_file import load_file
+from utils.token import Token
 
 SUPPORT_LANGUAGE = {
 	"en": "English",
