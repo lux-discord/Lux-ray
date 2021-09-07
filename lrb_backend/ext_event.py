@@ -1,7 +1,7 @@
 from core import InitedCog, Server
 from discord.ext.commands import Cog
 
-class Error(InitedCog):
+class ExtEvent(InitedCog):
 	@Cog.listener()
 	async def on_command_error(self, ctx, error):
 		# command not exist
@@ -14,4 +14,4 @@ class Error(InitedCog):
 		await ctx.send(error)
 
 def setup(bot):
-	bot.add_cog(Error(bot))
+	bot.add_cog(ExtEvent(bot))
