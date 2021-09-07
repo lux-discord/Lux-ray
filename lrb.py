@@ -29,7 +29,7 @@ def run(config_path):
 	lrb.run(bot_token)
 
 @main.command()
-@option("--stable", type=bool, is_flag=True, help="True if this bot is stable")
+@option("--stable", type=bool, is_flag=True, help="True if this bot is stable", default=False)
 @option("--owner-id", type=int, help="Bot owners ID")
 def generate_bot_config(stable, owner_id):
 	stable_token = prompt("Token to run stable bot(won't show anything)", default="", show_default=False, hide_input=True, type=str)
