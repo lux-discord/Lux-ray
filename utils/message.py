@@ -12,7 +12,7 @@ async def resolve_message_link(bot: Bot, message_link: str):
 	Raise
 	-----
 	InvalidMessageLink: when `message_link` is incomplete
-	InvalidChannelID: when chennel doesn't exist
+	InvalidChannelID: when channel doesn't exist
 	InvalidMessageID: when channel is not readable for bot or message doesn't exist
 	
 	Return
