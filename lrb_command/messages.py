@@ -1,8 +1,8 @@
 from core import InitedCog, Server
 from discord import Message
 from discord.ext.commands import command, has_permissions
-from exceptions import InvalidArgument, InvalidMessageLink
-from utils.message import parse_message_link, get_last_exist_message
+from exceptions import InvalidArgument
+from utils.message import target_message
 
 
 @has_permissions(manage_messages=True)
@@ -28,20 +28,11 @@ class Messages(InitedCog):
 		
 		await ctx_message.delete()
 		
-		if message_link:
-			try:
-				message: Message = await parse_message_link(self.bot, message_link)
-				
-				if not message.channel.permissions_for(ctx.author).manage_messages:
-					raise InvalidMessageLink(message_link)
-				
+		try:
+			async with target_message(ctx, message_link=message_link, manage_messages=True) as message:
 				await pin_message(message)
-			except InvalidArgument as error:
-				await server.send_error("error.invalid_argument.invalid_message_link", message_link=error.args[0])
-		elif refer_mes := ctx_message.reference:
-			await pin_message(refer_mes.resolved)
-		else:
-			await pin_message(await get_last_exist_message(ctx.channel))
+		except InvalidArgument as error:
+			await server.send_error("error.invalid_argument.invalid_message_link", message_link=error.args[0])
 	
 	@command()
 	async def unpin(self, ctx, message_link: str=None):
@@ -64,26 +55,16 @@ class Messages(InitedCog):
 		
 		await ctx_message.delete()
 		
-		if message_link:
-			try:
-				message: Message = await parse_message_link(self.bot, message_link)
-				
-				if not message.channel.permissions_for(ctx.author).manage_messages:
-					raise InvalidMessageLink(message_link)
-				
+		try:
+			async with target_message(ctx, message_link=message_link, manage_messages=True) as message:
 				await unpin_message(message)
-			except InvalidArgument as error:
-				await server.send_error("error.invalid_argument.invalid_message_link", message_link=error.args[0])
-		elif refer_mes := ctx_message.reference:
-			await unpin_message(refer_mes.resolved)
-		else:
-			await unpin_message(await get_last_exist_message(ctx.channel))
+		except InvalidArgument as error:
+			await server.send_error("error.invalid_argument.invalid_message_link", message_link=error.args[0])
 	
 	@command(aliases=["mes_link", "msg_link"])
 	async def message_link(self, ctx):
-		if refer_mes := ctx.message.reference:
-			return await ctx.send(refer_mes.jump_url)
-		await Server(ctx).send_error("error.target_not_found.no_reference_message")
+		async with target_message(ctx) as message:
+			return await ctx.send(message.jump_url)
 
 def setup(bot):
 	bot.add_cog(Messages(bot))
