@@ -54,10 +54,6 @@ class InvalidMessageID(InvalidArgument):
 	def __str__(self):
 		return f"Invalid message ID '{self.args[0]}'"
 
-class InvalidExtension(LRBError):
-	def __str__(self) -> str:
-		return f"Invalid extension '{self.args[0]}'"
-
 class InvalidToken(InvalidArgument):
 	def __init__(self, *args: object, **kargs) -> None:
 		super().__init__(*args)
@@ -83,3 +79,12 @@ class InvalidToken(InvalidArgument):
 		# why +3 when repeating " ":
 		# 1 for '.' betwean file name and self name
 		# 2 for ': ' after self name
+
+class InvalidPermission(InvalidArgument):
+	def __str__(self) -> str:
+		return f"Invalid permission: {self.args[0]}"
+
+# extension error
+class InvalidExtension(LRBError):
+	def __str__(self) -> str:
+		return f"Invalid extension '{self.args[0]}'"
