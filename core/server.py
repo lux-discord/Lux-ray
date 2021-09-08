@@ -18,7 +18,7 @@ class ServerBasic():
 		self.server_coll = server_coll
 	
 	def _update_coll(self, update):
-		return self.server_coll.update_one({"server_id": self.id}, update)
+		return self.server_coll.update_one({"_id": self.id}, update)
 	
 	def _update_each(self, properties: dict):
 		"""Update attribute data in each place(eg: server_coll, self.data, self.[attr_name], ...)"""
@@ -62,9 +62,9 @@ class Server(ServerBasic):
 		
 		super().__init__(ctx, server_coll)
 		
-		if not (server_data := self.server_coll.find_one({"server_id": self.id})):
+		if not (server_data := self.server_coll.find_one({"_id": self.id})):
 			server_data = {
-				"server_id": self.id,
+				"_id": self.id,
 				"lang_code": "en",
 				"roles": {
 					"auto_roles": []

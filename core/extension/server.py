@@ -18,9 +18,9 @@ class ExtensionServer(ServerBasic):
 		
 		extension_manifest: dict = extension_coll.find_one({"name": extension_name})
 		
-		if not (extension_server_data := self.server_coll.find_one({"server_id": self.id})):
+		if not (extension_server_data := self.server_coll.find_one({"_id": self.id})):
 			extension_server_data = {
-				"server_id": self.id,
+				"_id": self.id,
 				"lang_code": "en"
 			}
 			self.server_coll.insert_one(extension_server_data)

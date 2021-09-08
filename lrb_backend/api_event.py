@@ -17,7 +17,7 @@ class ApiEvent(InitedCog):
 	@Cog.listener()
 	async def on_member_join(self, member: Member):
 		async def auto_role():
-			server_data: dict = server_coll.find_one({"server_id": member.guild.id})
+			server_data: dict = server_coll.find_one({"_id": member.guild.id})
 			auto_roles: list = server_data["roles"]["auto_roles"]
 			
 			if auto_roles:
