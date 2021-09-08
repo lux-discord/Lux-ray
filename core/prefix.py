@@ -16,7 +16,7 @@ def get_prefix(bot, message):
 	bot_status = bot.status
 	
 	try:
-		prefix = prefix_cache[server_id][bot_status]
+		prefix = prefix_cache[server_id]
 	except KeyError:
 		if not (prefix := find_prefix(server_id, bot_status)):
 			prefix = insert_prefixes(server_id)[bot_status]
