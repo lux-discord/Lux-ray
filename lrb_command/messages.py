@@ -19,7 +19,7 @@ class Messages(InitedCog):
 			)
 			
 			# delete system message
-			async for message in message.channel.history(limit=7):
+			async for message in message.channel.history(limit=5):
 				if not message.content:
 					await message.delete()
 					break
@@ -46,7 +46,7 @@ class Messages(InitedCog):
 			)
 			
 			# delete system message
-			async for message in message.channel.history(limit=7):
+			async for message in message.channel.history(limit=5):
 				if not message.content:
 					await message.delete()
 					break
