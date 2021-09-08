@@ -1,6 +1,7 @@
 from typing import Union
 
 from discord.ext.commands import Context
+from discord.message import Message
 from exceptions import LanguageNotChange, InvalidPrefix, PrefixNotChange, RoleNotChange
 from pymongo.collection import Collection
 from utils import Token
@@ -43,16 +44,16 @@ class ServerBasic():
 	def lang_request_many(self, *tokens: Union[Token, str]) -> list[str, dict]:
 		return self.language.request_many(*tokens)
 	
-	async def send_error(self, token: Union[Token, str], **format):
-		message = self.lang_request(token).format(**format)
+	async def send_error(self, token: Union[Token, str], **format_kargs) -> Message:
+		message = self.lang_request(token).format(**format_kargs)
 		return await self.ctx.send(message, delete_after=5)
 	
-	async def send_warning(self, token: Union[Token, str], **format):
-		message = self.lang_request(token).format(**format)
+	async def send_warning(self, token: Union[Token, str], **format_kargs) -> Message:
+		message = self.lang_request(token).format(**format_kargs)
 		return await self.ctx.send(message, delete_after=10)
 	
-	async def send_info(self, token: Union[Token, str], **format):
-		message = self.lang_request(token).format(**format)
+	async def send_info(self, token: Union[Token, str], **format_kargs) -> Message:
+		message = self.lang_request(token).format(**format_kargs)
 		return await self.ctx.send(message, delete_after=3)
 
 class Server(ServerBasic):
