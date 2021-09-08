@@ -1,6 +1,7 @@
 class LRBError(Exception):
 	pass
 
+# emoji error
 class EmojiError(LRBError):
 	pass
 
@@ -8,6 +9,7 @@ class InvalidEmojiError(EmojiError):
 	def __str__(self) -> str:
 		return f"'{self.args[0]}' is not a valid emoji"
 
+# prefix error
 class PrefixError(LRBError):
 	pass
 
@@ -18,15 +20,14 @@ class InvalidPrefix(PrefixError):
 	def __str__(self) -> str:
 		return f"Invalid prefix '{self.args[0]}'"
 
+# role error
 class RoleError(LRBError):
 	pass
 
 class RoleNotChange(RoleError):
 	pass
 
-class RoleTypeInvalid(RoleError):
-	pass
-
+# language error
 class LanguageError(LRBError):
 	pass
 
@@ -37,6 +38,7 @@ class LanguageNotSupport(LanguageError):
 	def __str__(self):
 		return f"language(code) '{self.args[0]}' not suppot"
 
+# argument error
 class InvalidArgument(LRBError):
 	pass
 
