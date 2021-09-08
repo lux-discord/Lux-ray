@@ -1,6 +1,7 @@
 from discord import HTTPException, Message, TextChannel
 from discord.ext.commands import Bot
-from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
+from discord.ext.commands.context import Context
+from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink, InvalidPermission
 
 async def resolve_message_link(bot: Bot, message_link: str):
 	"""
@@ -41,3 +42,50 @@ async def resolve_message_link(bot: Bot, message_link: str):
 
 async def get_last_exist_message(channel: TextChannel) -> Message:
 	return [message async for message in channel.history(limit=1)][0]
+
+class target_message():
+	def __init__(self, ctx: Context, *, message_link: str=None, **permission_checks) -> None:
+		"""
+		Parameter
+		---------
+		ctx: `Context`
+			The context that command received
+		message_link: `str` `[optional]`
+			The link that needs to be resolved as a Message
+		permission_checks: `dict[str, bool]` `[optional]` `[for message_link]`
+			The permission check of command author
+		
+		Raise
+		-----
+		InvalidMessageLink:
+			when command author don't have enough permissions
+		InvalidPermission: [when permission_checks]
+			when permission name(key of permission_checks) is invalid
+			
+			check `discord.Permissions` for all avaliable permission names
+		"""
+		self.ctx = ctx
+		self.message_link = message_link
+		self.permission_checks = permission_checks
+	
+	async def __aenter__(self) -> Message:
+		if self.message_link:
+			message = await resolve_message_link(self.ctx.bot, self.message_link)
+			
+			if self.permission_checks:
+				author_permsision = message.channel.permission_for(self.ctx.message.author)
+				
+				for permission_name, value in self.permission_checks.items():
+					try:
+						if getattr(author_permsision, permission_name) != value:
+							raise InvalidMessageLink(self.message_link)
+					except AttributeError:
+						raise InvalidPermission(permission_name)
+			
+			return message
+		if refer_mes := self.ctx.message.reference:
+			return refer_mes.resolved
+		return await get_last_exist_message(self.ctx.message.channel)
+	
+	async def __aexit__(self, type, value, traceback):
+		pass
