@@ -1,4 +1,4 @@
-from exceptions import PrefixInvalid
+from exceptions import InvalidPrefix
 from pymongo.errors import CollectionInvalid
 
 from .db import bot_db
@@ -53,4 +53,4 @@ def update_prefix(server_id, status, prefix):
 		prefix_cache[server_id] = prefix
 	except CollectionInvalid:
 		# raise when stable and indev prefix are same
-		raise PrefixInvalid(prefix)
+		raise InvalidPrefix(prefix)

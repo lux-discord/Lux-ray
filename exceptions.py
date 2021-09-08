@@ -14,7 +14,7 @@ class PrefixError(LRBError):
 class PrefixNotChange(PrefixError):
 	pass
 
-class PrefixInvalid(PrefixError):
+class InvalidPrefix(PrefixError):
 	def __str__(self) -> str:
 		return f"Invalid prefix '{self.args[0]}'"
 

@@ -1,7 +1,7 @@
 from typing import Union
 
 from discord.ext.commands import Context
-from exceptions import LanguageNotChange, PrefixInvalid, PrefixNotChange, RoleNotChange
+from exceptions import LanguageNotChange, InvalidPrefix, PrefixNotChange, RoleNotChange
 from pymongo.collection import Collection
 from utils import Token
 
@@ -89,8 +89,8 @@ class Server(ServerBasic):
 			update_prefix(self.id, status, prefix)
 			# because prefix don't in attrs, server_coll and self.data
 			# so don't need use self._update at end
-		except PrefixInvalid:
-			raise PrefixInvalid(prefix)
+		except InvalidPrefix:
+			raise InvalidPrefix(prefix)
 	
 	def update_lang(self, lang_code):
 		if lang_code == self.lang_code:
