@@ -2,8 +2,7 @@ from discord import HTTPException, Message, TextChannel
 from discord.ext.commands import Bot
 from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 
-
-async def parse_message_link(bot: Bot, message_link: str):
+async def resolve_message_link(bot: Bot, message_link: str):
 	"""
 	Parameter
 	---------
