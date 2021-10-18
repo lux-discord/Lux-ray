@@ -1,6 +1,6 @@
 from core import InitedCog, Server
-from discord import Message
-from discord.ext.commands import command, has_permissions
+from disnake import Message
+from disnake.ext.commands import command, has_permissions
 from exceptions import InvalidArgument
 from utils.message import target_message
 

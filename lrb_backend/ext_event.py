@@ -1,5 +1,5 @@
 from core import InitedCog, Server
-from discord.ext.commands import Cog
+from disnake.ext.commands import Cog
 
 class ExtEvent(InitedCog):
 	@Cog.listener()

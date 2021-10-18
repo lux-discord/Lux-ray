@@ -1,6 +1,6 @@
 from json import load
 
-from discord.ext.commands import Bot
+from disnake.ext.commands import Bot
 
 def get_loading_message() -> list:
 	with open("loading_message.json", "r", encoding="UTF-8") as f:
@@ -28,6 +28,5 @@ def set_up_bot(command_prefix, *, intent=None):
 	
 	lrb = Bot(command_prefix=command_prefix, owner_id=bot_config.get("owner_id"), intent=intent)
 	setattr(lrb, "stable", bot_config["stable"])
-	setattr(lrb, "status", bot_config["status"])
 	setattr(lrb, "is_running", False) # for event on_ready judge is ready or reconnect
 	return lrb

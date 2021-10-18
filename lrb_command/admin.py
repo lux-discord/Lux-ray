@@ -1,7 +1,7 @@
 from core import InitedCog, Server
 from core.language import SUPPORT_LANGUAGE
-from discord.ext.commands import command, has_guild_permissions
-from discord.role import Role
+from disnake.ext.commands import command, has_guild_permissions
+from disnake.role import Role
 from exceptions import LanguageNotChange, LanguageNotSupport, PrefixNotChange, RoleNotChange
 
 

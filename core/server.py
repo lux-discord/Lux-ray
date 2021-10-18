@@ -1,7 +1,7 @@
 from typing import Union
 
-from discord.ext.commands import Context
-from discord.message import Message
+from disnake.ext.commands import Context
+from disnake.message import Message
 from exceptions import LanguageNotChange, InvalidPrefix, PrefixNotChange, RoleNotChange
 from pymongo.collection import Collection
 from utils import Token

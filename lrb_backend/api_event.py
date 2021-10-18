@@ -1,8 +1,8 @@
 from core import InitedCog
 from core.db import server_coll
-from discord import Member
-from discord.ext.commands.cog import Cog
-from discord.utils import get
+from disnake import Member
+from disnake.ext.commands.cog import Cog
+from disnake.utils import get
 
 
 class ApiEvent(InitedCog):

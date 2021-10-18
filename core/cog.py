@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from discord.ext.commands.bot import Bot
-from discord.ext.commands.cog import Cog
+from disnake.ext.commands.bot import Bot
+from disnake.ext.commands.cog import Cog
 from exceptions import InvalidExtension
 
 from .extension.loader import extension_cog_loader

@@ -1,4 +1,4 @@
-from discord.ext.commands.context import Context
+from disnake.ext.commands.context import Context
 
 from ..cog import cog_folder_abbr_to_fullname
 from ..db import extension_coll, extension_server_db

@@ -2,7 +2,7 @@ from sys import argv
 from pathlib import Path
 
 from click import group, prompt, option, confirm, echo, Path as ClickPath
-from discord import Intents
+from disnake import Intents
 
 from core.cog import default_cog_folders, load_cog_folders
 from core.prefix import get_prefix

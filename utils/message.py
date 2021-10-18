@@ -1,6 +1,6 @@
-from discord import HTTPException, Message, TextChannel
-from discord.ext.commands import Bot
-from discord.ext.commands.context import Context
+from disnake import HTTPException, Message, TextChannel
+from disnake.ext.commands import Bot
+from disnake.ext.commands.context import Context
 from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink, InvalidPermission
 
 async def resolve_message_link(bot: Bot, message_link: str):

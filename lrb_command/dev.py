@@ -1,6 +1,6 @@
 from core import InitedCog, Server
-from discord.ext.commands.core import command, is_owner
-from discord.ext.commands.errors import ExtensionNotFound, ExtensionNotLoaded
+from disnake.ext.commands.core import command, is_owner
+from disnake.ext.commands.errors import ExtensionNotFound, ExtensionNotLoaded
 
 
 @is_owner()

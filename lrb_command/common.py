@@ -1,8 +1,8 @@
 from re import compile
 
 from core import InitedCog, Server
-from discord.embeds import Embed
-from discord.ext.commands.core import command
+from disnake.embeds import Embed
+from disnake.ext.commands.core import command
 from exceptions import InvalidEmojiError
 from utils.embed import bot_color, embed_setup
 
