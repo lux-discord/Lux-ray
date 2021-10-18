@@ -1,0 +1,4 @@
+# common
+click
+disnake
+pymongo

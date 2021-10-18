@@ -1,7 +1,0 @@
-# common
-discord.py
-pymongo
-
-# stable only
-pymongo[srv]
-Flask
