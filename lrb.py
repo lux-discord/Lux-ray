@@ -6,7 +6,7 @@ from disnake import Intents
 
 from core.cog import default_cog_folders, load_cog_folders
 from core.prefix import get_prefix
-from core.set_up import set_up_bot, get_loading_message, get_bot_config
+from core.setup import set_up_bot, get_loading_message, get_bot_config
 from utils.json_file import dump_file
 
 @group()
