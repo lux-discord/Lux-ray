@@ -1,0 +1,48 @@
+{
+	"stable": false,
+	
+	"stable_config": {
+		"version": "0.0.1",
+		
+		"prefix_type": "string",
+		"prefix": "lr",
+		"prefixes": [],
+		"get_perfix_function": "",
+		
+		"owner_id": null,
+		"owner_ids": [],
+		
+		"intent_type": "default",
+		"intent_items": {},
+		
+		"cog_path": [],
+		"cog_folder_path": [
+			"lrb_background",
+			"lrb_command",
+			"lrb_extension"
+		]
+	},
+	"indev_config": {
+		"version": "0.0.1",
+		
+		"prefix_type": "function",
+		"prefix": "rl",
+		"prefixes": [],
+		"get_perfix_function": "core.prefix.get_prefix",
+		
+		"owner_id": null,
+		"owner_ids": [],
+		
+		"intent_type": "all",
+		"intent_items": {
+			"typing": false
+		},
+		
+		"cog_path": [],
+		"cog_folder_path": [
+			"lrb_background",
+			"lrb_command",
+			"lrb_extension"
+		]
+	}
+}
