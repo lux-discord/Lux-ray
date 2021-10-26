@@ -11,10 +11,12 @@ def get_bot_config(config_path=None, *, mode=None) -> dict:
 	if not config_path:
 		config_path = "bot-config.json"
 	
-	if not mode:
-		mode = "stable"
+	config_data = json_load(config_path)
 	
-	return json_load(config_path)[mode]
+	if not mode:
+		mode = "stable" if config_data["stable"] else "indev"
+	
+	return config_data[mode]
 
 def get_bot_token(token_path=None, *, mode=None) -> dict:
 	if not token_path:
