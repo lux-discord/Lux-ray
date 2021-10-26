@@ -1,61 +1,30 @@
 from pathlib import Path
 
 from disnake.ext.commands.bot import Bot
-from disnake.ext.commands.cog import Cog
+
 from exceptions import InvalidExtension
-
-from .extension.loader import extension_cog_loader
-
-default_cog_folders = [
-	"lrb_backend",
-	"lrb_command",
-	"lrb_extension"
-]
-cog_folder_abbr = [
-	"be",
-	"cmd",
-	"ext"
-]
-cog_folder_abbr_to_fullname = dict(zip(cog_folder_abbr, default_cog_folders))
+from core.extension.loader import extension_cog_loader
 
 class InitedCog(Cog):
 	def __init__(self, bot: Bot) -> None:
 		self.bot = bot
 
-def cog_folder_dict_generater(folder):
-	"""Generate dict with gived folder
-	
-	file startwith `_` won't in the dict
-	
-	Return
-	------
-	format: {`file.stem` : `folder_path` . `file.stem`}
-	"""
-	folder_path = Path(folder)
-	
-	return {file.stem: f"{folder_path}.{file.stem}" for file in folder_path.iterdir() if file.is_file() and not str(file).startswith("_") and file.suffix == ".py"}
-
-def cog_folder_loader(bot, folder):
-	if folder == cog_folder_abbr_to_fullname["ext"]:
-		for extension_folder in Path(folder).iterdir():
-			print(f"    {extension_folder.name}")
-			
-			try:
-				extension_cog_loader(bot, extension_folder)
-			except InvalidExtension:
-				raise InvalidExtension(extension_folder)
-	else:
-		cog_dict = cog_folder_dict_generater(folder)
+def load_cogs(bot, *, cogs=None, cog_folders=None):
+	def folder_loader(bot, folder: Path, *, indent_lv: int=None):
+		indent_lv = 1 if not indent_lv else indent_lv
+		print(f"{'	'*indent_lv}{folder}")
 		
-		for file, cog in cog_dict.items():
-			print(f"    {file}")
-			bot.load_extension(cog)
-
-def load_cog_folders(bot, folders: list, *, loading_messages: list=None):
-	if loading_messages:
-		for folder, loading_message in zip(folders, loading_messages):
-			print(loading_message)
-			cog_folder_loader(bot, folder)
-	else:
-		for folder in folders:
-			cog_folder_loader(bot, folder)
+		for item in folder.iterdir():
+			if item.is_file() and item.suffix == ".py" and not item.name.startswith("_"):
+				print(f"{'	'*indent_lv+1}{item.name}")
+			elif item.is_dir():
+				folder_loader(bot, item, indent_lv=indent_lv+1)
+	
+	if cogs:
+		for cog in cogs:
+			print(f"	{cog}")
+			bot.load_extension(cogs)
+	
+	if cog_folders:
+		for folder in cog_folders:
+			folder_loader(bot, Path(folder))

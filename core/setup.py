@@ -1,32 +1,44 @@
-from json import load
-
+from disnake import Intents
 from disnake.ext.commands import Bot
 
-def get_loading_message() -> list:
-	with open("loading_message.json", "r", encoding="UTF-8") as f:
-		return load(f)
+from core.cog import load_cogs
+from utils.json_file import json_load
 
-def get_bot_config(key=None, *, config_path=None):
+def get_loading_message() -> list:
+	return json_load("loading_message.json")
+
+def get_bot_config(config_path=None, *, mode=None) -> dict:
 	if not config_path:
 		config_path = "bot-config.json"
 	
-	with open(config_path, "r", encoding="UTF-8") as f:
-		bot_config: dict = load(f)
+	if not mode:
+		mode = "stable"
 	
-	status = "stable" if bot_config["stable"] else "indev"
-	bot_config["token"] = bot_config["token"][status]
-	bot_config["status"] = status
-	
-	if key:
-		return bot_config.get(key)
-	return bot_config
+	return json_load(config_path)[mode]
 
-def set_up_bot(command_prefix, *, intent=None):
-	bot_config = get_bot_config()
+def get_bot_token(token_path=None, *, mode=None) -> dict:
+	if not token_path:
+		token_path = "bot-token.json"
 	
-	print("Setting up bot")
+	token_data = json_load(token_path)
 	
-	lrb = Bot(command_prefix=command_prefix, owner_id=bot_config.get("owner_id"), intent=intent)
-	setattr(lrb, "stable", bot_config["stable"])
-	setattr(lrb, "is_running", False) # for event on_ready judge is ready or reconnect
-	return lrb
+	return token_data["tokens"]["stable" if not mode else mode] if not (token := token_data["token"]) else token
+
+def intent_generater(base_type, *, **items):
+	base_intent = getattr(Intents, base_type)()
+	
+	for intent, value in items:
+		setattr(base_intent, intent, value)
+	
+	return base_intent
+
+def setup_bot(*, config_path=None, mode=None):
+	config = get_bot_config(config_path, mode=mode)
+	bot = Bot(command_prefix=config["prefix"] if not (prefixes := config["prefixes"]) else prefixes,
+		owner_id=config["owner_id"] if not (owner_ids := config["owner_ids"]) else owner_ids,
+		intent=intent_generater(config["intent_type"], **config["intent_item"]))
+	
+	setattr(bot, mode, mode if mode else "stable")
+	load_cogs(bot, cogs=config["cog_path"], cog_folders=config["cog_folder_path"])
+	
+	return bot
