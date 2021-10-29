@@ -40,7 +40,7 @@ def setup_bot(*, config_path=None, mode=None):
 		owner_id=config["owner_id"] if not (owner_ids := config["owner_ids"]) else owner_ids,
 		intent=intent_generater(config["intent_type"], **config["intent_item"]))
 	
-	setattr(bot, mode, mode if mode else "stable")
+	setattr(bot, "mode", mode if mode else "stable")
 	load_cogs(bot, cogs=config["cog_path"], cog_folders=config["cog_folder_path"])
 	
 	return bot
