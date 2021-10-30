@@ -7,7 +7,8 @@
 		"prefix_type": "string",
 		"prefix": "lr",
 		"prefixes": [],
-		"get_perfix_function": "",
+		"prefix_function_file": "",
+		"prefix_function_name": "",
 		
 		"owner_id": null,
 		"owner_ids": [],
@@ -28,7 +29,8 @@
 		"prefix_type": "function",
 		"prefix": "rl",
 		"prefixes": [],
-		"get_perfix_function": "core.prefix.get_prefix",
+		"prefix_function_file": "core/prefix.py",
+		"prefix_function_name": "get_server_prefix",
 		
 		"owner_id": null,
 		"owner_ids": [],
