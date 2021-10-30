@@ -1,8 +1,12 @@
+# All folder start with ".", except ".github"
 .*/
+!.github/
 
+# All cache file
 *.pyc
 
-bot-config.json
-keep_alive.py
+# Secure files
+bot-token.json
+
+# Sundries
 **/test.py
-todo.md
