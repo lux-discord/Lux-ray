@@ -1,17 +1,17 @@
 from disnake import Intents
 from disnake.ext.commands import Bot
 
-from utils.json_file import json_load
+from utils.json_file import load_file
 
 def get_loading_message() -> list:
-	return json_load("loading_message.json")
+	return load_file("loading_message.json")
 
 def get_bot_config(config_path, mode) -> dict:
-	config_data = json_load(config_path)
+	config_data = load_file(config_path)
 	return config_data[mode]
 
 def get_bot_token(token_path, mode) -> dict:
-	token_data = json_load(token_path)
+	token_data = load_file(token_path)
 	return token_data["tokens"][mode] if not (token := token_data["token"]) else token
 
 def intent_generater(base_type, **items):
