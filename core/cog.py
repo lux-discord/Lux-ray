@@ -33,7 +33,7 @@ class CogLoader(BaseLoader):
 		
 		for item in folder.iterdir():
 			if item.is_file() and item.suffix == ".py" and not item.name.startswith("_"):
-				print(f"{'	'*indent_lv+1}{item.stem}")
+				print(f"{'	'*(indent_lv+1)}{item.stem}")
 				# replace "/" with "." and remove suffix
 				cog_path = ".".join(item.with_name(item.stem).parts)
 				self.bot.load_extension(cog_path)
