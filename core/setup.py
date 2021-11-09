@@ -31,7 +31,7 @@ def setup_bot(config, mode, db):
 	# Create Bot instance
 	bot = Bot(command_prefix=prefix,
 		owner_id=config["owner_id"] if not (owner_ids := config["owner_ids"]) else owner_ids,
-		intent=intent_generater(config["intent_type"], **config["intent_item"]))
+		intent=intent_generater(config["intent_type"], **config["intent_items"]))
 	
 	# Add custom attr
 	setattr(bot, "db", db)
