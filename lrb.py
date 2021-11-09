@@ -12,8 +12,8 @@ def main():
 	pass
 
 @main.command()
-@option("-C", "--config-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default=None, help="Path of config file")
-@option("-T", "--token-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default=None, help="Path of token file")
+@option("-C", "--config-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default="bot-config.json", help="Path of config file")
+@option("-T", "--token-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default="bot-token.json", help="Path of token file")
 @option("-M", "--mode", default="dev", help="Which mode should bot run on")
 def run(config_path, token_path, mode):
 	# Prepare
