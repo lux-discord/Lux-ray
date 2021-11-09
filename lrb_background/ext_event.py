@@ -1,5 +1,7 @@
-from core import InitedCog, Server
+from core import Server
 from disnake.ext.commands import Cog
+from utils.cog import InitedCog
+
 
 class ExtEvent(InitedCog):
 	@Cog.listener()

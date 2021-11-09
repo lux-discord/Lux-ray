@@ -1,8 +1,7 @@
-from core import InitedCog
-from core.db import server_coll
 from disnake import Member
 from disnake.ext.commands.cog import Cog
 from disnake.utils import get
+from utils.cog import InitedCog
 
 
 class ApiEvent(InitedCog):
@@ -17,7 +16,7 @@ class ApiEvent(InitedCog):
 	@Cog.listener()
 	async def on_member_join(self, member: Member):
 		async def auto_role():
-			server_data: dict = server_coll.find_one({"_id": member.guild.id})
+			server_data: dict = self.bot.db.find_one({"_id": member.guild.id})
 			auto_roles: list = server_data["roles"]["auto_roles"]
 			
 			if auto_roles:

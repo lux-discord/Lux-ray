@@ -1,10 +1,12 @@
 from re import compile
 
-from core import InitedCog, Server
+from core import Server
 from disnake.embeds import Embed
 from disnake.ext.commands.core import command
 from exceptions import InvalidEmojiError
+from utils.cog import InitedCog
 from utils.embed import bot_color, embed_setup
+
 
 emoji_regex = compile(r"<a?:(.+?:[0-9]{15,21})>")
 

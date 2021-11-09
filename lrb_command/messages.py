@@ -1,7 +1,8 @@
-from core import InitedCog, Server
+from core import Server
 from disnake import Message
 from disnake.ext.commands import command, has_permissions
 from exceptions import InvalidArgument
+from utils.cog import InitedCog
 from utils.message import target_message
 
 

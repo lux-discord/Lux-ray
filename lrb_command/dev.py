@@ -1,6 +1,7 @@
-from core import InitedCog, Server
+from core import Server
 from disnake.ext.commands.core import command, is_owner
 from disnake.ext.commands.errors import ExtensionNotFound, ExtensionNotLoaded
+from utils.cog import InitedCog
 
 
 @is_owner()

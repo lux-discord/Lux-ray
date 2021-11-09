@@ -1,9 +1,10 @@
-from core import InitedCog, Server
+from core import Server
 from core.language import SUPPORT_LANGUAGE
 from disnake.ext.commands import command, has_guild_permissions
 from disnake.role import Role
 from exceptions import LanguageNotChange, LanguageNotSupport, PrefixNotChange, RoleNotChange
 
+from utils.cog import InitedCog
 
 @has_guild_permissions(administrator=True)
 class Admin(InitedCog):
