@@ -27,7 +27,7 @@ class CogLoader(BaseLoader):
 		print(f"	{cog}")
 		self.bot.load_extension(cog)
 	
-	def folder_loader(self, folder: Path):
+	def folder_loader(self, folder: Path, indent_lv=None):
 		indent_lv = 1 if not indent_lv else indent_lv
 		print(f"{'	'*indent_lv}{folder.name}")
 		
