@@ -6,8 +6,6 @@ from exceptions import LanguageNotChange, InvalidPrefix, PrefixNotChange, RoleNo
 from pymongo.collection import Collection
 from utils import Token
 
-from core.prefix import update_prefix
-
 from .db import server_coll
 from .language import Language
 
