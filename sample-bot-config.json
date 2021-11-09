@@ -2,11 +2,7 @@
 	"stable": {
 		"version": "0.0.1",
 		
-		"prefix_type": "string",
 		"prefix": "lr",
-		"prefixes": [],
-		"prefix_function_file": "",
-		"prefix_function_name": "",
 		
 		"owner_id": null,
 		"owner_ids": [],
@@ -19,16 +15,15 @@
 			"lrb_background",
 			"lrb_command",
 			"lrb_extension"
-		]
+		],
+		
+		"db_host": "",
+		"db_port": null
 	},
 	"dev": {
 		"version": "0.0.1",
 		
-		"prefix_type": "function",
 		"prefix": "rl",
-		"prefixes": [],
-		"prefix_function_file": "core/prefix.py",
-		"prefix_function_name": "get_server_prefix",
 		
 		"owner_id": null,
 		"owner_ids": [],
@@ -43,6 +38,9 @@
 			"lrb_background",
 			"lrb_command",
 			"lrb_extension"
-		]
+		],
+		
+		"db_host": "",
+		"db_port": null
 	}
 }
