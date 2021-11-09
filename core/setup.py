@@ -14,7 +14,7 @@ def get_bot_token(token_path, mode) -> dict:
 	token_data = json_load(token_path)
 	return token_data["tokens"][mode] if not (token := token_data["token"]) else token
 
-def intent_generater(base_type, *, **items):
+def intent_generater(base_type, **items):
 	base_intent = getattr(Intents, base_type)()
 	
 	for intent, value in items:
