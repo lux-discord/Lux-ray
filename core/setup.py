@@ -14,10 +14,10 @@ def get_bot_token(token_path, mode) -> dict:
 	token_data = load_file(token_path)
 	return token_data["tokens"][mode] if not (token := token_data["token"]) else token
 
-def intent_generater(base_type, **items):
+def intent_generater(base_type, **intent_items):
 	base_intent = getattr(Intents, base_type)()
 	
-	for intent, value in items:
+	for intent, value in intent_items.items():
 		setattr(base_intent, intent, value)
 	
 	return base_intent
@@ -31,7 +31,7 @@ def setup_bot(config, mode, db):
 	# Create Bot instance
 	bot = Bot(command_prefix=prefix,
 		owner_id=config["owner_id"] if not (owner_ids := config["owner_ids"]) else owner_ids,
-		intent=intent_generater(config["intent_type"], **config["intent_items"]))
+		intent=intent_generater(config["intent_type"], **config["intent_item"]))
 	
 	# Add custom attr
 	setattr(bot, "db", db)
