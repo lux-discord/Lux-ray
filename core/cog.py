@@ -37,8 +37,8 @@ class CogLoader(BaseLoader):
 				# replace "/" with "." and remove suffix
 				cog_path = ".".join(item.with_name(item.stem).parts)
 				self.bot.load_extension(cog_path)
-			elif item.is_dir():
-				self.folder_loader(bot, item, indent_lv=indent_lv+1)
+			elif item.is_dir() and not item.name.startswith("_"):
+				self.folder_loader(item, indent_lv=indent_lv+1)
 
 def load_cogs(bot, *, cogs=None, cog_folders=None):
 	CogLoader(bot).load(files=cogs, folders=cog_folders)
