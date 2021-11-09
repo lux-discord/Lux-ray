@@ -26,7 +26,7 @@ def setup_bot(config, mode, db):
 	# Set prefix
 	if not (prefix := config["prefix"]):
 		# If not set prefix, get it from db
-		prefix = db.get_prefix
+		from core.db import get_prefix as prefix
 	
 	# Create Bot instance
 	bot = Bot(command_prefix=prefix,
@@ -37,5 +37,6 @@ def setup_bot(config, mode, db):
 	setattr(bot, "db", db)
 	setattr(bot, "config", config)
 	setattr(bot, "mode", mode)
+	setattr(bot, "is_running", False)
 	
 	return bot
