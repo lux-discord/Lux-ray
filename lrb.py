@@ -22,7 +22,7 @@ def run(config_path, token_path, mode):
 	lrb = setup_bot(config, mode, MongoDB(db_host=config["db_host"], db_port=config["db_port"]))
 	
 	# Load cogs
-	load_cogs(bot, cogs=config["cog_path"], cog_folders=config["cog_folder_path"])
+	load_cogs(lrb, cogs=config["cog_path"], cog_folders=config["cog_folder_path"])
 	
 	# Run
 	lrb.run(token)
