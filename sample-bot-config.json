@@ -1,7 +1,5 @@
 {
-	"stable": false,
-	
-	"stable_config": {
+	"stable": {
 		"version": "0.0.1",
 		
 		"prefix_type": "string",
@@ -23,7 +21,7 @@
 			"lrb_extension"
 		]
 	},
-	"indev_config": {
+	"dev": {
 		"version": "0.0.1",
 		
 		"prefix_type": "function",
