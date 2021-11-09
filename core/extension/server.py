@@ -1,12 +1,10 @@
 from disnake.ext.commands.context import Context
 
-from ..cog import cog_folder_abbr_to_fullname
-from ..db import extension_coll, extension_server_db
 from ..language import LANG_FILE_PATH, Language
-from ..server import Server, ServerBasic
+from ..server import Server, ServerBase
 
 
-class ExtensionServer(ServerBasic):
+class ExtensionServer(ServerBase):
 	def __init__(self, ctx: Context) -> None:
 		if not isinstance(ctx, Context):
 			raise TypeError(f"ctx must be discord.ext.commands.Context, not {ctx.__class__.__name__}")
