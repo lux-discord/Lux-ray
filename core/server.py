@@ -9,7 +9,7 @@ from utils import Token
 from .language import Language
 
 
-class ServerBasic():
+class ServerBase():
 	def __init__(self, ctx: Context, server_coll: Collection) -> None:
 		self.id = ctx.guild.id
 		self.ctx = ctx
@@ -53,7 +53,7 @@ class ServerBasic():
 		message = self.lang_request(token).format(**format_kargs)
 		return await self.ctx.send(message, delete_after=3)
 
-class Server(ServerBasic):
+class Server(ServerBase):
 	def __init__(self, ctx: Context) -> None:
 		if not isinstance(ctx, Context):
 			raise TypeError(f"ctx must be discord.ext.commands.Context, not {ctx.__class__.__name__}")
