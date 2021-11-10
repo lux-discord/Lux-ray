@@ -7,10 +7,10 @@ class BaseLoader():
 	def __init__(self, bot: Bot) -> None:
 		self.bot = bot
 	
-	def file_loader():
+	def file_loader(self):
 		raise NotImplementedError
 	
-	def folder_loader():
+	def folder_loader(self):
 		raise NotImplementedError
 	
 	def load(self, *, files=None, folders=None):
