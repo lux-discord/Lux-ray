@@ -7,6 +7,7 @@ class MongoDB():
 		self.server_coll = self.bot_db["server"]
 		self.prefix_coll = self.bot_db["prefix"]
 		self.prefix_cache = {}
+		self.server_cache = {}
 	
 	def get_prefix(self, server_id: int):
 		try:
@@ -16,7 +17,9 @@ class MongoDB():
 	
 	def find_prefix(self, server_id: int):
 		if prefix_doc := self.prefix_coll.find_one({"_id": server_id}):
-			return prefix_doc["prefix"]
+			prefix = prefix_doc["prefix"]
+			self.prefix_cache[server_id] = prefix
+			return prefix
 		
 		return None
 	
@@ -40,6 +43,7 @@ class MongoDB():
 			"_id": server_id,
 			"prefix": prefix,
 		})
+		self.prefix_cache[server_id] = prefix
 		
 		return prefix
 	
@@ -48,6 +52,24 @@ class MongoDB():
 			filter={"_id": server_id},
 			update={"$set": {"prefix": prefix}}
 		)
+	
+	def get_server(self, server_id: int):
+		try:
+			return self.server_cache[server_id]
+		except KeyError:
+			return self.find_server(server_id)
+	
+	def find_server(self, server_id: int):
+		if server_doc := self.server_coll.find_one({"_id": server_id}):
+			return server_doc
+		
+		return None
+	
+	def insert_server(self, server_id: int):
+		pass
+	
+	def update_server(self, server_id: int, **kargs):
+		pass
 
 def get_prefix(bot, message):
 	server_id = message.guild.id
