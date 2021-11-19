@@ -1,6 +1,6 @@
 from disnake.ext.commands.context import Context
 
-from ..language import LANG_FILE_PATH, Language
+from ..language import PUBLIC_LANGUAGE_DIR, Language
 from ..server import Server, ServerBase
 
 
@@ -28,7 +28,7 @@ class ExtensionServer(ServerBase):
 		self.language = Language(self.lang_code, extension_manifest["support_language"], "/".join([
 			cog_folder_abbr_to_fullname["ext"],
 			extension_name,
-			extension_manifest.get("lang_file_path", LANG_FILE_PATH)
+			extension_manifest.get("lang_file_path", PUBLIC_LANGUAGE_DIR)
 		]))
 	
 	def MainServer(self):
