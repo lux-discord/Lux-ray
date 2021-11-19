@@ -6,9 +6,14 @@ from exceptions import LanguageNotSupport, MessageNotExists
 from utils.json_file import load_file
 from utils.token import Token
 
+PUBLIC_LANGUAGE_DIR = Path("language")
+
 @cache
 def get_support_language(lang_dir: Path):
 	return {lang_file.name for lang_file in lang_dir.iterdir()}
+
+def language_support_check(lang_dir: Path, lang_code: str):
+	return lang_code in get_support_language(lang_dir)
 
 @cache
 def request_message(lang_dir: Path, lang_code: str, token: Union[str, Token]):
@@ -20,7 +25,7 @@ def request_language(lang_dir: Path, lang_code: str):
 
 class LanguageBase():
 	def __init__(self, lang_dir: Path, lang_code: str) -> None:
-		if lang_code not in get_support_language(lang_dir):
+		if not language_support_check(lang_dir, lang_code):
 			raise LanguageNotSupport(lang_code)
 		
 		self.data = load_file(lang_dir/lang_code+".json")
@@ -43,11 +48,4 @@ class Language(LanguageBase):
 		lang_code: `str`
 			The language code you want to use
 		"""
-		super().__init__(Path("language"), lang_code)
-	
-	def request_message(self, token: Union[str, Token]):
-		return super().request_message(token)
-	
-	@cache
-	def bulk_request_message(self, *tokens: Union[str, Token]):
-		return super().bulk_request_message(*tokens)
+		super().__init__(PUBLIC_LANGUAGE_DIR, lang_code)
