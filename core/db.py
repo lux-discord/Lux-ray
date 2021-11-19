@@ -61,11 +61,11 @@ class MongoDB():
 		
 		return None
 	
-	def insert_server(self, server_id: int):
+	def insert_server(self, server_id: int, server_data: dict=None):
 		self.server.insert_one({
 			"_id": server_id,
 			"lang_code": "en"
-		})
+		} if not server_data else server_data)
 	
 	def update_server(self, server_id: int, **kargs):
 		self.server.update_one(
