@@ -1,6 +1,5 @@
 from re import compile
 
-from core import Server
 from disnake.embeds import Embed
 from disnake.ext.commands.core import command
 from exceptions import InvalidEmojiError
@@ -13,8 +12,6 @@ emoji_regex = compile(r"<a?:(.+?:[0-9]{15,21})>")
 class Common(InitedCog):
 	@command(aliases=["emoji"])
 	async def emoji_info(self, ctx, *emojis):
-		server = Server(ctx)
-		
 		def parse_raw_emojis(*raw_emojis: str) -> set[tuple[str, str]]:
 			"""
 			Parse `raw_emoji` to (`emoji_name`, `emoji_id`)
@@ -61,14 +58,14 @@ class Common(InitedCog):
 			try:
 				emojis = parse_raw_emojis(*emojis)
 			except InvalidEmojiError as error:
-				return await server.send_error("error.invalid_argument.invalid_emoji", invalid_emoji_text=error.args[0])
+				return await self.send_error(ctx, "error.invalid_argument.invalid_emoji", invalid_emoji_text=error.args[0])
 			return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
 		if refer_mes := ctx.message.reference:
 			if emojis := emoji_regex.findall(refer_mes.resolved.content):
 				emojis: set[list[str, str]] = {tuple(emoji.split(":")) for emoji in emojis}
 				return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
-			return await server.send_error("error.target_not_found.reference_message_has_no_emoji")
-		await server.send_error("error.target_not_found.no_emoji_input")
+			return await self.send_error(ctx, "error.target_not_found.reference_message_has_no_emoji")
+		return await self.send_error(ctx, "error.target_not_found.no_emoji_input")
 
 def setup(bot):
 	bot.add_cog(Common(bot))
