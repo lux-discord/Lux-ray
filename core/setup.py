@@ -25,8 +25,8 @@ def intent_generater(base_type, **intent_items):
 def setup_bot(config, mode, db):
 	# Set prefix
 	if not (prefix := config["prefix"]):
-		# If not set prefix, get it from db
-		from core.db import get_prefix as prefix
+		# If not set prefix, import it from core.prefix
+		from core.prefix import get_prefix as prefix
 	
 	# Create Bot instance
 	bot = Bot(command_prefix=prefix,
