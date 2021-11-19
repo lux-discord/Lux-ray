@@ -1,22 +1,20 @@
+from functools import cache
 from pymongo import MongoClient
+from .server import Server
 
 class MongoDB():
 	def __init__(self, db_host, *, db_port=None) -> None:
 		self.client = MongoClient(host=db_host, port=db_port)
-		self.bot_db = self.client["discord-bot"]
-		self.server_coll = self.bot_db["server"]
-		self.prefix_coll = self.bot_db["prefix"]
-		self.prefix_cache = {}
-		self.server_cache = {}
+		self.db = self.client["discord-bot"]
+		self.server = self.db["server"]
+		self.prefix = self.db["prefix"]
 	
+	@cache
 	def get_prefix(self, server_id: int):
-		try:
-			return self.prefix_cache[server_id]
-		except KeyError:
-			return self.find_prefix(server_id)
+		return self.find_prefix(server_id)
 	
 	def find_prefix(self, server_id: int):
-		if prefix_doc := self.prefix_coll.find_one({"_id": server_id}):
+		if prefix_doc := self.prefix.find_one({"_id": server_id}):
 			prefix = prefix_doc["prefix"]
 			self.prefix_cache[server_id] = prefix
 			return prefix
@@ -39,7 +37,7 @@ class MongoDB():
 		prefix that pass in or default value
 		"""
 		prefix = prefix if prefix else "l;"
-		self.prefix_coll.insert_one({
+		self.prefix.insert_one({
 			"_id": server_id,
 			"prefix": prefix,
 		})
@@ -48,28 +46,32 @@ class MongoDB():
 		return prefix
 	
 	def update_prefix(self, server_id: int, prefix: str):
-		self.prefix_coll.update_one(
+		self.prefix.update_one(
 			filter={"_id": server_id},
 			update={"$set": {"prefix": prefix}}
 		)
 	
+	@cache
 	def get_server(self, server_id: int):
-		try:
-			return self.server_cache[server_id]
-		except KeyError:
-			return self.find_server(server_id)
+		return self.find_server(server_id)
 	
 	def find_server(self, server_id: int):
-		if server_doc := self.server_coll.find_one({"_id": server_id}):
+		if server_doc := self.server.find_one({"_id": server_id}):
 			return server_doc
 		
 		return None
 	
 	def insert_server(self, server_id: int):
-		pass
+		self.server.insert_one({
+			"_id": server_id,
+			"lang_code": "en"
+		})
 	
 	def update_server(self, server_id: int, **kargs):
-		pass
+		self.server.update_one(
+			filter={"_id": server_id},
+			update={"$set": kargs}
+		)
 
 def get_prefix(bot, message):
 	server_id = message.guild.id
