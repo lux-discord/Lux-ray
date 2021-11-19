@@ -1,8 +1,5 @@
-from core import Server
 from core.language import PUBLIC_LANGUAGE_DIR, language_support_check
 from disnake.ext.commands import command, has_permissions
-from disnake.role import Role
-from exceptions import LanguageNotChange, LanguageNotSupport, PrefixNotChange, RoleNotChange
 
 from utils.cog import InitedCog
 

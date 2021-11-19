@@ -1,4 +1,3 @@
-from core import Server
 from disnake import Message
 from disnake.ext.commands import command, has_permissions
 from exceptions import InvalidArgument
