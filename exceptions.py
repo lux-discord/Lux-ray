@@ -13,9 +13,6 @@ class InvalidEmojiError(EmojiError):
 class PrefixError(LRBError):
 	pass
 
-class PrefixNotChange(PrefixError):
-	pass
-
 class InvalidPrefix(PrefixError):
 	def __str__(self) -> str:
 		return f"Invalid prefix '{self.args[0]}'"
@@ -24,19 +21,17 @@ class InvalidPrefix(PrefixError):
 class RoleError(LRBError):
 	pass
 
-class RoleNotChange(RoleError):
-	pass
-
 # language error
 class LanguageError(LRBError):
-	pass
-
-class LanguageNotChange(LanguageError):
 	pass
 
 class LanguageNotSupport(LanguageError):
 	def __str__(self):
 		return f"language(code) '{self.args[0]}' not suppot"
+
+class MessageNotExists(LanguageError):
+	def __str__(self):
+		return f"message {self.args[0]} not exists"
 
 # argument error
 class InvalidArgument(LRBError):
