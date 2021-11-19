@@ -11,11 +11,11 @@ def get_support_language(lang_dir: Path):
 	return {lang_file.name for lang_file in lang_dir.iterdir()}
 
 @cache
-def request_message(lang_dir: Path, lang_code: str, token: Token):
-	return request_lang(lang_dir, lang_code).request_message(token)
+def request_message(lang_dir: Path, lang_code: str, token: Union[str, Token]):
+	return request_language(lang_dir, lang_code).request_message(token)
 
 @cache
-def request_lang(lang_dir: Path, lang_code: str):
+def request_language(lang_dir: Path, lang_code: str):
 	return LanguageBase(lang_dir, lang_code)
 
 class LanguageBase():
@@ -25,12 +25,14 @@ class LanguageBase():
 		
 		self.data = load_file(lang_dir/lang_code+".json")
 	
-	def request_message(self, token: Token) -> str:
+	def request_message(self, token: Union[str, Token]) -> str:
+		token = token if isinstance(token, Token) else Token(token)
+		
 		if message := token.dict_get(self.data):
 			return message
 		raise MessageNotExists(token)
 	
-	def bulk_request_message(self, *tokens: Token):
+	def bulk_request_message(self, *tokens: Union[str, Token]):
 		return [self.request_message(token) for token in tokens]
 
 class Language(LanguageBase):
@@ -44,7 +46,7 @@ class Language(LanguageBase):
 		super().__init__(Path("language"), lang_code)
 	
 	def request_message(self, token: Union[str, Token]):
-		return super().request_message(token if isinstance(token, Token) else Token(token))
+		return super().request_message(token)
 	
 	@cache
 	def bulk_request_message(self, *tokens: Union[str, Token]):
