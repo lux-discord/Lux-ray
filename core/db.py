@@ -67,10 +67,10 @@ class MongoDB():
 			"lang_code": "en"
 		} if not server_data else server_data)
 	
-	def update_server(self, server_id: int, **kargs):
+	def update_server(self, server_id: int, update: dict):
 		self.server.update_one(
 			filter={"_id": server_id},
-			update={"$set": kargs}
+			update={"$set": update}
 		)
 
 def get_prefix(bot, message):
