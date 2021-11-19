@@ -1,62 +1,51 @@
+from functools import cache
+from pathlib import Path
 from typing import Union
 
-from exceptions import LanguageNotSupport
+from exceptions import LanguageNotSupport, MessageNotExists
 from utils.json_file import load_file
 from utils.token import Token
 
-SUPPORT_LANGUAGE = {
-	"en": "English",
-	"zh-TW": "中文(臺灣)"
-}
-LANG_FILE_PATH = "language/{lang_code}.json"
+@cache
+def get_support_language(lang_dir: Path):
+	return {lang_file.name for lang_file in lang_dir.iterdir()}
 
-class Language():
-	def __init__(self, lang_code: str, support_lang: dict=None, lang_file_path: str=None) -> None:
+@cache
+def request_message(lang_dir: Path, lang_code: str, token: Token):
+	return request_lang(lang_dir, lang_code).request_message(token)
+
+@cache
+def request_lang(lang_dir: Path, lang_code: str):
+	return LanguageBase(lang_dir, lang_code)
+
+class LanguageBase():
+	def __init__(self, lang_dir: Path, lang_code: str) -> None:
+		if lang_code not in get_support_language(lang_dir):
+			raise LanguageNotSupport(lang_code)
+		
+		self.data = load_file(lang_dir/lang_code+".json")
+	
+	def request_message(self, token: Token) -> str:
+		if message := token.dict_get(self.data):
+			return message
+		raise MessageNotExists(token)
+	
+	def bulk_request_message(self, *tokens: Token):
+		return [self.request_message(token) for token in tokens]
+
+class Language(LanguageBase):
+	def __init__(self, lang_code: str) -> None:
 		"""
 		Parameter
 		---------
 		lang_code: `str`
 			The language code you want to use
-		support_lang: `dict`
-			All supported languages and their names
-			
-			format: `{language_code: language_name}`
-		lang_file_path: `str`
-			Path to language file
-			
-			default: `language/{lang_code}.json`
 		"""
-		if not support_lang:
-			support_lang = SUPPORT_LANGUAGE
-		
-		if not lang_file_path:
-			lang_file_path = LANG_FILE_PATH
-		
-		if lang_code in support_lang:
-			self.code = lang_code
-			self.name = support_lang[lang_code]
-		else:
-			raise LanguageNotSupport(lang_code)
-		
-		self.data = load_file(lang_file_path.format(lang_code=lang_code))
+		super().__init__(Path("language"), lang_code)
 	
-	def request(self, token: Union[Token, str], *, delimiter: str=None) -> Union[str, dict]:
-		try:
-			return token.dict_get(self.data)
-		except AttributeError:
-			return Token(token, delimiter).dict_get(self.data) if delimiter else Token(token).dict_get(self.data)
+	def request_message(self, token: Union[str, Token]):
+		return super().request_message(token if isinstance(token, Token) else Token(token))
 	
-	def request_many(self, *tokens: Union[Token, str]) -> list[str, dict]:
-		return [self.request(token) for token in tokens]
-	
-	def __str__(self):
-		return self.code
-	
-	def __repr__(self) -> str:
-		return f"<Language_code: {self.code}, Name: {self.name}>"
-	
-	def __eq__(self, o: object) -> bool:
-		return self.code == str(o)
-
-def generate_lang_file_path(lang_folder_path: str):
-	return lang_folder_path + "{lang_code}.json" if lang_folder_path.endswith("/") else lang_folder_path + "/{lang_code}.json"
+	@cache
+	def bulk_request_message(self, *tokens: Union[str, Token]):
+		return super().bulk_request_message(*tokens)
