@@ -7,7 +7,7 @@ from utils.cog import InitedCog
 class Admin(InitedCog):
 	@command()
 	async def set_lang(self, ctx, lang_code: str):
-		if not language_support_check(PUBLIC_LANGUAGE_DIR):
+		if not language_support_check(PUBLIC_LANGUAGE_DIR, lang_code):
 			await self.send_error(ctx, "error.invalid_argument.lang_not_found")
 		
 		if not lang_code == self.get_server_data(ctx.guild.id)["lang_code"]:

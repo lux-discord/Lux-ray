@@ -16,7 +16,7 @@ class Messages(InitedCog):
 	@command()
 	async def pin(self, ctx, message_link: str=None):
 		async def pin_message(message: Message):
-			await message.pin(reason=self.get_message("audit_log.reason.message.pin_message",
+			await message.pin(reason=self.get_message(ctx.guild.id, "audit_log.reason.message.pin_message",
 				user=f"{ctx.author.name}(ID: {ctx.author.id})",
 				command_name=ctx.invoked_with))
 			
@@ -34,7 +34,7 @@ class Messages(InitedCog):
 			async with target_message(ctx, message_link=message_link, manage_messages=True) as message:
 				await pin_message(message)
 		except InvalidArgument as error:
-			await self.send_error("error.invalid_argument.invalid_message_link", message_link=error.args[0])
+			await self.send_error(ctx, "error.invalid_argument.invalid_message_link", message_link=error.args[0])
 	
 	@command()
 	async def unpin(self, ctx, message_link: str=None):
