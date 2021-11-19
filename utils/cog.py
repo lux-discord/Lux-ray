@@ -2,6 +2,7 @@ from typing import Union
 
 from disnake.ext.commands import Bot, Cog
 from core.language import request_language
+from core.server import Server
 from utils.token import Token
 
 class InitedCog(Cog):
@@ -12,7 +13,6 @@ class InitedCog(Cog):
 		
 		# Shortcuts
 		self.db = bot.db
-		self.get_server = bot.db.get_server
 		self.find_server = bot.db.find_server
 		self.insert_server = bot.db.insert_server
 		self.update_server = bot.db.update_server
@@ -53,3 +53,8 @@ class InitedCog(Cog):
 	async def send_error(self, ctx, token: Union[str, Token], **mes_format):
 		message = self.get_message(ctx.guild.id, token, **mes_format)
 		return await ctx.send(message, delete_after=9)
+	
+	def get_server(self, server_id):
+		if server_data := self.db.get_server(server_id):
+			return Server(server_data)
+		return None
