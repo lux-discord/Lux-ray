@@ -23,9 +23,9 @@ def intent_generater(base_type, **intent_items):
 	return base_intent
 
 def setup_bot(config, mode, db):
-	# Set prefix
+	# Get prefix
 	if not (prefix := config["prefix"]):
-		# If not set prefix, import it from core.prefix
+		# If config not set prefix, use core.prefix.get_prefix function instead
 		from core.prefix import get_prefix as prefix
 	
 	# Create Bot instance
@@ -33,10 +33,13 @@ def setup_bot(config, mode, db):
 		owner_id=config["owner_id"] if not (owner_ids := config["owner_ids"]) else owner_ids,
 		intent=intent_generater(config["intent_type"], **config["intent_items"]))
 	
-	# Add custom attr
+	# Set custom attr
+	# Basic
 	setattr(bot, "db", db)
 	setattr(bot, "config", config)
+	# Additional
 	setattr(bot, "mode", mode)
+	# Deprecated
 	setattr(bot, "is_running", False)
 	
 	return bot
