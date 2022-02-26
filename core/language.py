@@ -1,4 +1,3 @@
-from functools import cache
 from pathlib import Path
 from typing import Union
 
@@ -8,20 +7,11 @@ from utils.token import Token
 
 PUBLIC_LANGUAGE_DIR = Path("language")
 
-@cache
 def get_support_language(lang_dir: Path):
 	return {lang_file.name for lang_file in lang_dir.iterdir()}
 
 def language_support_check(lang_dir: Path, lang_code: str):
 	return lang_code in get_support_language(lang_dir)
-
-@cache
-def request_message(lang_dir: Path, lang_code: str, token: Union[str, Token]):
-	return request_language(lang_dir, lang_code).request_message(token)
-
-@cache
-def request_language(lang_dir: Path, lang_code: str):
-	return LanguageBase(lang_dir, lang_code)
 
 class LanguageBase():
 	def __init__(self, lang_dir: Path, lang_code: str) -> None:
