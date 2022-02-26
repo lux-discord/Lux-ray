@@ -5,7 +5,7 @@ from exceptions import LanguageNotSupport, MessageNotExists
 from utils.json_file import load_file
 from utils.token import Token
 
-PUBLIC_LANGUAGE_DIR = Path("language")
+GLOBAL_LANGUAGE_DIR = Path("language")
 
 def get_support_language(lang_dir: Path):
 	return {lang_file.name for lang_file in lang_dir.iterdir()}
