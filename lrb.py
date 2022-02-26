@@ -1,9 +1,7 @@
 from sys import argv
-from pathlib import Path
 
 from click import group, option, Path as ClickPath
 
-from core.db import MongoDB
 from core.setup import setup_bot, get_bot_token, get_bot_config
 from utils.cog import load_cogs
 
@@ -12,17 +10,16 @@ def main():
 	pass
 
 @main.command()
-@option("-C", "--config-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default="bot-config.json", help="Path of config file")
-@option("-T", "--token-path", type=ClickPath(exists=True, dir_okay=False, resolve_path=True), default="bot-token.json", help="Path of token file")
-@option("-M", "--mode", default="dev", help="Which mode should bot run on")
-def run(config_path, token_path, mode):
+@option("-M", "--mode", default="dev", show_default=True, help="Which mode should bot run on")
+@option("-C", "--config-path", default="bot-config.toml", show_default=True, type=ClickPath(exists=True, dir_okay=False, resolve_path=True), help="Path of config file")
+def run(mode="dev", config_path="bot-config.toml"):
 	# Prepare
-	config = get_bot_config(config_path, mode)
-	token = get_bot_token(token_path, mode)
-	bot = setup_bot(config, mode, MongoDB(db_host=config["db_host"], db_port=config["db_port"]))
+	config = get_bot_config(config_path)
+	token = get_bot_token(config, mode)
+	bot = setup_bot(config, mode)
 	
 	# Load cogs
-	load_cogs(bot, cogs=config["cog_path"], cog_folders=config["cog_folder_path"])
+	load_cogs(bot, cogs=config["cogs"]["file"], cog_folders=config["cogs"]["folder"])
 	
 	# Run
 	bot.run(token)

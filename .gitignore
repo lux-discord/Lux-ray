@@ -6,8 +6,7 @@
 *.pyc
 
 # Secure files
-bot-config.json
-bot-token.json
+bot-config.toml
 
 # Sundries
 **/test.py
