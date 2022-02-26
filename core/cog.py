@@ -1,44 +1,63 @@
-from pathlib import Path
+from disnake.ext.commands import Bot, Cog
 
-from disnake.ext.commands import Bot
+from core.language import GLOBAL_LANGUAGE_DIR, GlobalLanguage
+from core.server import Server
+from utils.token import Token
 
 
-class BaseLoader():
+class GlobalCog(Cog):
 	def __init__(self, bot: Bot) -> None:
+		# Basic attr
 		self.bot = bot
-	
-	def file_loader(self, cog: Path):
-		raise NotImplementedError
-	
-	def folder_loader(self, folder: Path, indent_lv=None):
-		raise NotImplementedError
-	
-	def load(self, *, files=None, folders=None):
-		if files:
-			for file in files:
-				self.file_loader(Path(file))
 		
-		if folders:
-			for folder in folders:
-				self.folder_loader(Path(folder))
-
-class CogLoader(BaseLoader):
-	def file_loader(self, cog: Path):
-		print(f"	{cog}")
-		self.bot.load_extension(cog)
+		# Shortcuts
+		## db
+		self.db = bot.db
+		self.get_server_data = bot.db.get_server
+		self.find_server = bot.db.find_server
+		self.insert_server = bot.db.insert_server
+		self.update_server = bot.db.update_server
 	
-	def folder_loader(self, folder: Path, indent_lv=None):
-		indent_lv = 1 if not indent_lv else indent_lv
-		print(f"{'	'*indent_lv}{folder.name}")
+	def request_message(self, server_id: int, token: Token) -> str:
+		"""
 		
-		for item in folder.iterdir():
-			if item.is_file() and item.suffix == ".py" and not item.name.startswith("_"):
-				print(f"{'	'*(indent_lv+1)}{item.stem}")
-				# replace "/" with "." and remove suffix
-				cog_path = ".".join(item.with_name(item.stem).parts)
-				self.bot.load_extension(cog_path)
-			elif item.is_dir() and not item.name.startswith("_"):
-				self.folder_loader(item, indent_lv=indent_lv+1)
-
-def load_cogs(bot, *, cogs=None, cog_folders=None):
-	CogLoader(bot).load(files=cogs, folders=cog_folders)
+		
+		Argument
+		--------
+		server_id: int
+			server's id
+		token: utils.token.Token
+			token that use to request message
+		
+		Return
+		------
+		The message that request
+		
+		Return type
+		-----------
+		str
+		"""
+		lang_code = self.get_server_data(server_id)["lang_code"]
+		language = GlobalLanguage(lang_code)
+		
+		return language.request_message(token)
+	
+	async def send_info(self, ctx, token: Token):
+		message = self.request_message(ctx.guild.id, token)
+		return await ctx.send(message, delete_after=2)
+	
+	async def send_warning(self, ctx, token: Token):
+		message = self.request_message(ctx.guild.id, token)
+		return await ctx.send(message, delete_after=6)
+	
+	async def send_error(self, ctx, token: Token):
+		message = self.request_message(ctx.guild.id, token)
+		return await ctx.send(message, delete_after=10)
+	
+	def get_server(self, server_id):
+		if server_data := self.db.get_server(server_id):
+			return Server(server_data)
+		return None
+	
+	def token(self, string, *, delimiter=".") -> Token:
+		return Token(string, delimiter=delimiter)

@@ -1,61 +1,44 @@
-from typing import Union
+from pathlib import Path
 
-from disnake.ext.commands import Bot, Cog
-from core.language import request_language
-from core.server import Server
-from utils.token import Token
+from disnake.ext.commands import Bot
 
-class InitedCog(Cog):
-	def __init__(self, bot: Bot, *, lang_dir="language") -> None:
-		# Basic attr
+
+class BaseLoader():
+	def __init__(self, bot: Bot) -> None:
 		self.bot = bot
-		self.lang_dir = lang_dir
+	
+	def file_loader(self, cog: Path):
+		raise NotImplementedError
+	
+	def folder_loader(self, folder: Path, indent_lv=None):
+		raise NotImplementedError
+	
+	def load(self, *, files=None, folders=None):
+		if files:
+			for file in files:
+				self.file_loader(Path(file))
 		
-		# Shortcuts
-		self.db = bot.db
-		self.get_server_data = bot.db.get_server
-		self.find_server = bot.db.find_server
-		self.insert_server = bot.db.insert_server
-		self.update_server = bot.db.update_server
+		if folders:
+			for folder in folders:
+				self.folder_loader(Path(folder))
+
+class CogLoader(BaseLoader):
+	def file_loader(self, cog: Path):
+		print(f"	{cog}")
+		self.bot.load_extension(cog)
 	
-	def get_message(self, server_id: int, token: Union[str, Token], **mes_format) -> str:
-		"""
-		Parameter
-		---------
-		server_id: int
-			server's id
-		token: utils.token.Token
-			token that use to request message
-		[lang_dir]="language": str
-			language file's dirctory, default is public language dirctory
-		[**mes_format]:
-			use for format message
+	def folder_loader(self, folder: Path, indent_lv=None):
+		indent_lv = 1 if not indent_lv else indent_lv
+		print(f"{'	'*indent_lv}{folder.name}")
 		
-		Return type
-		-----------
-		str
-		"""
-		lang_code = self.get_server(server_id)["lang_code"]
-		language = request_language(self.lang_dir, lang_code)
-		
-		if message := language.request_message(token) and mes_format:
-			message = message.format(**mes_format)
-		
-		return message
-	
-	async def send_info(self, ctx, token: Union[str, Token], **mes_format):
-		message = self.get_message(ctx.guild.id, token, **mes_format)
-		return await ctx.send(message, delete_after=3)
-	
-	async def send_warning(self, ctx, token: Union[str, Token], **mes_format):
-		message = self.get_message(ctx.guild.id, token, **mes_format)
-		return await ctx.send(message, delete_after=6)
-	
-	async def send_error(self, ctx, token: Union[str, Token], **mes_format):
-		message = self.get_message(ctx.guild.id, token, **mes_format)
-		return await ctx.send(message, delete_after=9)
-	
-	def get_server(self, server_id):
-		if server_data := self.db.get_server(server_id):
-			return Server(server_data)
-		return None
+		for item in folder.iterdir():
+			if item.is_file() and item.suffix == ".py" and not item.name.startswith("_"):
+				print(f"{'	'*(indent_lv+1)}{item.stem}")
+				# replace "/" with "." and remove suffix
+				cog_path = ".".join(item.with_name(item.stem).parts)
+				self.bot.load_extension(cog_path)
+			elif item.is_dir() and not item.name.startswith("_"):
+				self.folder_loader(item, indent_lv=indent_lv+1)
+
+def load_cogs(bot, *, cogs=None, cog_folders=None):
+	CogLoader(bot).load(files=cogs, folders=cog_folders)
