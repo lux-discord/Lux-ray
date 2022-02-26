@@ -1,4 +1,3 @@
-from functools import cache
 from pymongo import MongoClient
 from .server import Server
 
@@ -15,7 +14,6 @@ class MongoDB():
 		"""
 		return {"_id": server_id}
 	
-	@cache
 	def get_prefix(self, server_id: int):
 		return self.find_prefix(server_id)
 	
@@ -57,7 +55,6 @@ class MongoDB():
 			update={"$set": {"prefix": prefix}}
 		)
 	
-	@cache
 	def get_server(self, server_id: int):
 		return self.find_server(server_id)
 	
