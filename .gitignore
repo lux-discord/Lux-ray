@@ -2,10 +2,11 @@
 .*/
 !.github/
 
-# All cache file
+# Cache file
 *.pyc
 
 # Secure files
+bot-config.json
 bot-token.json
 
 # Sundries
