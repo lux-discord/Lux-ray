@@ -15,28 +15,22 @@ def language_support_check(lang_dir: Path, lang_code: str):
 	return lang_code in get_support_language(lang_dir)
 
 class LanguageBase():
-	def __init__(self, lang_dir: Path, lang_code: str) -> None:
-		if not language_support_check(lang_dir, lang_code):
-			raise LanguageNotSupport(lang_code)
+	def __init__(self) -> None:
+		self.data = {}
 		
-		self.data = load_file(lang_dir/lang_code+".json")
+		raise NotImplementedError
 	
-	def request_message(self, token: Union[str, Token]) -> str:
-		token = token if isinstance(token, Token) else Token(token)
-		
+	def request_message(self, token: Token) -> str:
 		if message := token.dict_get(self.data):
 			return message
 		raise MessageNotExists(token)
 	
-	def bulk_request_message(self, *tokens: Union[str, Token]):
+	def bulk_request_message(self, *tokens: Token):
 		return [self.request_message(token) for token in tokens]
 
 class Language(LanguageBase):
 	def __init__(self, lang_code: str) -> None:
-		"""
-		Parameter
-		---------
-		lang_code: `str`
-			The language code you want to use
-		"""
-		super().__init__(PUBLIC_LANGUAGE_DIR, lang_code)
+		if lang_code not in GLOBAL_SUPPORT_LANGUAGE:
+			raise LanguageNotSupport(lang_code)
+		
+		self.data = load_file(GLOBAL_LANGUAGE_DIR/(lang_code+".json"))
