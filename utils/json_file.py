@@ -7,7 +7,7 @@ __all__ = [
 ]
 
 @cache
-def load_file(file_path) -> dict:
+def load_file(file_path):
 	with open(file_path, "r", encoding="UTF-8") as file:
 		return load(file)
 
