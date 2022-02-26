@@ -1,0 +1,70 @@
+[cogs]
+# Cog file(s)
+file = []
+# Cog folder
+folder = [
+	"lrb_background",
+	"lrb_command",
+	"lrb_event"
+]
+
+[database]
+# Database type, valid values: mongodb
+type = "mongodb"
+
+	[database.stable]
+	# Database url to use when bot run in stable mode
+	url = ""
+	# Database port to use when bot run in stable mode
+	post = ""
+
+	[database.dev]
+	# Database url to use when bot run in dev mode
+	url = ""
+	# Database port to use when bot run in dev mode
+	port = ""
+
+[intent]
+# Intent base, valid values: all, default, none
+base = "default"
+# Intent item, valid keys: bans, dm_messages, dm_reactions, dm_typing, emojis, emojis_and_stickers, guild_messages, guild_reactions, guild_scheduled_events, guild_typing, guilds, integrations, invites, members, messages, presences, reactions, typing, value, voice_states, webhooks
+# Value should be boolen(true or false)
+
+[intent.items]
+# Example:
+# dm_messages = true
+# This will override some of the base settings
+
+[prefix]
+# Prefix type, valid values: string, array, function
+# string type: for SINGLE prefix
+# array type: for MULTI prefix
+# function: other, ex: server custom prefix
+type = "function"
+
+# prefix: when prefix type is string, use this setting
+#  when prefix type is "function", use this setting as default prefix
+# prefixes: when prefix type is "array", use this setting
+# function_path: when prefix type is "function", use this setting,
+#  full import path with function name from root dir of bot
+	[prefix.stable]
+	prefix = ""
+	prefixes = []
+	function_path = ""
+	
+	[prefix.dev]
+	prefix = ""
+	prefixes = []
+	function_path = "core.prefix.get_prefix"
+
+[tokens]
+# Bot token to use in all mode, will overwrite other token setting
+all = ""
+# Bot token to use in stable mode
+stable = ""
+# Bot token to use in dev mode
+dev = ""
+
+[misc]
+# Owner(s) ID
+owner_ids = []
