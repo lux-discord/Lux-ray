@@ -9,6 +9,12 @@ class MongoDB():
 		self.server = self.bot_db["server"]
 		self.prefix = self.bot_db["prefix"]
 	
+	def _server_id_filter(self, server_id):
+		"""
+		Return a filter(dict) of server_id
+		"""
+		return {"_id": server_id}
+	
 	@cache
 	def get_prefix(self, server_id: int):
 		return self.find_prefix(server_id)
