@@ -8,6 +8,7 @@ from utils.token import Token
 GLOBAL_LANGUAGE_DIR = Path("language")
 GLOBAL_SUPPORT_LANGUAGE = {lang_file.name for lang_file in GLOBAL_LANGUAGE_DIR.iterdir()}
 
+# For custom language file
 def get_support_language(lang_dir: Path):
 	return {lang_file.name for lang_file in lang_dir.iterdir()}
 
