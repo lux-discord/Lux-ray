@@ -4,4 +4,4 @@ def get_prefix(bot, message):
 	if not (prefix := bot.db.get_prefix(server_id)):
 		prefix = bot.db.insert_prefix(server_id)
 	
-	return prefix
+	return prefix + " ", prefix
