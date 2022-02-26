@@ -5,9 +5,9 @@ from .server import Server
 class MongoDB():
 	def __init__(self, db_host, *, db_port=None) -> None:
 		self.client = MongoClient(host=db_host, port=db_port)
-		self.db = self.client["discord-bot"]
-		self.server = self.db["server"]
-		self.prefix = self.db["prefix"]
+		self.bot_db = self.client["discord-bot"]
+		self.server = self.bot_db["server"]
+		self.prefix = self.bot_db["prefix"]
 	
 	@cache
 	def get_prefix(self, server_id: int):
