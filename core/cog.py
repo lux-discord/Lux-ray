@@ -5,9 +5,8 @@ from core.server import Server
 from utils.token import Token
 
 
-class GlobalCog(Cog):
+class GeneralCog(Cog):
 	def __init__(self, bot: Bot) -> None:
-		# Basic attr
 		self.bot = bot
 		
 		# Shortcuts
