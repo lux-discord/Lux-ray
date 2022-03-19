@@ -8,11 +8,7 @@ from core.cog import GeneralCog
 class ApiEvent(GeneralCog):
 	@Cog.listener()
 	async def on_ready(self):
-		if not self.bot.is_running:
-			self.bot.is_running = True
-			print("Bot is ready")
-		else:
-			print("Reconnected")
+		print("Bot is ready")
 	
 	@Cog.listener()
 	async def on_member_join(self, member: Member):
