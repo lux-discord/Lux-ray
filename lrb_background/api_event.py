@@ -7,6 +7,10 @@ from core.cog import GeneralCog
 
 class ApiEvent(GeneralCog):
 	@Cog.listener()
+	async def on_connect(self):
+		print("Connected to Discord")
+	
+	@Cog.listener()
 	async def on_ready(self):
 		print("Bot is ready")
 	
