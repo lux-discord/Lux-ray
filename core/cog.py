@@ -11,6 +11,7 @@ from utils.token import Token
 class GeneralCog(Cog):
 	def __init__(self, bot: LuxRay) -> None:
 		self.bot = bot
+		self.token = Token
 		
 		# Shortcuts
 		## db
