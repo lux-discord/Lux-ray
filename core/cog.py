@@ -41,16 +41,31 @@ class GeneralCog(Cog):
 		
 		return language.request_message(token)
 	
-	async def send_info(self, ctx, token: Token):
-		message = self.request_message(ctx.guild.id, token)
+	async def send_info(self, ctx, message: Union[str, Token], **format_):
+		if isinstance(message, Token):
+			message = self.request_message(ctx.guild.id, message)
+		
+		if format_:
+			message = message.format(**format_)
+		
 		return await ctx.send(message, delete_after=2)
 	
-	async def send_warning(self, ctx, token: Token):
-		message = self.request_message(ctx.guild.id, token)
+	async def send_warning(self, ctx, message: Union[str, Token], **format_):
+		if isinstance(message, Token):
+			message = self.request_message(ctx.guild.id, message)
+		
+		if format_:
+			message = message.format(**format_)
+		
 		return await ctx.send(message, delete_after=6)
 	
-	async def send_error(self, ctx, token: Token):
-		message = self.request_message(ctx.guild.id, token)
+	async def send_error(self, ctx, message: Union[str, Token], **format_):
+		if isinstance(message, Token):
+			message = self.request_message(ctx.guild.id, message)
+		
+		if format_:
+			message = message.format(**format_)
+		
 		return await ctx.send(message, delete_after=10)
 	
 	def get_server(self, server_id):
