@@ -1,7 +1,10 @@
-from disnake import HTTPException, Message, TextChannel
+from disnake.channel import TextChannel
 from disnake.ext.commands import Bot
 from disnake.ext.commands.context import Context
-from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink, InvalidPermission
+from disnake.message import DeletedReferencedMessage, Message
+
+from core.checks import has_channel_permissions
+from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 
 async def resolve_message_link(bot: Bot, message_link: str):
 	"""
@@ -58,10 +61,6 @@ class target_message():
 		-----
 		InvalidMessageLink:
 			when command author don't have enough permissions
-		InvalidPermission: [when permission_checks]
-			when permission name(key of permission_checks) is invalid
-			
-			check `discord.Permissions` for all avaliable permission names
 		"""
 		self.ctx = ctx
 		self.message_link = message_link
@@ -73,8 +72,9 @@ class target_message():
 			
 			if not self.perms or has_channel_permissions(self.ctx, message.channel, **self.perms):
 				return message
-		if refer_mes := self.ctx.message.reference:
-			return refer_mes.resolved
+		if ref_msg := self.ctx.message.reference:
+			if not isinstance(message := ref_msg.resolved, DeletedReferencedMessage):
+				return message
 		return await get_last_exist_message(self.ctx.message.channel)
 	
 	async def __aexit__(self, type, value, traceback):
