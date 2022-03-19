@@ -13,8 +13,7 @@ class GeneralCog(Cog):
 		self.bot = bot
 		self.token = Token
 		
-		# Shortcuts
-		## db
+		# Shortcuts of db
 		self.db = bot.db
 		self.get_server_data = bot.db.get_server
 		self.find_server = bot.db.find_server
@@ -23,8 +22,6 @@ class GeneralCog(Cog):
 	
 	def request_message(self, server_id: int, token: Token) -> str:
 		"""
-		
-		
 		Argument
 		--------
 		server_id: int
