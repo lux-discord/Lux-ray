@@ -8,13 +8,13 @@ async def resolve_message_link(bot: Bot, message_link: str):
 	Parameter
 	---------
 	message_link: `str`
-		a link that contain `https://discord.com/channels/`
+		link of a message(that contain `https://discord.com/channels/`)
 	
 	Raise
 	-----
-	InvalidMessageLink: when `message_link` is incomplete
+	InvalidMessageLink: when `message_link` is incomplete(missing one or more of guild_id, channel_id, message_id) or not a link
 	InvalidChannelID: when channel doesn't exist
-	InvalidMessageID: when channel is not readable for bot or message doesn't exist
+	InvalidMessageID: when bot don't have permission read the channel or message doesn't exist
 	
 	Return
 	------
@@ -24,19 +24,18 @@ async def resolve_message_link(bot: Bot, message_link: str):
 	
 	if link_prefix in message_link:
 		try:
-			channel_id, message_id = message_link.removeprefix("https://discord.com/channels/").split("/")[1:]
-			channel: TextChannel = bot.get_channel(int(channel_id))
-			message: Message = await channel.fetch_message(int(message_id))
+			# Remove link_prefix -> split to guild_id, channel_id, message_id -> drop guild_id
+			_, channel_id, message_id = [int(item) for item in message_link.removeprefix(link_prefix).split("/")]
+			
+			if not (channel := bot.get_channel(channel_id)):
+				raise InvalidChannelID(channel_id)
+			
+			if not (message := await channel.fetch_message(message_id)):
+				raise InvalidMessageID(message_id)
+			
 			return message
 		except ValueError:
-			# `message_link` is incomplete
 			raise InvalidMessageLink(message_link)
-		except AttributeError:
-			# 'NoneType' object has no 'fetch_message' attribute -> channel doesn't exist
-			raise InvalidChannelID(channel_id)
-		except HTTPException:
-			# channel not readable or message doesn't exist
-			raise InvalidMessageID(message_id)
 	else:
 		raise InvalidMessageLink(message_link)
 
