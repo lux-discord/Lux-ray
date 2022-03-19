@@ -28,7 +28,7 @@ class LanguageBase():
 	def bulk_request_message(self, *tokens: Token):
 		return [self.request_message(token) for token in tokens]
 
-class GlobalLanguage(LanguageBase):
+class GeneralLanguage(LanguageBase):
 	def __init__(self, lang_code: str) -> None:
 		if lang_code not in GLOBAL_SUPPORT_LANGUAGE:
 			raise LanguageNotSupport(lang_code)
