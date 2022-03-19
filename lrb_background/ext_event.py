@@ -1,9 +1,8 @@
 from core import Server
 from disnake.ext.commands import Cog
-from utils.cog import InitedCog
+from core.cog import GeneralCog
 
-
-class ExtEvent(InitedCog):
+class ExtEvent(GeneralCog):
 	@Cog.listener()
 	async def on_command_error(self, ctx, error):
 		# command not exist
