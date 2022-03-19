@@ -2,7 +2,8 @@ from sys import argv
 
 from click import group, option, Path as ClickPath
 
-from core.setup import setup_bot, get_bot_token, get_bot_config
+from core.setup import setup_bot, get_bot_config
+from core.config import get_bot_token
 from utils.cog import load_cogs
 
 @group()
