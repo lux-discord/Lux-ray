@@ -1,6 +1,6 @@
 bot_color = 0x66e8e4
 
-def embed_setup(embed, *, fields: list, image_url):
+def embed_setup(embed, *, fields: list, image_url=None):
 	if fields:
 		for field in fields:
 			if len(field) == 3:
