@@ -1,55 +1,70 @@
 class LRBError(Exception):
+	"""
+	Base exception of Lux-ray bot
+	"""
 	pass
 
-# emoji error
-class EmojiError(LRBError):
+# Check Failure
+class CheckFailure(LRBError):
 	pass
 
-class InvalidEmojiError(EmojiError):
+class MissingPermissions(CheckFailure):
+	def __init__(self, missing_permissions: list[str]) -> None:
+		self.missing_permissions: list[str] = missing_permissions
+		
+		missing = [
+			perm.replace("_", " ").replace("guild", "server").title()
+			for perm in self.missing_permissions
+		]
+		
+		self.massage = ", ".join(missing)
+	
 	def __str__(self) -> str:
-		return f"'{self.args[0]}' is not a valid emoji"
+		return f"Missing permission(s): {self.massage}"
 
-# prefix error
-class PrefixError(LRBError):
+# Invalid user input exceptions
+class InvalidUserInput(LRBError):
+	"""
+	Base exception of all invalid user input
+	"""
 	pass
 
-class InvalidPrefix(PrefixError):
+class LanguageNotSupport(InvalidUserInput):
+	"""
+	Raise when language is not support
+	"""
+	def __init__(self, lang_code) -> None:
+		self.lang_code = lang_code
+	
+	def __str__(self):
+		return f"language(code) '{self.lang_code}' not suppot"
+
+class InvalidMessageLink(InvalidUserInput):
+	def __init__(self, msg_link) -> None:
+		self.msg_link = msg_link
+	
 	def __str__(self) -> str:
-		return f"Invalid prefix '{self.args[0]}'"
+		return f"Invalid message link '{self.msg_link}'"
 
-# role error
-class RoleError(LRBError):
+class InvalidChannelID(InvalidUserInput):
+	def __init__(self, ch_id):
+		self.ch_id = ch_id
+	
+	def __str__(self):
+		return f"Invalid channel ID '{self.ch_id}'"
+
+class InvalidMessageID(InvalidUserInput):
+	def __init__(self, msg_id) -> None:
+		self.msg_id = msg_id
+	
+	def __str__(self):
+		return f"Invalid message ID '{self.msg_id}'"
+
+# Internal exceptions
+class InternalError(LRBError):
 	pass
 
-# language error
-class LanguageError(LRBError):
-	pass
-
-class LanguageNotSupport(LanguageError):
-	def __str__(self):
-		return f"language(code) '{self.args[0]}' not suppot"
-
-class MessageNotExists(LanguageError):
-	def __str__(self):
-		return f"message {self.args[0]} not exists"
-
-# argument error
-class InvalidArgument(LRBError):
-	pass
-
-class InvalidMessageLink(InvalidArgument):
-	def __str__(self) -> str:
-		return f"Invalid message link '{self.args[0]}'"
-
-class InvalidChannelID(InvalidArgument):
-	def __str__(self):
-		return f"Invalid channel ID '{self.args[0]}'"
-
-class InvalidMessageID(InvalidArgument):
-	def __str__(self):
-		return f"Invalid message ID '{self.args[0]}'"
-
-class InvalidToken(InvalidArgument):
+class InvalidToken(InternalError):
 	def __init__(self, *args: object, **kargs) -> None:
 		super().__init__(*args)
 		self.kargs = kargs
@@ -75,11 +90,9 @@ class InvalidToken(InvalidArgument):
 		# 1 for '.' betwean file name and self name
 		# 2 for ': ' after self name
 
-class InvalidPermission(InvalidArgument):
-	def __str__(self) -> str:
-		return f"Invalid permission: {self.args[0]}"
-
-# extension error
-class InvalidExtension(LRBError):
-	def __str__(self) -> str:
-		return f"Invalid extension '{self.args[0]}'"
+class ItemNotExists(InternalError):
+	def __init__(self, token):
+		self.token = token
+	
+	def __str__(self):
+		return f"Item of token '{self.token}' not exists"
