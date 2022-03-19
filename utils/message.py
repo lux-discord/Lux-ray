@@ -43,7 +43,7 @@ async def get_last_exist_message(channel: TextChannel) -> Message:
 	return [message async for message in channel.history(limit=1)][0]
 
 class target_message():
-	def __init__(self, ctx: Context, *, message_link: str=None, **permission_checks) -> None:
+	def __init__(self, ctx: Context, *, message_link: str=None, **perms: bool):
 		"""
 		Parameter
 		---------
@@ -51,7 +51,7 @@ class target_message():
 			The context that command received
 		message_link: `str` `[optional]`
 			The link that needs to be resolved as a Message
-		permission_checks: `dict[str, bool]` `[optional]` `[for message_link]`
+		perms: `dict[str, bool]` `[optional]` `[for message_link]`
 			The permission check of command author
 		
 		Raise
@@ -65,7 +65,7 @@ class target_message():
 		"""
 		self.ctx = ctx
 		self.message_link = message_link
-		self.permission_checks = permission_checks
+		self.perms = perms
 	
 	async def __aenter__(self) -> Message:
 		if self.message_link:
