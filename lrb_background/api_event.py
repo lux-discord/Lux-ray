@@ -1,10 +1,11 @@
 from disnake import Member
 from disnake.ext.commands.cog import Cog
 from disnake.utils import get
-from utils.cog import InitedCog
+
+from core.cog import GeneralCog
 
 
-class ApiEvent(InitedCog):
+class ApiEvent(GeneralCog):
 	@Cog.listener()
 	async def on_ready(self):
 		if not self.bot.is_running:
