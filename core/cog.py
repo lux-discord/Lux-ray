@@ -1,12 +1,15 @@
-from disnake.ext.commands import Bot, Cog
+from typing import Union
 
+from disnake.ext.commands import Cog
+
+from core.bot import LuxRay
 from core.language import GeneralLanguage
 from core.server import Server
 from utils.token import Token
 
 
 class GeneralCog(Cog):
-	def __init__(self, bot: Bot) -> None:
+	def __init__(self, bot: LuxRay) -> None:
 		self.bot = bot
 		
 		# Shortcuts
