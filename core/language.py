@@ -1,7 +1,6 @@
 from pathlib import Path
-from typing import Union
 
-from exceptions import LanguageNotSupport, MessageNotExists
+from exceptions import LanguageNotSupport, ItemNotExists
 from utils.json_file import load_file
 from utils.token import Token
 
@@ -24,7 +23,7 @@ class LanguageBase():
 	def request_message(self, token: Token) -> str:
 		if message := token.dict_get(self.data):
 			return message
-		raise MessageNotExists(token)
+		raise ItemNotExists(token)
 	
 	def bulk_request_message(self, *tokens: Token):
 		return [self.request_message(token) for token in tokens]
