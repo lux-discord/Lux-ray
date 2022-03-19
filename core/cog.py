@@ -1,6 +1,6 @@
 from disnake.ext.commands import Bot, Cog
 
-from core.language import GLOBAL_LANGUAGE_DIR, GlobalLanguage
+from core.language import GeneralLanguage
 from core.server import Server
 from utils.token import Token
 
@@ -37,7 +37,7 @@ class GeneralCog(Cog):
 		str
 		"""
 		lang_code = self.get_server_data(server_id)["lang_code"]
-		language = GlobalLanguage(lang_code)
+		language = GeneralLanguage(lang_code)
 		
 		return language.request_message(token)
 	
