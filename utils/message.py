@@ -71,17 +71,8 @@ class target_message():
 		if self.message_link:
 			message = await resolve_message_link(self.ctx.bot, self.message_link)
 			
-			if self.permission_checks:
-				author_permsision = message.channel.permission_for(self.ctx.message.author)
-				
-				for permission_name, value in self.permission_checks.items():
-					try:
-						if getattr(author_permsision, permission_name) != value:
-							raise InvalidMessageLink(self.message_link)
-					except AttributeError:
-						raise InvalidPermission(permission_name)
-			
-			return message
+			if not self.perms or has_channel_permissions(self.ctx, message.channel, **self.perms):
+				return message
 		if refer_mes := self.ctx.message.reference:
 			return refer_mes.resolved
 		return await get_last_exist_message(self.ctx.message.channel)
