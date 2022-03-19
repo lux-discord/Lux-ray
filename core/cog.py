@@ -69,9 +69,4 @@ class GeneralCog(Cog):
 		return await ctx.send(message, delete_after=10)
 	
 	def get_server(self, server_id):
-		if server_data := self.db.get_server(server_id):
-			return Server(server_data)
-		return None
-	
-	def token(self, string, *, delimiter=".") -> Token:
-		return Token(string, delimiter=delimiter)
+		return Server(server_data) if (server_data := self.db.get_server(server_id)) else None
