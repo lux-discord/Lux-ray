@@ -75,5 +75,54 @@ class GeneralCog(Cog):
 		
 		return await ctx.send(message, delete_after=10)
 	
-	def get_server(self, server_id):
-		return Server(server_data) if (server_data := self.db.get_server(server_id)) else None
+	async def get_prefix(self, server_id):
+		"""
+		Get prefix by server id
+		
+		Will auto create data if not found
+		
+		Argument
+		--------
+		server_id:
+			server id
+		
+		Return
+		------
+		The prefix of server
+		
+		Return type
+		-----------
+		str
+		"""
+		if not (prefix := await self.find_prefix(server_id)):
+			default_data = PrefixData(_id=server_id, prefix=get_default_prefix(self.bot.config, self.bot.mode))
+			await self.insert_prefix(default_data)
+			prefix = default_data.prefix
+		
+		return prefix
+	
+	async def get_server_data(self, server_id):
+		"""
+		Get server data by server id
+		
+		Will auto create data if not found
+		
+		Argument
+		--------
+		server_id: int
+			server id
+		
+		Return
+		------
+		The server's data
+		
+		Return type
+		-----------
+		dict
+		"""
+		if not (server := await self.find_server(server_id)):
+			default_data = ServerData(_id=server_id, lang_code=get_default_lang_code(self.bot.config, self.bot.mode))
+			await self.insert_server(default_data)
+			server = default_data.to_dict()
+		
+		return server
