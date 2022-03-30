@@ -34,6 +34,9 @@ def get_db(config, mode):
 	dbtype_to_class = {
 		"mongodb": "core.db.MongoDB"
 	}
+	
+	dbconfig = config["database"][mode]
+	dbtype = dbconfig["type"]
 	dbclass = import_from_path(dbtype_to_class[dbtype])
 	db = dbclass(db_host=dbconfig["url"], db_port=port if (port := dbconfig["port"]) else None)
 	return db
