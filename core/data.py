@@ -26,7 +26,7 @@ class PrefixData(BaseData):
 	
 	def __init__(self, **items):
 		super().__init__(**items)
-		self.prefix = items["prefix"]
+		self.prefix = self.items["prefix"]
 
 class ServerData(BaseData):
 	REQUIRE_ITEMS = [
@@ -38,5 +38,5 @@ class ServerData(BaseData):
 	
 	def __init__(self, **items):
 		super().__init__(**items)
-		self.lang_code = items["lang_code"]
+		self.lang_code = self.items["lang_code"]
 		self.role = self.items["role"]
