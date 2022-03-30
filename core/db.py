@@ -1,5 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from core.data import PrefixData, ServerData
 
 
 class MongoDB():
@@ -9,124 +10,106 @@ class MongoDB():
 		self.server = self.bot_db["server"]
 		self.prefix = self.bot_db["prefix"]
 	
-	def _server_id_filter(self, server_id):
-		"""
-		Return a filter(dict) of server_id
-		"""
-		return {"_id": server_id}
-	
 	# Prefix
-	def get_prefix(self, server_id: int):
+	async def find_prefix(self, server_id: int):
 		"""
-		Alias of find_prefix
-		"""
-		return self.find_prefix(server_id)
-	
-	def find_prefix(self, server_id: int):
-		"""
-		Find prefix from db by server_id
+		Find prefix by server id
 		
 		Argument
 		--------
 		server_id: int
-			server ID
+			server id
 		
 		Return
 		------
-		The server's prefix or None if not found
+		The prefix of server or None if not found
 		
 		Return Type
 		-----------
 		Optinoal[str]
 		"""
-		if doc := self.prefix.find_one(self._server_id_filter(server_id)):
-			return doc["prefix"]
-		
-		return None
+		doc = await self.prefix.find_one({"_id": server_id})
+		return doc["prefix"] if doc else None
 	
-	def insert_prefix(self, server_id: int, prefix: str):
+	async def insert_prefix(self, prefix_data: PrefixData):
 		"""
-		Insert prefix by server id
+		Insert prefix
 		
 		Argument
 		--------
-		server_id: int
-			server id
-		prefix: str
-			server prefix
+		prefix: PrefixData
+			prefix data
 		
-		Return
-		------
-		The prefix that pass in
-		
-		Return Type
+		Return type
 		-----------
-		str
+		pumongo.results.InsertOneResult
 		"""
-		self.prefix.insert_one({
-			"_id": server_id,
-			"prefix": prefix,
-		})
-		
-		return prefix
+		return await self.prefix.insert_one(prefix_data.to_dict())
 	
-	def update_prefix(self, server_id: int, prefix: str):
+	async def update_prefix(self, update: PrefixData):
 		"""
-		Update prefix by server ID
+		Update prefix
 		
 		Argument
 		--------
-		server_id: int
-			server id
-		prefix: str
-			new server prefix
-		
-		Return
-		------
-		prefix that pass in
+		update: PrefixData
+			new prefix data
 		
 		Return Type
 		-----------
-		str
+		pymongo.results.UpdateResult
 		"""
-		self.prefix.update_one(
-			filter=self._server_id_filter(server_id),
-			update={"$set": {"prefix": prefix}}
-		)
+		_update = {"$set": {"prefix": update.prefix}}
+		return await self.prefix.update_one({"_id": update.id}, _update)
 	
 	# Server
-	def get_server(self, server_id: int):
+	async def find_server(self, server_id: int):
 		"""
-		Alias of find_server
-		"""
-		return self.find_server(server_id)
-	
-	def find_server(self, server_id: int):
-		"""
-		Unfinished...
-		"""
-		if doc := self.server.find_one(self._server_id_filter(server_id)):
-			return doc
+		Find server by server id
 		
-		return None
-	
-	def insert_server(self, server_id: int, server_data: dict=None):
-		"""
-		Unfinished...
-		"""
-		self.server.insert_one({
-			"_id": server_id,
-			"lang_code": "en"
-		} if not server_data else server_data)
-	
-	def update_server(self, server_id: int, update: dict):
-		"""
-		Unfinished...
+		Argument
+		--------
+		server_id:
+			server id
 		
-		TO DO:
-		1. "update" use custom class instead
+		Return
+		------
+		The server's data or None if not found
+		
+		Return type
+		-----------
+		Optinoal[dict]
 		"""
-		self.server.update_one(
-			filter=self._server_id_filter(server_id),
-			update={"$set": update}
-		)
+		return await self.server.find_one({"_id": server_id})
+	
+	async def insert_server(self, server_data: ServerData):
+		"""
+		Argument
+		--------
+		server_id:
+			server id
+		
+		server_data: ServerData
+			server data
+		
+		Return type
+		------
+		pymongo.results.InsertOneResult
+		"""
+		return await self.server.insert_one(server_data.to_dict())
+	
+	async def update_server(self, update: ServerData):
+		"""
+		Update server
+		
+		Argument
+		--------
+		update: ServerData
+			new server data
+		
+		Return type
+		-----------
+		pymongo.results.UpdateResult
+		"""
+		_update = {"$set": update.to_dict()}
+		return await self.server.update_one({"_id": update.id}, _update)
