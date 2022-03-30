@@ -43,7 +43,7 @@ class GeneralCog(Cog):
 		str
 		"""
 		server_data = await self.get_server_data(server_id)
-		language = GeneralLanguage(server_data["lang_code"])
+		language = GeneralLanguage(server_data.lang_code)
 		
 		return language.request_message(token)
 	
@@ -108,7 +108,7 @@ class GeneralCog(Cog):
 		
 		Argument
 		--------
-		server_id: int
+		server_id: `int`
 			server id
 		
 		Return
@@ -117,11 +117,12 @@ class GeneralCog(Cog):
 		
 		Return type
 		-----------
-		dict
+		`core.data.ServerData`
 		"""
-		if not (server := await self.find_server(server_id)):
-			default_data = ServerData(_id=server_id, lang_code=get_default_lang_code(self.bot.config, self.bot.mode))
-			await self.insert_server(default_data)
-			server = default_data.to_dict()
+		if raw_server_data := await self.find_server(server_id):
+			server_data = ServerData(**raw_server_data)
+		else:
+			server_data = ServerData(_id=server_id, lang_code=get_default_lang_code(self.bot.config, self.bot.mode))
+			await self.insert_server(server_data)
 		
-		return server
+		return server_data
