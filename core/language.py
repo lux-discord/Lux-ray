@@ -15,10 +15,11 @@ def language_support_check(lang_dir: Path, lang_code: str):
 	return lang_code in get_support_language(lang_dir)
 
 class LanguageBase():
-	def __init__(self) -> None:
-		self.data = {}
+	def __init__(self, lang_code, *, support_language: set, language_dir: Path) -> None:
+		if lang_code not in support_language:
+			raise LanguageNotSupport(lang_code)
 		
-		raise NotImplementedError
+		self.data = load_file(language_dir/(lang_code+".json"))
 	
 	def request_message(self, token: Token) -> str:
 		if message := token.dict_get(self.data):
@@ -30,7 +31,4 @@ class LanguageBase():
 
 class GeneralLanguage(LanguageBase):
 	def __init__(self, lang_code: str) -> None:
-		if lang_code not in GLOBAL_SUPPORT_LANGUAGE:
-			raise LanguageNotSupport(lang_code)
-		
-		self.data = load_file(GLOBAL_LANGUAGE_DIR/(lang_code+".json"))
+		super().__init__(lang_code, support_language=GLOBAL_SUPPORT_LANGUAGE, language_dir=GLOBAL_LANGUAGE_DIR)
