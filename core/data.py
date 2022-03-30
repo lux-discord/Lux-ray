@@ -16,6 +16,10 @@ class BaseData():
 		self.items = self.OPTIONAL_ITEMS | items
 		self.id = items["_id"]
 	
+	@classmethod
+	def from_items(cls, items: dict):
+		return cls(**items)
+	
 	def to_dict(self):
 		return self.items
 
