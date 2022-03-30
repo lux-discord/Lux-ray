@@ -18,6 +18,10 @@ class GeneralCog(Cog):
 		# Shortcuts of db
 		self.db = bot.db
 		
+		self.find_prefix = bot.db.find_prefix
+		self.insert_prefix = bot.db.insert_prefix
+		self.update_prefix = bot.db.update_prefix
+		
 		self.find_server = bot.db.find_server
 		self.insert_server = bot.db.insert_server
 		self.update_server = bot.db.update_server
