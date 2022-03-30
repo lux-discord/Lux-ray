@@ -1,9 +1,10 @@
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
+
 
 
 class MongoDB():
 	def __init__(self, db_host, *, db_port=None) -> None:
-		self.client = MongoClient(host=db_host, port=db_port)
+		self.client = AsyncIOMotorClient(host=db_host, port=db_port)
 		self.bot_db = self.client["discord-bot"]
 		self.server = self.bot_db["server"]
 		self.prefix = self.bot_db["prefix"]
