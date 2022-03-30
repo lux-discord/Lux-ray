@@ -3,7 +3,7 @@ class BaseData():
 	OPTIONAL_ITEMS = {}
 	
 	def __init__(self, **items):
-		invalid = set(items) - set([*self.REQUIRE_ITEMS, "_id"]) - set(self.OPTIONAL_ITEMS)
+		invalid = set(items) - {*self.REQUIRE_ITEMS, "_id"} - set(self.OPTIONAL_ITEMS)
 		
 		if invalid:
 			raise TypeError(f"Invalid item(s): {', '.join(invalid)}")
