@@ -23,10 +23,14 @@ def get_prefix(config, mode):
 	
 	return prefix
 
+def get_default_prefix(config, mode):
+	pconfig = config["prefix"][mode]
+	return pconfig["prefix"]
+
+def get_default_lang_code(config, mode):
+	return config["server"]["default_lang_code"]
+
 def get_db(config, mode):
-	dbconfig = config["database"]
-	dbtype = dbconfig["type"]
-	dbconfig = dbconfig[mode]
 	dbtype_to_class = {
 		"mongodb": "core.db.MongoDB"
 	}
