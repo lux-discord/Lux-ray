@@ -26,7 +26,7 @@ class GeneralCog(Cog):
 		self.insert_server = bot.db.insert_server
 		self.update_server = bot.db.update_server
 	
-	def request_message(self, server_id: int, token: Token) -> str:
+	async def request_message(self, server_id: int, token: Token) -> str:
 		"""
 		Argument
 		--------
@@ -43,14 +43,14 @@ class GeneralCog(Cog):
 		-----------
 		str
 		"""
-		lang_code = self.get_server_data(server_id)["lang_code"]
-		language = GeneralLanguage(lang_code)
+		server_data = await self.get_server_data(server_id)
+		language = GeneralLanguage(server_data["lang_code"])
 		
 		return language.request_message(token)
 	
 	async def send_info(self, ctx, message: Union[str, Token], **format_):
 		if isinstance(message, Token):
-			message = self.request_message(ctx.guild.id, message)
+			message = await self.request_message(ctx.guild.id, message)
 		
 		if format_:
 			message = message.format(**format_)
@@ -59,7 +59,7 @@ class GeneralCog(Cog):
 	
 	async def send_warning(self, ctx, message: Union[str, Token], **format_):
 		if isinstance(message, Token):
-			message = self.request_message(ctx.guild.id, message)
+			message = await self.request_message(ctx.guild.id, message)
 		
 		if format_:
 			message = message.format(**format_)
@@ -68,7 +68,7 @@ class GeneralCog(Cog):
 	
 	async def send_error(self, ctx, message: Union[str, Token], **format_):
 		if isinstance(message, Token):
-			message = self.request_message(ctx.guild.id, message)
+			message = await self.request_message(ctx.guild.id, message)
 		
 		if format_:
 			message = message.format(**format_)
