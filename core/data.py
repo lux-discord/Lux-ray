@@ -39,3 +39,4 @@ class ServerData(BaseData):
 	def __init__(self, **items):
 		super().__init__(**items)
 		self.lang_code = items["lang_code"]
+		self.role = self.items["role"]
