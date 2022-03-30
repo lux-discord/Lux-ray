@@ -1,4 +1,3 @@
-from disnake.ext.commands import Bot
 from tomli import load
 
 from core.bot import LuxRay

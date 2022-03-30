@@ -6,7 +6,6 @@ from core.bot import LuxRay
 from core.data import PrefixData, ServerData
 from core.config import get_default_prefix, get_default_lang_code
 from core.language import GeneralLanguage
-from core.server import Server
 from utils.token import Token
 
 
