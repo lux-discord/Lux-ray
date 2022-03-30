@@ -3,9 +3,10 @@ from typing import Union
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
+from core.config import get_default_lang_code, get_default_prefix
 from core.data import PrefixData, ServerData
-from core.config import get_default_prefix, get_default_lang_code
 from core.language import GeneralLanguage
+from core.server import Server
 from utils.token import Token
 
 
@@ -126,3 +127,6 @@ class GeneralCog(Cog):
 			await self.insert_server(server_data)
 		
 		return server_data
+	
+	async def get_server(self, server_id):
+		return Server(await self.get_server_data(server_id))
