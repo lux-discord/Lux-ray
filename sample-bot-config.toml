@@ -1,44 +1,48 @@
 [cogs]
 # Cog file(s)
+# full path from root dir or bot without suffix
+# ex: cog_files/sample
 file = []
-# Cog folder
+# Cog folder(s)
+# full path from root dir of bot, suffix "/" if optional
+# ex: cog_folders/sample/
 folder = [
 	"lrb_background",
-	"lrb_command",
-	"lrb_event"
+	"lrb_command"
 ]
 
 [database]
-# Database type, valid values: mongodb
-type = "mongodb"
-
 	[database.stable]
-	# Database url to use when bot run in stable mode
+	# Type, valid values: mongodb
+	type = "mongodb"
+	# Host uri
 	url = ""
-	# Database port to use when bot run in stable mode
-	post = ""
+	# Port to use if needed
+	port = ""
 
 	[database.dev]
-	# Database url to use when bot run in dev mode
+	# Type, valid values: mongodb
+	type = "mongodb"
+	# Host uri
 	url = ""
-	# Database port to use when bot run in dev mode
+	# Port to use if needed
 	port = ""
 
 [intent]
 # Intent base, valid values: all, default, none
 base = "default"
-# Intent item, valid keys: bans, dm_messages, dm_reactions, dm_typing, emojis, emojis_and_stickers, guild_messages, guild_reactions, guild_scheduled_events, guild_typing, guilds, integrations, invites, members, messages, presences, reactions, typing, value, voice_states, webhooks
-# Value should be boolen(true or false)
 
-[intent.items]
-# Example:
-# dm_messages = true
-# This will override some of the base settings
+	[intent.items]
+	# Intent item, valid keys: bans, dm_messages, dm_reactions, dm_typing, emojis, emojis_and_stickers, guild_messages, guild_reactions, guild_scheduled_events, guild_typing, guilds, integrations, invites, members, messages, presences, reactions, typing, value, voice_states, webhooks
+	# Value should be boolen(true or false)
+	# Example:
+	# dm_messages = true
+	# This will override some of the base settings
 
 [prefix]
 # Prefix type, valid values: string, array, function
-# string type: for SINGLE prefix
-# array type: for MULTI prefix
+# string: for SINGLE prefix
+# array: for MULTI prefix
 # function: other, ex: server custom prefix
 type = "function"
 
