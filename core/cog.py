@@ -17,7 +17,7 @@ class GeneralCog(Cog):
 		
 		# Shortcuts of db
 		self.db = bot.db
-		self.get_server_data = bot.db.get_server
+		
 		self.find_server = bot.db.find_server
 		self.insert_server = bot.db.insert_server
 		self.update_server = bot.db.update_server
