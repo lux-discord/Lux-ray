@@ -68,3 +68,7 @@ dev = ""
 [misc]
 # Owner(s) ID
 owner_ids = []
+
+[server]
+# Default language when join a new server
+default_lang_code = "en"
