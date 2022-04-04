@@ -19,7 +19,7 @@ class ApiEvent(GeneralCog):
 		async def auto_role():
 			server = await self.get_server(member.guild.id)
 			
-			if server.role["auto_role"]:
+			if auto_roles := server.role["auto_role"]:
 				server_roles = member.guild.roles
 				_ = [await member.add_roles(get(server_roles, name=role)) for role in auto_roles]
 		
