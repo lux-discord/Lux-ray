@@ -46,7 +46,7 @@ async def get_last_exist_message(channel: TextChannel) -> Message:
 	return [message async for message in channel.history(limit=1)][0]
 
 class target_message():
-	def __init__(self, ctx: Context, *, message_link: str=None, **perms: bool):
+	def __init__(self, ctx: Context, *, message_link: str="", **perms: bool):
 		"""
 		Parameter
 		---------
@@ -73,7 +73,7 @@ class target_message():
 			if not self.perms or has_channel_permissions(self.ctx, message.channel, **self.perms):
 				return message
 		if ref_msg := self.ctx.message.reference:
-			if not isinstance(message := ref_msg.resolved, DeletedReferencedMessage):
+			if not isinstance((message := ref_msg.resolved), DeletedReferencedMessage):
 				return message
 		return await get_last_exist_message(self.ctx.message.channel)
 	
