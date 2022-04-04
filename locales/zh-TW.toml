@@ -1,0 +1,63 @@
+# Bot
+# Load cog
+"Successfully loaded `{cog_name}`" = "成功加載`{cog_name}`"
+# Unload cog
+"Successfully unloaded `{cog_name}`" = "成功卸載`{cog_name}`"
+# Reload cog
+"Successfully reloaded `{cog_name}`" = "成功重載`{cog_name}`"
+# Reload all cog
+"Successfully reloaded all cogs" = "成功重載所有Cogs"
+
+
+# Command error
+# Command not exists
+"Command `{name}` not exists" = "指令`{name}`不存在"
+# User missing permission
+"Permission denied, you need {permissions} to use this command" = "沒有權限, 你需要{permissions}權限才能使用此指令"
+# Bot missing permission
+"Permission denied, I need {permissions} to {things}" = "沒有權限, 我需要{permissions}權限才能{things}"
+# Invalid message link
+"Invalid message link: `{message_link}`" = "無效的訊息連結: `{message_link}`"
+# Invalid channel id
+"Invalid channel id: `{channel_id}`" = "無效的頻道ID: `{channel_id}`"
+# Invalid message id
+"Invalid message id: `{message_id}`" = "無效的訊息ID: `{message_id}`"
+
+
+# Command
+# admin.set_lang
+"Language `{lang_code}` is not support" = "不支援`{lang_code}`語言"
+"Language did not change" = "語言沒有改變"
+"Successful set language to `{lang_code}`" = "成功將語言改為`{lang_code}`"
+# admin.set_prefix
+"Prefix did not change" = "前綴沒有改變"
+"Successful set prefix to `{prefix}`" = "成功將前綴改為`{prefix}`"
+# admin.set_auto_role
+"Auto-role did not change" = "自動身分組沒有改變"
+"Role `{role_name}` not found" = "沒有找到`{role_name}`身分組"
+"Successful set auto-role to {roles}" = "成功將自動身分組改為{roles}"
+# admin.delete_message
+"`{amount}` message(s) deleted" = "已刪除`{amount}`則訊息"
+
+# message.pin
+"Successful pinning message" = "成功釘選訊息"
+"Message pinned" = "訊息已釘選"
+# message.unpin
+"Successful unpinning message" = "成功解釘訊息"
+"Message unpinned" = "訊息未釘選"
+
+# general.emoji_info
+"`{invalid_emojis}` is not a valid emoji" = "`{invalid_emojis}`不是有效的Emoji"
+"Reference message has no emoji" = "回覆的訊息沒有Emoji"
+"Emoji not found" = "找不到Emoji"
+
+
+# Audit log reason
+"User `{user_name_with_id}` used command `{command_name}`" = "用戶`{user_name_with_id}`使用了指令`{command_name}`"
+
+
+# Event
+# on_member_join
+"{member} joined server" = "{member}加入了伺服器"
+# on_member_leave
+"{member} left server" = "{member}離開了伺服器"

@@ -1,0 +1,63 @@
+# Bot
+# Load cog
+"Successfully loaded `{cog_name}`" = "Successfully loaded `{cog_name}`"
+# Unload cog
+"Successfully unloaded `{cog_name}`" = "Successfully unloaded `{cog_name}`"
+# Reload cog
+"Successfully reloaded `{cog_name}`" = "Successfully reloaded `{cog_name}`"
+# Reload all cog
+"Successfully reloaded all cogs" = "Successfully reloaded all cogs"
+
+
+# Command error
+# Command not exists
+"Command `{name}` not exists" = "Command `{name}` not exists"
+# User missing permission
+"Permission denied, you need {permissions} to use this command" = "Permission denied, you need {permissions} to use this command"
+# Bot missing permission
+"Permission denied, I need {permissions} to {things}" = "Permission denied, I need {permissions} to {things}"
+# Invalid message link
+"Invalid message link: `{message_link}`" = "Invalid message link: `{message_link}`"
+# Invalid channel id
+"Invalid channel ID: `{channel_id}`" = "Invalid channel ID: `{channel_id}`"
+# Invalid message id
+"Invalid message ID: `{message_id}`" = "Invalid message ID: `{message_id}`"
+
+
+# Command
+# admin.set_lang
+"Language `{lang_code}` is not support" = "Language `{lang_code}` is not support"
+"Language did not change" = "Language did not change"
+"Successful set language to `{lang_code}`" = "Successful set language to `{lang_code}`"
+# admin.set_prefix
+"Prefix did not change" = "Prefix did not change"
+"Successful set prefix to `{prefix}`" = "Successful set prefix to `{prefix}`"
+# admin.set_auto_role
+"Auto-role did not change" = "Auto-role did not change"
+"Role `{role_name}` not found" = "Role `{role_name}` not found"
+"Successful set auto-role to {roles}" = "Successful set auto-role to {roles}"
+# admin.delete_message
+"`{amount}` message(s) deleted" = "`{amount}` message(s) deleted"
+
+# message.pin
+"Successful pinning message" = "Successful pinning message"
+"Message pinned" = "Message pinned"
+# message.unpin
+"Successful unpinning message" = "Successful unpinning message"
+"Message unpinned" = "Message unpinned"
+
+# general.emoji_info
+"`{invalid_emojis}` is not a valid emoji" = "`{invalid_emojis}` is not a valid emoji"
+"Reference message has no emoji" = "Reference message has no emoji"
+"Emoji not found" = "Emoji not found"
+
+
+# Audit log reason
+"User `{user_name_with_id}` used command `{command_name}`" = "User `{user_name_with_id}` used command `{command_name}`"
+
+
+# Event
+# on_member_join
+"{member} joined server" = "{member} joined server"
+# on_member_leave
+"{member} left server" = "{member} left server"
