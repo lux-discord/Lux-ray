@@ -1,6 +1,5 @@
 from disnake import Message
 from disnake.ext.commands import command, has_permissions
-from exceptions import InvalidUserInput
 from utils.message import target_message
 from core.cog import GeneralCog
 
