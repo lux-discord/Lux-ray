@@ -77,5 +77,5 @@ class target_message():
 				return message
 		return await get_last_exist_message(self.ctx.message.channel)
 	
-	async def __aexit__(self, type, value, traceback):
+	async def __aexit__(self, type_, value, traceback):
 		pass
