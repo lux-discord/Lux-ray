@@ -1,34 +1,34 @@
 from pathlib import Path
 
-from exceptions import LanguageNotSupport, ItemNotExists
-from utils.json_file import load_file
+from exceptions import LanguageNotSupport
+from utils.toml_file import load_file
 from utils.token import Token
 
-GLOBAL_LANGUAGE_DIR = Path("language")
-GLOBAL_SUPPORT_LANGUAGE = {lang_file.stem for lang_file in GLOBAL_LANGUAGE_DIR.iterdir()}
+GLOBAL_LOCALES_DIR = Path("locales")
+GLOBAL_SUPPORT_LANGUAGE = {locale_file.stem for locale_file in GLOBAL_LOCALES_DIR.iterdir()}
+GLOBAL_DEFAULT_LANGUAGE = "en"
 
-# For custom language file
-def get_support_language(lang_dir: Path):
-	return {lang_file.name for lang_file in lang_dir.iterdir()}
+# For custom locale file
+def get_support_language(locale_dir: Path):
+	return {locale_file.stem for locale_file in locale_dir.iterdir()}
 
-def language_support_check(lang_dir: Path, lang_code: str):
-	return lang_code in get_support_language(lang_dir)
+def language_support_check(locale_dir: Path, lang_code: str):
+	return lang_code in get_support_language(locale_dir)
 
 class LanguageBase():
-	def __init__(self, lang_code, *, support_language: set, language_dir: Path) -> None:
+	def __init__(self, lang_code, *, support_language: set, locale_dir: Path) -> None:
 		if lang_code not in support_language:
 			raise LanguageNotSupport(lang_code)
 		
-		self.data = load_file(language_dir/(lang_code+".json"))
+		self.lang_code = lang_code
+		self.data = load_file(locale_dir/(lang_code+".toml"))
 	
-	def request_message(self, token: Token) -> str:
-		if message := token.dict_get(self.data):
-			return message
-		raise ItemNotExists(token)
+	def request_message(self, token: str) -> str:
+		return self.data[token]
 	
-	def bulk_request_message(self, *tokens: Token):
+	def bulk_request_message(self, *tokens: str):
 		return [self.request_message(token) for token in tokens]
 
 class GeneralLanguage(LanguageBase):
 	def __init__(self, lang_code: str) -> None:
-		super().__init__(lang_code, support_language=GLOBAL_SUPPORT_LANGUAGE, language_dir=GLOBAL_LANGUAGE_DIR)
+		super().__init__(lang_code, support_language=GLOBAL_SUPPORT_LANGUAGE, locale_dir=GLOBAL_LOCALES_DIR)
