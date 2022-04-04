@@ -26,39 +26,38 @@ class Server():
 		"""
 		return ServerData.from_items(self.items | update)
 	
-	def request_message(self, token: Token):
+	def translate(self, message):
 		"""
 		Argument
 		--------
-		token: utils.token.Token
-			token that use to request message
+		message: str
+			message that need translate
 		
 		Return
 		------
-		The message that request
+		The message that translated
 		
 		Return type
 		-----------
 		str
 		"""
 		language = GeneralLanguage(self.lang_code)
-		return language.request_message(token)
+		return language.request_message(message)
 	
-	async def _send(self, ctx, message: Union[str, Token], *, delete_after=None, **_format):
-		if isinstance(message, Token):
-			message = self.request_message(message)
+	async def _send(self, ctx, message: str, *, delete_after=None, **_format):
+		if self.lang_code != GLOBAL_DEFAULT_LANGUAGE:
+			message = self.translate(message)
 		
 		if _format:
 			message = message.format(**_format)
 		
-		return ctx.send(message, delete_after=delete_after)
+		return await ctx.send(message, delete_after=delete_after)
 	
-	async def send_info(self, ctx, message: Union[str, Token], **_format):
+	async def send_info(self, ctx, message: str, **_format):
 		return await self._send(ctx, message, delete_after=2, **_format)
 	
-	async def send_warning(self, ctx, message: Union[str, Token], **_format):
+	async def send_warning(self, ctx, message: str, **_format):
 		return await self._send(ctx, message, delete_after=6, **_format)
 	
-	async def send_error(self, ctx, message: Union[str, Token], **_format):
+	async def send_error(self, ctx, message: str, **_format):
 		return await self._send(ctx, message, delete_after=10, **_format)
-	
