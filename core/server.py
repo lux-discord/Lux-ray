@@ -14,17 +14,21 @@ class Server():
 	
 	def update(self, **update):
 		"""
-		Generatr a ServerData with self.items and gived update
+		Update attribute and return a ServerData with updated `self.items`
 		
 		Return
 		------
-		A ServerData instance base on self.items and update
+		A ServerData instance base on updated `self.items`
 		
 		Return type
 		-----------
 		`core.data.ServerData`
 		"""
-		return ServerData.from_items(self.items | update)
+		for item, value in update.items():
+			setattr(self, item, value)
+		
+		self.items |= update
+		return ServerData.from_items(self.items)
 	
 	def translate(self, message):
 		"""
