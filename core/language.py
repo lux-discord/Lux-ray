@@ -2,7 +2,6 @@ from pathlib import Path
 
 from exceptions import LanguageNotSupport
 from utils.toml_file import load_file
-from utils.token import Token
 
 GLOBAL_LOCALES_DIR = Path("locales")
 GLOBAL_SUPPORT_LANGUAGE = {locale_file.stem for locale_file in GLOBAL_LOCALES_DIR.iterdir()}
