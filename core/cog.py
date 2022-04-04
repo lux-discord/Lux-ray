@@ -1,11 +1,9 @@
-from typing import Union
-
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
 from core.config import get_default_lang_code, get_default_prefix
 from core.data import PrefixData, ServerData
-from core.language import GeneralLanguage
+from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
 from utils.token import Token
 
@@ -26,54 +24,47 @@ class GeneralCog(Cog):
 		self.insert_server = bot.db.insert_server
 		self.update_server = bot.db.update_server
 	
-	async def request_message(self, server_id: int, token: Token) -> str:
+	def translate(self, lang_code: str, message: str) -> str:
 		"""
 		Argument
 		--------
-		server_id: int
-			server's id
-		token: utils.token.Token
-			token that use to request message
+		guild_id: int
+			the guidl's id
+		message: str
+			the message that need translate
 		
 		Return
 		------
-		The message that request
+		The message that translated
 		
 		Return type
 		-----------
 		str
 		"""
-		server_data = await self.get_server_data(server_id)
-		language = GeneralLanguage(server_data.lang_code)
+		if lang_code == GLOBAL_DEFAULT_LANGUAGE:
+			return message
 		
-		return language.request_message(token)
+		language = GeneralLanguage(lang_code)
+		
+		return language.request_message(message)
 	
-	async def send_info(self, ctx, message: Union[str, Token], **format_):
-		if isinstance(message, Token):
-			message = await self.request_message(ctx.guild.id, message)
+	async def _send(self, ctx, message: str, *, delete_after=None, **_format):
+		server_data = await self.get_server_data(ctx.guild.id)
+		message = self.translate(server_data.lang_code, message)
 		
-		if format_:
-			message = message.format(**format_)
+		if _format:
+			message = message.format(**_format)
 		
-		return await ctx.send(message, delete_after=2)
+		await ctx.send(message, delete_after=delete_after)
 	
-	async def send_warning(self, ctx, message: Union[str, Token], **format_):
-		if isinstance(message, Token):
-			message = await self.request_message(ctx.guild.id, message)
-		
-		if format_:
-			message = message.format(**format_)
-		
-		return await ctx.send(message, delete_after=6)
+	async def send_info(self, ctx, message: str, **_format):
+		return await self._send(ctx, message, delete_after=2, **_format)
 	
-	async def send_error(self, ctx, message: Union[str, Token], **format_):
-		if isinstance(message, Token):
-			message = await self.request_message(ctx.guild.id, message)
-		
-		if format_:
-			message = message.format(**format_)
-		
-		return await ctx.send(message, delete_after=10)
+	async def send_warning(self, ctx, message: str, **_format):
+		return await self._send(ctx, message, delete_after=6, **_format)
+	
+	async def send_error(self, ctx, message: str, **_format):
+		return await self._send(ctx, message, delete_after=2, **_format)
 	
 	async def get_prefix(self, server_id):
 		"""
