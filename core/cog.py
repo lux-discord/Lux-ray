@@ -24,7 +24,8 @@ class GeneralCog(Cog):
 		self.insert_server = bot.db.insert_server
 		self.update_server = bot.db.update_server
 	
-	def translate(self, lang_code: str, message: str) -> str:
+	@staticmethod
+	def translate(lang_code: str, message: str) -> str:
 		"""
 		Argument
 		--------

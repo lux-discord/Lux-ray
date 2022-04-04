@@ -6,7 +6,8 @@ from core.cog import GeneralCog
 
 @has_permissions(manage_messages=True)
 class Messages(GeneralCog):
-	async def delete_system_message(self, channel):
+	@staticmethod
+	async def delete_system_message(channel):
 		async for message in channel.history(limit=5):
 			if message.is_system():
 				await message.delete()
