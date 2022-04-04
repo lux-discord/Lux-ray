@@ -1,8 +1,5 @@
-from typing import Union
-
 from core.data import ServerData
-from core.language import GeneralLanguage
-from utils.token import Token
+from core.language import GeneralLanguage, GLOBAL_DEFAULT_LANGUAGE
 
 
 class Server():
