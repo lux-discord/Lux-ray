@@ -72,7 +72,7 @@ class InvalidToken(InternalError):
 	def __str__(self) -> str:
 		file_name = __file__.split('\\')[-1][:-2]
 		self_name = self.__class__.__name__
-		token_str = self.kargs.get("token", self.kargs.get("token_str", None))
+		token_str = self.kargs.get("token", self.kargs.get("token_str"))
 		invalid_key = self.kargs.get("key")
 		delimiter = self.kargs.get("delimiter")
 		
