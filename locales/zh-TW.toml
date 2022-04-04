@@ -1,10 +1,10 @@
 # Bot
 # Load cog
-"Successfully loaded `{cog_name}`" = "成功加載`{cog_name}`"
+"Successfully loaded {cog_names}" = "成功加載{cog_names}"
 # Unload cog
-"Successfully unloaded `{cog_name}`" = "成功卸載`{cog_name}`"
+"Successfully unloaded {cog_names}" = "成功卸載{cog_names}"
 # Reload cog
-"Successfully reloaded `{cog_name}`" = "成功重載`{cog_name}`"
+"Successfully reloaded {cog_names}" = "成功重載{cog_names}"
 # Reload all cog
 "Successfully reloaded all cogs" = "成功重載所有Cogs"
 
@@ -44,7 +44,7 @@
 "Message pinned" = "訊息已釘選"
 # message.unpin
 "Successful unpinning message" = "成功解釘訊息"
-"Message unpinned" = "訊息未釘選"
+"Message not pinned" = "訊息未釘選"
 
 # general.emoji_info
 "`{invalid_emojis}` is not a valid emoji" = "`{invalid_emojis}`不是有效的Emoji"
@@ -61,3 +61,12 @@
 "{member} joined server" = "{member}加入了伺服器"
 # on_member_leave
 "{member} left server" = "{member}離開了伺服器"
+
+
+# Misc
+# Embed title
+"Emoji info" = "Emoji資訊"
+# Embed field
+"Name" = "名稱"
+"Created at" = "建立時間"
+"Url" = "Url"
