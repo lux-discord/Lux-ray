@@ -42,12 +42,14 @@ class Server():
 		-----------
 		str
 		"""
+		if self.lang_code == GLOBAL_DEFAULT_LANGUAGE:
+			return message
+		
 		language = GeneralLanguage(self.lang_code)
 		return language.request_message(message)
 	
 	async def _send(self, ctx, message: str, *, delete_after=None, **_format):
-		if self.lang_code != GLOBAL_DEFAULT_LANGUAGE:
-			message = self.translate(message)
+		message = self.translate(message)
 		
 		if _format:
 			message = message.format(**_format)
