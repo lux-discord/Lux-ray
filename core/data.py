@@ -40,10 +40,10 @@ class ServerData(BaseData):
 	]
 	OPTIONAL_ITEMS = {
 		"role": {
-			"admin": list(),
-			"mod": list(),
-			"member": list(),
-			"auto_role": list()
+			"admin": [],
+			"mod": [],
+			"member": [],
+			"auto_role": []
 		},
 		"channel": {
 			"on_member_join": int(),
