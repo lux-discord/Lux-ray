@@ -9,7 +9,7 @@ from utils.embed import bot_color, embed_setup
 from utils.message import target_message
 
 
-class Common(GeneralCog):
+class General(GeneralCog):
 	@command(aliases=["emoji"])
 	async def emoji_info(self, ctx, *emojis: Emoji):
 		def generate_embed(emoji: Emoji):
@@ -30,4 +30,4 @@ class Common(GeneralCog):
 			return [await ctx.send(embed=generate_embed(emoji)) for emoji in match_emojis]
 
 def setup(bot):
-	bot.add_cog(Common(bot))
+	bot.add_cog(General(bot))
