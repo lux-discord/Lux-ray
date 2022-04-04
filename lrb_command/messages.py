@@ -13,50 +13,43 @@ class Messages(GeneralCog):
 				break
 	
 	@command()
-	async def pin(self, ctx, message_link: str=None):
-		async def pin_message(message: Message):
-			reason = self.request_message(ctx.guild.id, "audit_log.reason.message.pin_message").format(
-				user=f"{ctx.author.name}(ID: {ctx.author.id})",
+	async def pin(self, ctx):
+		await ctx.message.delete()
+		server = await self.get_server(ctx.guild.id)
+		
+		async def do_pin(message: Message):
+			reason = server.translate("User `{user_name_with_id}` used command `{command_name}`").format(
+				user_name_with_id=f"{ctx.author.name}(ID: {ctx.author.id})",
 				command_name=ctx.invoked_with
 			)
 			
 			await message.pin(reason=reason)
-			await message.pin(reason=self.request_message(ctx.guild.id, "audit_log.reason.message.pin_message").format(
-				user=f"{ctx.author.name}(ID: {ctx.author.id})",
-				command_name=ctx.invoked_with))
-			
-			# delete system message
-			async for message in message.channel.history(limit=5):
-				if not message.content:
-					await message.delete()
-					break
-			
-			await self.send_info(ctx, "info.message.pinned")
+			await self.delete_system_message(message.channel)
+			await server.send_info(ctx, "Successful pinning message")
 		
-		await ctx.message.delete()
-		
-		try:
-			async with target_message(ctx, message_link=message_link, manage_messages=True) as message:
-				await pin_message(message)
-		except InvalidUserInput as error:
-			await self.send_error(ctx, "error.invalid_argument.invalid_message_link", message_link=error.args[0])
+		async with target_message(ctx) as message:
+			if message.pinned:
+				return await server.send_warning(ctx, "Message pinned")
+			await do_pin(message)
 	
 	@command()
-	async def unpin(self, ctx, message_link: str=None):
-		async def unpin_message(message: Message):
-			await message.unpin(reason=self.request_message(ctx.guild.id, "audit_log.reason.message.unpin_message",
-				user=f"{ctx.author.name}(ID: {ctx.author.id})",
-				command_name=ctx.invoked_with))
-			await self.delete_system_message(message.channel)
-			await self.send_info(ctx, "info.message.unpinned")
-		
+	async def unpin(self, ctx):
 		await ctx.message.delete()
+		server = await self.get_server(ctx.guild.id)
 		
-		try:
-			async with target_message(ctx, message_link=message_link, manage_messages=True) as message:
-				await unpin_message(message)
-		except InvalidUserInput as error:
-			await self.send_error(ctx, "error.invalid_argument.invalid_message_link", message_link=error.args[0])
+		async def unpin_message(message: Message):
+			reason = server.translate("User `{user_name_with_id}` used command `{command_name}`").format(
+				user_name_with_id=f"{ctx.author.name}(ID: {ctx.author.id})",
+				command_name=ctx.invoked_with
+			)
+			await message.unpin(reason=reason)
+			await self.delete_system_message(message.channel)
+			await server.send_info(ctx, "Successful unpinning message")
+		
+		async with target_message(ctx) as message:
+			if not message.pinned:
+				return await server.send_warning(ctx, "Message not pinned")
+			await unpin_message(message)
 	
 	@command(aliases=["mes_link", "msg_link"])
 	async def message_link(self, ctx):

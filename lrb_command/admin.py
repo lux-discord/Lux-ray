@@ -1,39 +1,54 @@
-from core.language import GLOBAL_SUPPORT_LANGUAGE
 from disnake.ext.commands import command, has_guild_permissions
 
 from core.cog import GeneralCog
+from core.data import PrefixData
+from core.language import GLOBAL_SUPPORT_LANGUAGE
+
 
 @has_guild_permissions(administrator=True)
 class Admin(GeneralCog):
 	@command()
 	async def set_lang(self, ctx, lang_code: str):
+		server = await self.get_server(ctx.guild.id)
+		
 		if lang_code not in GLOBAL_SUPPORT_LANGUAGE:
-			await self.send_error(ctx, self.token("error.invalid_argument.lang_not_found"))
+			return await server.send_error(ctx, "Language code `{lang_code}` is not support", lang_code=lang_code)
 		
-		if lang_code != self.get_server_data(ctx.guild.id)["lang_code"]:
-			self.update_server(ctx.guild.id, {"lang_code": lang_code})
+		if server.lang_code == lang_code:
+			return await server.send_warning(ctx, "Language did not change")
 		
-		await self.send_info(ctx, self.token("info.server.set_lang"), language=lang_code)
+		update = server.update(lang_code=lang_code)
+		await self.update_server(update)
+		await server.send_info(ctx, "Successful set language to `{lang_code}`", lang_code=lang_code)
 	
 	@command()
 	async def set_prefix(self, ctx, prefix):
-		if prefix != ctx.prefix:
-			self.update_server(ctx.guild.id, {"prefix": prefix})
+		server = await self.get_server(ctx.guild.id)
 		
-		await self.send_info(ctx, "info.server.set_prefix")
+		if prefix == ctx.prefix:
+			return await server.send_warning(ctx, "Prefix did not change")
+		
+		await self.update_prefix(PrefixData(_id=ctx.guild.id, prefix=prefix))
+		await self.send_info(ctx, "Successful set prefix to `{prefix}`", prefix=prefix)
 	
 	@command()
 	async def auto_role(self, ctx, *roles):
-		auto_roles = self.get_server_data(ctx.guild.id)["auto_roles"]
+		server = await self.get_server(ctx.guild.id)
 		
-		if not auto_roles == roles:
-			self.update_server(ctx.guild.id, {"auto_roles": roles})
-		await self.send_info(ctx, self.token("info.server.set_auto_role"), roles=", ".join(roles))
+		if tuple(server.role["auto_role"]) == roles:
+			return await server.send_warning(ctx, "Auto-role did not change")
+		
+		# Need improve
+		new_role = server.role
+		new_role["auto_role"] = roles
+		update = server.update(role=new_role)
+		await self.update_server(update)
+		await self.send_info(ctx, "Successful set auto-role to {roles}", roles=", ".join(roles))
 	
 	@command(aliases=["del_mes", "del_msg", "purge"])
-	async def delete_message(self, ctx, delete_num=1):
-		await ctx.channel.purge(limit=delete_num+1)
-		await self.send_info(ctx, self.token("info.message.deleted"), deleted_number=delete_num)
+	async def delete_message(self, ctx, amount=1):
+		await ctx.channel.purge(limit=amount+1)
+		await self.send_info(ctx, "`{amount}` message(s) deleted", amount=amount)
 
 def setup(bot):
 	bot.add_cog(Admin(bot))

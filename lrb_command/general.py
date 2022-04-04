@@ -12,12 +12,19 @@ from utils.message import target_message
 class General(GeneralCog):
 	@command(aliases=["emoji"])
 	async def emoji_info(self, ctx, *emojis: Emoji):
+		server = await self.get_server(ctx.guild.id)
+		embed_fields_name = {
+			"Name": server.translate("Name"),
+			"Created at": server.translate("Created at"),
+			"Url": server.translate("Url")
+		}
+		
 		def generate_embed(emoji: Emoji):
-			embed = Embed(title="Emoji info", color=bot_color)
+			embed = Embed(title=server.translate("Emoji info"), color=bot_color)
 			fields = [
-				["Name", f"`{emoji.name}`"],
-				["Created at", emoji.created_at.strftime("%Y-%m-%d %H:%M:%S")],
-				["Url", emoji.url, False]
+				[embed_fields_name["Name"], f"`{emoji.name}`"],
+				[embed_fields_name["Created at"], emoji.created_at.strftime("%Y-%m-%d %H:%M:%S")],
+				[embed_fields_name["Url"], emoji.url, False]
 			]
 			
 			return embed_setup(embed, fields=fields)

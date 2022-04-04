@@ -9,7 +9,7 @@ class Dev(GeneralCog):
 		for cog_name in cog_names:
 			self.bot.reload_extension(cog_name)
 		
-		await self.send_info(ctx, "info.extension.reload", cog_name=", ".join(cog_names))
+		await self.send_info(ctx, "Successfully reloaded {cog_names}", cog_names=", ".join(cog_names))
 
 def setup(bot):
 	bot.add_cog(Dev(bot))
