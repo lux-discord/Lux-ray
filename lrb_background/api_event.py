@@ -16,14 +16,12 @@ class ApiEvent(GeneralCog):
 	
 	@Cog.listener()
 	async def on_member_join(self, member: Member):
-		async def auto_role():
-			server = await self.get_server(member.guild.id)
-			
-			if auto_roles := server.role["auto_role"]:
-				server_roles = member.guild.roles
-				_ = [await member.add_roles(get(server_roles, name=role)) for role in auto_roles]
+		# [Bug] bot won't recived event
+		server = await self.get_server(member.guild.id)
 		
-		await auto_role()
+		if auto_roles := server.role["auto_role"]:
+			roles = [member.guild.get_role(role_id) for role_id in auto_roles]
+			await member.add_roles(*roles)
 
 def setup(bot):
 	bot.add_cog(ApiEvent(bot))

@@ -1,13 +1,14 @@
 from disnake.ext.commands import command, has_guild_permissions
+from disnake.role import Role
 
 from core.cog import GeneralCog
 from core.data import PrefixData
 from core.language import GLOBAL_SUPPORT_LANGUAGE
 
 
-@has_guild_permissions(administrator=True)
 class Admin(GeneralCog):
 	@command()
+	@has_guild_permissions(administrator=True)
 	async def set_lang(self, ctx, lang_code: str):
 		server = await self.get_server(ctx.guild.id)
 		
@@ -22,6 +23,7 @@ class Admin(GeneralCog):
 		await server.send_info(ctx, "Successful set language to `{lang_code}`", lang_code=lang_code)
 	
 	@command()
+	@has_guild_permissions(administrator=True)
 	async def set_prefix(self, ctx, prefix):
 		server = await self.get_server(ctx.guild.id)
 		
@@ -32,23 +34,26 @@ class Admin(GeneralCog):
 		await self.send_info(ctx, "Successful set prefix to `{prefix}`", prefix=prefix)
 	
 	@command()
-	async def auto_role(self, ctx, *roles):
+	@has_guild_permissions(administrator=True)
+	async def auto_role(self, ctx, *roles: Role):
 		server = await self.get_server(ctx.guild.id)
 		
-		if tuple(server.role["auto_role"]) == roles:
+		if not roles:
+			server.role["auto_role"] = []
+			update = server.update(role=server.role)
+			await self.update_server(update)
+			return await server.send_info(ctx, "Auto-roles cleared")
+		
+		role_ids = {role.id for role in roles}
+		
+		if set(server.role["auto_role"]) == role_ids:
 			return await server.send_warning(ctx, "Auto-role did not change")
 		
 		# Need improve
-		new_role = server.role
-		new_role["auto_role"] = roles
-		update = server.update(role=new_role)
+		server.role["auto_role"] = list(role_ids)
+		update = server.update(role=server.role)
 		await self.update_server(update)
-		await self.send_info(ctx, "Successful set auto-role to {roles}", roles=", ".join(roles))
-	
-	@command(aliases=["del_mes", "del_msg", "purge"])
-	async def delete_message(self, ctx, amount=1):
-		await ctx.channel.purge(limit=amount+1)
-		await self.send_info(ctx, "`{amount}` message(s) deleted", amount=amount)
+		await self.send_info(ctx, "Successful set auto-role to {roles}", roles=", ".join(role.name for role in roles))
 
 def setup(bot):
 	bot.add_cog(Admin(bot))
