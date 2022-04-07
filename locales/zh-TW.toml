@@ -36,6 +36,7 @@
 "Auto-role did not change" = "自動身分組沒有改變"
 "Role `{role_name}` not found" = "沒有找到`{role_name}`身分組"
 "Successful set auto-role to {roles}" = "成功將自動身分組改為{roles}"
+"Auto-roles cleared" = "已清除自動身份組"
 # admin.delete_message
 "`{amount}` message(s) deleted" = "已刪除`{amount}`則訊息"
 
