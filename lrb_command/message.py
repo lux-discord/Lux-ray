@@ -3,8 +3,8 @@ from disnake.ext.commands import command, has_permissions
 from utils.message import target_message
 from core.cog import GeneralCog
 
-@has_permissions(manage_messages=True)
-class Messages(GeneralCog):
+
+class Message(GeneralCog):
 	@staticmethod
 	async def delete_system_message(channel):
 		async for message in channel.history(limit=5):
@@ -13,6 +13,7 @@ class Messages(GeneralCog):
 				break
 	
 	@command()
+	@has_permissions(manage_messages=True)
 	async def pin(self, ctx):
 		await ctx.message.delete()
 		server = await self.get_server(ctx.guild.id)
@@ -33,6 +34,7 @@ class Messages(GeneralCog):
 			await do_pin(message)
 	
 	@command()
+	@has_permissions(manage_messages=True)
 	async def unpin(self, ctx):
 		await ctx.message.delete()
 		server = await self.get_server(ctx.guild.id)
@@ -55,6 +57,12 @@ class Messages(GeneralCog):
 	async def message_link(self, ctx):
 		async with target_message(ctx) as message:
 			return await ctx.send(message.jump_url)
+	
+	@command(aliases=["del_mes", "del_msg", "purge"])
+	@has_permissions(manage_messages=True)
+	async def delete_message(self, ctx, amount=1):
+		await ctx.channel.purge(limit=amount+1)
+		await self.send_info(ctx, "`{amount}` message(s) deleted", amount=amount)
 
 def setup(bot):
-	bot.add_cog(Messages(bot))
+	bot.add_cog(Message(bot))
