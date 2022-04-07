@@ -1,6 +1,5 @@
 from disnake import Member
 from disnake.ext.commands.cog import Cog
-from disnake.utils import get
 
 from core.cog import GeneralCog
 

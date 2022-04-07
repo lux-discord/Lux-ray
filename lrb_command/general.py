@@ -1,6 +1,6 @@
 from re import findall
 
-from disnake.embeds import E, Embed
+from disnake.embeds import Embed
 from disnake.emoji import Emoji
 from disnake.ext.commands import command
 
