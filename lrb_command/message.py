@@ -1,4 +1,4 @@
-from disnake import Message
+from disnake import Message as Msg
 from disnake.ext.commands import command, has_permissions
 from utils.message import target_message
 from core.cog import GeneralCog
@@ -18,7 +18,7 @@ class Message(GeneralCog):
 		await ctx.message.delete()
 		server = await self.get_server(ctx.guild.id)
 		
-		async def do_pin(message: Message):
+		async def do_pin(message: Msg):
 			reason = server.translate("User `{user_name_with_id}` used command `{command_name}`").format(
 				user_name_with_id=f"{ctx.author.name}(ID: {ctx.author.id})",
 				command_name=ctx.invoked_with
@@ -39,7 +39,7 @@ class Message(GeneralCog):
 		await ctx.message.delete()
 		server = await self.get_server(ctx.guild.id)
 		
-		async def unpin_message(message: Message):
+		async def unpin_message(message: Msg):
 			reason = server.translate("User `{user_name_with_id}` used command `{command_name}`").format(
 				user_name_with_id=f"{ctx.author.name}(ID: {ctx.author.id})",
 				command_name=ctx.invoked_with
