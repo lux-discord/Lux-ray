@@ -1,0 +1,3 @@
+language = "bash"
+run = "./main.sh"
+entrypoint = "main.sh"

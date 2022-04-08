@@ -1,4 +1,4 @@
-click
+flask
 disnake
 motor
 pymongo[srv]
