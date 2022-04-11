@@ -62,6 +62,21 @@ class MongoDB():
 		_update = {"$set": {"prefix": update.prefix}}
 		return await self.prefix.update_one({"_id": update.id}, _update)
 	
+	async def delete_prefix(self, server_id: int):
+		"""
+		Delete prefix
+		
+		Argument
+		--------
+		server_id: `int`
+			server id
+		
+		Return type
+		-----------
+		`pymongo.results.DeleteResult`
+		"""
+		return await self.prefix.delete_one({"_id": server_id})
+	
 	# Server
 	async def find_server(self, server_id: int):
 		"""
@@ -113,3 +128,18 @@ class MongoDB():
 		"""
 		_update = {"$set": update.to_dict()}
 		return await self.server.update_one({"_id": update.id}, _update)
+	
+	async def delete_server(self, server_id: int):
+		"""
+		Delete server data
+		
+		Argument
+		--------
+		server_id: `int`
+			server id
+		
+		Return type
+		-----------
+		`pymongo.results.DeleteResult`
+		"""
+		return await self.server.delete_one({"_id": server_id})
