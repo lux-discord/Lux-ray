@@ -96,3 +96,11 @@ class ItemNotExists(InternalError):
 	
 	def __str__(self):
 		return f"Item of token '{self.token}' not exists"
+
+class ConfigInvalid(LRBError):
+	def __init__(self, config_name: str, config_value: str) -> None:
+		self.config_name = config_name
+		self.config_value = config_value
+	
+	def __str__(self) -> str:
+		return f"Invalid config, {self.config_name} can not be {self.config_value}"
