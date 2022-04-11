@@ -7,7 +7,8 @@
 "Successfully reloaded {cog_names}" = "成功重載{cog_names}"
 # Reload all cog
 "Successfully reloaded all cogs" = "成功重載所有Cogs"
-
+# No cog name input
+"At least one cog name must be entered" = "必須輸入至少一個Cog名稱"
 
 # Command error
 # Command not exists

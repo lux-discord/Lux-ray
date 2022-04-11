@@ -6,6 +6,9 @@ class Dev(GeneralCog):
 	@command()
 	@is_owner()
 	async def reload(self, ctx, *cog_names):
+		if not cog_names:
+			return await self.send_error(ctx, "At least one cog name must be entered")
+		
 		for cog_name in cog_names:
 			self.bot.reload_extension("lrb_command."+cog_name)
 		
@@ -14,6 +17,9 @@ class Dev(GeneralCog):
 	@command()
 	@is_owner()
 	async def load(self, ctx, *cog_names):
+		if not cog_names:
+			return await self.send_error(ctx, "At least one cog name must be entered")
+		
 		for cog_name in cog_names:
 			self.bot.load_extension("lrb_command."+cog_name)
 		
@@ -22,6 +28,9 @@ class Dev(GeneralCog):
 	@command()
 	@is_owner()
 	async def unload(self, ctx, *cog_names):
+		if not cog_names:
+			return await self.send_error(ctx, "At least one cog name must be entered")
+		
 		for cog_name in cog_names:
 			self.bot.unload_extension("lrb_command."+cog_name)
 		

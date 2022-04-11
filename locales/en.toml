@@ -7,7 +7,8 @@
 "Successfully reloaded {cog_names}" = "Successfully reloaded {cog_names}"
 # Reload all cog
 "Successfully reloaded all cogs" = "Successfully reloaded all cogs"
-
+# No cog name input
+"At least one cog name must be entered" = "At least one cog name must be entered"
 
 # Command error
 # Command not exists
