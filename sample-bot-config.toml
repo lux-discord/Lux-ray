@@ -52,12 +52,12 @@ type = "function"
 # function_path: when prefix type is "function", use this setting,
 #  full import path with function name from root dir of bot
 	[prefix.stable]
-	prefix = ""
+	prefix = "l;"
 	prefixes = []
-	function_path = ""
+	function_path = "core.prefix.get_prefix"
 	
 	[prefix.dev]
-	prefix = ""
+	prefix = "l;"
 	prefixes = []
 	function_path = "core.prefix.get_prefix"
 
