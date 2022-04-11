@@ -13,7 +13,7 @@ def get_bot_config(config_path) -> dict:
 
 def setup_bot(config, mode):
 	# Create Bot instance
-	bot = LuxRay(command_prefix=get_prefix(config, mode), owner_id=config["misc"]["owner_ids"],
+	bot = LuxRay(command_prefix=get_prefix(config, mode), owner_ids=config["misc"]["owner_ids"],
 		intent=intent_generater(config, mode), config=config, mode=mode)
 	
 	return bot
