@@ -16,8 +16,6 @@ class GeneralCog(Cog):
 		# Shortcuts of db
 		self.db = bot.db
 		
-		self.find_prefix = bot.db.find_prefix
-		self.insert_prefix = bot.db.insert_prefix
 		self.update_prefix = bot.db.update_prefix
 		
 		self.find_server = bot.db.find_server
@@ -66,32 +64,6 @@ class GeneralCog(Cog):
 	
 	async def send_error(self, ctx, message: str, **_format):
 		return await self._send(ctx, message, delete_after=2, **_format)
-	
-	async def get_prefix(self, server_id):
-		"""
-		Get prefix by server id
-		
-		Will auto create data if not found
-		
-		Argument
-		--------
-		server_id:
-			server id
-		
-		Return
-		------
-		The prefix of server
-		
-		Return type
-		-----------
-		str
-		"""
-		if not (prefix := await self.find_prefix(server_id)):
-			default_data = PrefixData(_id=server_id, prefix=get_default_prefix(self.bot.config, self.bot.mode))
-			await self.insert_prefix(default_data)
-			prefix = default_data.prefix
-		
-		return prefix
 	
 	async def get_server_data(self, server_id):
 		"""
