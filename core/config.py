@@ -30,7 +30,7 @@ def get_default_prefix(config, mode):
 def get_default_lang_code(config, mode):
 	return config["server"]["default_lang_code"]
 
-def get_db(config, mode):
+def get_db_client(config, mode):
 	dbtype_to_class = {
 		"mongodb": "core.db.MongoDB"
 	}
