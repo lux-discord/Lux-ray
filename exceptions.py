@@ -111,3 +111,10 @@ class TokenNotFound(LRBError):
 	
 	def __str__(self) -> str:
 		return f"Bot token not found, 'BOT_TOKEN_ALL' or 'BOT_TOKEN_{self.mode}' must be set in environment variables"
+
+class DatabaseSettingNotFound(LRBError):
+	def __init__(self, setting_item) -> None:
+		self.setting_item = setting_item
+	
+	def __str__(self):
+		return f"Database setting not found, '{self.setting_item}' must be set in environment variable"
