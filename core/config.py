@@ -1,11 +1,19 @@
-from disnake import Intents
+from os import getenv
 
+from disnake import Intents
+from exceptions import TokenNotFound
 from utils.misc import import_from_path
 
 
-def get_bot_token(config: dict, mode: str) -> dict:
-	tokens = config["tokens"]
-	return token if (token := tokens["all"]) else tokens[mode]
+def get_bot_token(mode: str) -> str:
+	if not (token := getenv("BOT_TOKEN_ALL")):
+		mode = mode.upper()
+		key = "BOT_TOKEN"+mode
+		
+		if not (token := getenv(key)):
+			raise TokenNotFound(mode)
+	
+	return token
 
 def get_prefix(config, mode):
 	pconfig = config["prefix"]

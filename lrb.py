@@ -16,7 +16,7 @@ def main():
 def run(mode="dev", config_path="bot-config.toml"):
 	# Prepare
 	config = get_bot_config(config_path)
-	token = get_bot_token(config, mode)
+	token = get_bot_token(mode)
 	bot = setup_bot(config, mode)
 	
 	# Load cogs

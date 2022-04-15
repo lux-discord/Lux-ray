@@ -104,3 +104,10 @@ class ConfigInvalid(LRBError):
 	
 	def __str__(self) -> str:
 		return f"Invalid config, {self.config_name} can not be {self.config_value}"
+
+class TokenNotFound(LRBError):
+	def __init__(self, mode: str):
+		self.mode = mode
+	
+	def __str__(self) -> str:
+		return f"Token not found, 'BOT_TOKEN_ALL' or 'BOT_TOKEN_{self.mode}' must be set in environment variables"
