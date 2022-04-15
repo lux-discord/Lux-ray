@@ -1,10 +1,16 @@
 from sys import argv
 
-from click import group, option, Path as ClickPath
-
-from core.setup import setup_bot, get_bot_config
+from pathlib import Path
+from click import Path as ClickPath, group, option
 from core.config import get_bot_token
+from core.setup import get_bot_config, setup_bot
+from dotenv import load_dotenv
 from utils.cog import load_cogs
+
+ENV_FILE_PATH = Path(".env")
+
+if ENV_FILE_PATH.exists():
+	load_dotenv(ENV_FILE_PATH)
 
 @group()
 def main():
