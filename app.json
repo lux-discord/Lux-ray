@@ -28,7 +28,7 @@
       "description": "Database host uri use when run on `dev` mode.",
       "required": false
     },
-    "DB_HOST_PROD: {
+    "DB_HOST_PROD": {
       "description": "Database host uri use when run on `production` mode."
     },
     "DB_TYPE_DEV": {
