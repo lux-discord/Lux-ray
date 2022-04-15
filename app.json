@@ -1,47 +1,47 @@
 {
-  "name": "Lux-ray Discord bot",
-  "description": "A Discord bot that help manage server",
-  "keywords": [
+  "name":"Lux-ray Discord bot",
+  "description":"A Discord bot that help manage server",
+  "keywords":[
     "Discord",
     "Python",
     "Disnake",
     "Bot"
   ],
-  "repository": "https://github.com/Euxcbsks/Lux-ray",
-  "logo": "https://github.com/Euxcbsks/Lux-ray/blob/main/img/Lux-ray-bot.png",
-  "env": {
-    "PORT": {
-      "description": "Which port should flask run on",
+  "repository":"https://github.com/Euxcbsks/Lux-ray",
+  "logo":"https://github.com/Euxcbsks/Lux-ray/blob/main/img/Lux-ray-bot.png",
+  "env":{
+    "PORT":{
+      "description":"Which port should flask run on"
     },
-    "TOKEN_ALL": {
-      "description": "Bot token use when run on both `dev` and `production` mode. WILL OVERWRITE OTHER TOKEN SETTINGS",
-      "required": false
+    "TOKEN_ALL":{
+      "description":"Bot token use when run on both `dev` and `production` mode. WILL OVERWRITE OTHER TOKEN SETTINGS",
+      "required":false
     },
-    "TOKEN_DEV": {
-      "description": "Bot token use when run on `dev` mode.",
-      "required": false
+    "TOKEN_DEV":{
+      "description":"Bot token use when run on `dev` mode.",
+      "required":false
     },
-    "TOKEN_PROD": {
-      "description": "Bot token use when run on `production` mode.",
+    "TOKEN_PROD":{
+      "description":"Bot token use when run on `production` mode."
     },
-    "DB_HOST_DEV": {
-      "description": "Database host uri use when run on `dev` mode.",
-      "required": false
+    "DB_HOST_DEV":{
+      "description":"Database host uri use when run on `dev` mode.",
+      "required":false
     },
-    "DB_HOST_PROD": {
-      "description": "Database host uri use when run on `production` mode."
+    "DB_HOST_PROD":{
+      "description":"Database host uri use when run on `production` mode."
     },
-    "DB_TYPE_DEV": {
-      "description": "Database type use when run on `dev` mode.",
-      "required": false
+    "DB_TYPE_DEV":{
+      "description":"Database type use when run on `dev` mode.",
+      "required":false
     },
-    "DB_TYPE_PROD": {
-      "description": "Database type use when run on `production` mode.",
+    "DB_TYPE_PROD":{
+      "description":"Database type use when run on `production` mode."
     }
   },
-  "buildpacks": [
+  "buildpacks":[
     {
-      "url": "heroku/python"
+      "url":"heroku/python"
     }
   ]
 }
