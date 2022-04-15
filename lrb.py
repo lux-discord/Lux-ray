@@ -29,6 +29,9 @@ def run(mode="dev", config_path="bot-config.toml"):
 	load_cogs(bot, cogs=config["cogs"]["file"], cog_folders=config["cogs"]["folder"])
 	
 	# Run
+	if mode == "stable":
+		from keep_alive import keep_alive
+		keep_alive()
 	bot.run(token)
 
 if len(argv) == 1:
