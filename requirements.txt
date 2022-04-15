@@ -1,5 +1,6 @@
-flask
 disnake
+flask
 motor
 pymongo[srv]
+python-dotenv
 tomli
