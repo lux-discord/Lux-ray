@@ -1,0 +1,53 @@
+[cogs]
+# Cog file(s)
+# full path from root dir or bot without suffix
+# ex: cog_files/sample
+file = []
+# Cog folder(s)
+# full path from root dir of bot, suffix "/" if optional
+# ex: cog_folders/sample/
+folder = [
+	"lrb_background",
+	"lrb_command"
+]
+
+[intent]
+# Intent base, valid values: all, default, none
+base = "all"
+
+	[intent.items]
+	# Intent item, valid keys: bans, dm_messages, dm_reactions, dm_typing, emojis, emojis_and_stickers, guild_messages, guild_reactions, guild_scheduled_events, guild_typing, guilds, integrations, invites, members, messages, presences, reactions, typing, value, voice_states, webhooks
+	# Value should be boolen(true or false)
+	# Example:
+	# dm_messages = true
+	# This will override some of the base settings
+
+[prefix]
+# Prefix type, valid values: string, array, function
+# string: for SINGLE prefix
+# array: for MULTI prefix
+# function: other, ex: server custom prefix
+type = "function"
+
+# prefix: when prefix type is string, use this setting
+#  when prefix type is "function", use this setting as default prefix
+# prefixes: when prefix type is "array", use this setting
+# function_path: when prefix type is "function", use this setting,
+#  full import path with function name from root dir of bot
+	[prefix.stable]
+	prefix = "l;"
+	prefixes = []
+	function_path = "core.prefix.get_prefix"
+	
+	[prefix.dev]
+	prefix = "l;"
+	prefixes = []
+	function_path = "core.prefix.get_prefix"
+
+[misc]
+# Owner(s) ID
+owner_ids = []
+
+[server]
+# Default language when join a new server
+default_lang_code = "en"
