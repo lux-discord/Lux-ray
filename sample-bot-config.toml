@@ -11,23 +11,6 @@ folder = [
 	"lrb_command"
 ]
 
-[database]
-	[database.stable]
-	# Type, valid values: mongodb
-	type = "mongodb"
-	# Host uri
-	url = ""
-	# Port to use if needed
-	port = ""
-
-	[database.dev]
-	# Type, valid values: mongodb
-	type = "mongodb"
-	# Host uri
-	url = ""
-	# Port to use if needed
-	port = ""
-
 [intent]
 # Intent base, valid values: all, default, none
 base = "default"
@@ -60,14 +43,6 @@ type = "function"
 	prefix = "l;"
 	prefixes = []
 	function_path = "core.prefix.get_prefix"
-
-[tokens]
-# Bot token to use in all mode, will overwrite other token setting
-all = ""
-# Bot token to use in stable mode
-stable = ""
-# Bot token to use in dev mode
-dev = ""
 
 [misc]
 # Owner(s) ID
