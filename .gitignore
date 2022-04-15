@@ -7,7 +7,6 @@
 
 # Secure files
 .env
-bot-config.toml
 
 # Sundries
 **/test.py
