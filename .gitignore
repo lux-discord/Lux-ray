@@ -6,6 +6,7 @@
 *.pyc
 
 # Secure files
+.env
 bot-config.toml
 
 # Sundries
