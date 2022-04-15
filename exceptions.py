@@ -110,4 +110,4 @@ class TokenNotFound(LRBError):
 		self.mode = mode
 	
 	def __str__(self) -> str:
-		return f"Token not found, 'BOT_TOKEN_ALL' or 'BOT_TOKEN_{self.mode}' must be set in environment variables"
+		return f"Bot token not found, 'BOT_TOKEN_ALL' or 'BOT_TOKEN_{self.mode}' must be set in environment variables"
