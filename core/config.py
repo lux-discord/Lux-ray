@@ -1,16 +1,15 @@
 from os import getenv
 
 from disnake import Intents
-from exceptions import TokenNotFound
+from exceptions import DatabaseSettingNotFound, TokenNotFound
 from utils.misc import import_from_path
 
 
 def get_bot_token(mode: str) -> str:
 	if not (token := getenv("BOT_TOKEN_ALL")):
 		mode = mode.upper()
-		key = "BOT_TOKEN"+mode
 		
-		if not (token := getenv(key)):
+		if not (token := getenv(f"BOT_TOKEN_{mode}")):
 			raise TokenNotFound(mode)
 	
 	return token
@@ -38,16 +37,22 @@ def get_default_prefix(config, mode):
 def get_default_lang_code(config, mode):
 	return config["server"]["default_lang_code"]
 
-def get_db_client(config, mode):
+def get_db_client(mode: str):
 	dbtype_to_class = {
 		"mongodb": "core.db.MongoDB"
 	}
+	mode = mode.upper()
 	
-	dbconfig = config["database"][mode]
-	dbtype = dbconfig["type"]
+	if not (dbtype := getenv(key := f"DB_TYPE_{mode}")):
+		raise DatabaseSettingNotFound(key)
+	
+	if not (db_host := getenv(key := f"DB_HOST_URI_{mode}")):
+		raise DatabaseSettingNotFound(key)
+	
+	db_port = getenv(key := f"DB_HOST_PORT_{mode}")
 	dbclass = import_from_path(dbtype_to_class[dbtype])
-	db = dbclass(db_host=dbconfig["url"], db_port=port if (port := dbconfig["port"]) else None)
-	return db
+	client = dbclass(db_host=db_host, db_port=db_port)
+	return client
 
 def intent_generater(config, mode):
 	iconfig = config["intent"]
