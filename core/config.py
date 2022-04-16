@@ -1,7 +1,7 @@
 from os import getenv
 
 from disnake import Intents
-from exceptions import DatabaseSettingNotFound, TokenNotFound
+from exceptions import ConfigInvalid, EnvVarNotFound, TokenNotFound
 from utils.misc import import_from_path
 
 
@@ -15,9 +15,8 @@ def get_bot_token(mode: str) -> str:
 	return token
 
 def get_prefix(config, mode):
-	pconfig = config["prefix"]
+	pconfig = config["prefix"][mode]
 	ptype = pconfig["type"]
-	pconfig = pconfig[mode]
 	ptype_to_key = {
 		"string": "prefix",
 		"array": "prefixes",
@@ -25,8 +24,14 @@ def get_prefix(config, mode):
 	
 	if ptype == "function":
 		prefix = import_from_path(pconfig["function_path"])
+		config_name = f"prefix.{mode}.function_path"
 	else:
-		prefix = pconfig[ptype_to_key[ptype]]
+		key = ptype_to_key[ptype]
+		prefix = pconfig[key]
+		config_name = f"prefix.{mode}.{key}"
+	
+	if not prefix:
+		raise ConfigInvalid(config_name, "None")
 	
 	return prefix
 
@@ -60,14 +65,17 @@ def intent_generater(config, mode):
 	intent_items = iconfig["items"]
 	
 	if base_type not in {"all", "default", "none"}:
-		raise ValueError("Intent base type must be all, default or none")
+		raise ConfigInvalid("intent.base", base_type)
 	
 	base_intent = getattr(Intents, base_type)()
 	
 	try:
 		for item, value in intent_items.items():
 			setattr(base_intent, item, value)
-	except AttributeError:
-		pass # raise InvalidIntentItem(f"Invalid intent item {item}")
+	except AttributeError as e:
+		config_value = e.args[0].split("'")[-2]
+		# e.args[0] -> error message
+		# split("'")[-2] -> get attribute name that not exists
+		raise ConfigInvalid("intent.item", config_value)
 	
 	return base_intent
