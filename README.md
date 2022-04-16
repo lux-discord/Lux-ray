@@ -1,6 +1,11 @@
 # Lux-ray, A Discord Bot Write In Python
-![Minimal Support Python Version](https://img.shields.io/badge/python-3.9-blue?style=flat-square)
-
+![Minimal Support Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10-blue?style=flat-square)
+<a href="https://github.com/Euxcbsks/Lux-ray/commits/main">
+  <img src="https://img.shields.io/github/commit-activity/w/euxcbsks/Lux-ray?style=flat-square">
+</a>
+<a href="https://github.com/DisnakeDev/disnake">
+  <img src="https://img.shields.io/badge/disnake-latest-blue?style=flat-square" alt="disnake">
+</a>
 - [Lux-ray, A Discord Bot Write In Python](#lux-ray-a-discord-bot-write-in-python)
 - [Self-host](#self-host)
   - [If You Want Host Bot On Heroku](#if-you-want-host-bot-on-heroku)
