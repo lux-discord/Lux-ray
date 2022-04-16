@@ -1,53 +1,69 @@
 [cogs]
-# Cog file(s)
-# full path from root dir or bot without suffix
-# ex: cog_files/sample
-file = []
-# Cog folder(s)
-# full path from root dir of bot, suffix "/" if optional
-# ex: cog_folders/sample/
-folder = [
-	"lrb_background",
-	"lrb_command"
-]
+	file = []
+	# Cog file(s)
+	# Value should be full path from root dir of bot to file position without ".py" suffix.
+	# Ex: "cog_files/sample_cog_file"
+	
+	folder = [
+		"lrb_background",
+		"lrb_command"
+	]
+	# Cog folder(s)
+	# Value should be full path from bot root dir to folder position, suffix "/" if optional
+	# Ex: "sample_cog_folder/" or "sample_cog_folder"
 
 [intent]
-# Intent base, valid values: all, default, none
-base = "all"
-
+	base = "all"
+	# Base intent, valid values: `all`, `default`, `none`
+	
 	[intent.items]
-	# Intent item, valid keys: bans, dm_messages, dm_reactions, dm_typing, emojis, emojis_and_stickers, guild_messages, guild_reactions, guild_scheduled_events, guild_typing, guilds, integrations, invites, members, messages, presences, reactions, typing, value, voice_states, webhooks
-	# Value should be boolen(true or false)
-	# Example:
-	# dm_messages = true
-	# This will override some of the base settings
+		# Intent item, valid keys: `bans`, `dm_messages`, `dm_reactions`,
+		# `dm_typing`, `emojis`, `emojis_and_stickers`, `guild_messages`,
+		# `guild_reactions`, `guild_scheduled_events`, `guild_typing`,
+		# `guilds`, `integrations`, `invites`, `members`, `messages`,
+		# `presences`, `reactions`, `typing`, `value`, `voice_states`, `webhooks`
+		# Value should be a boolen(true or false)
+		
+		# Example:
+		# dm_messages = true
+		# This will override the `dm_messages` value to true of the base intent
 
 [prefix]
-# Prefix type, valid values: string, array, function
-# string: for SINGLE prefix
-# array: for MULTI prefix
-# function: other, ex: server custom prefix
-type = "function"
+	[prefix.PROD]
+		type = "function"
+		# Prefix type, valid values: `string`, `array`, `function`
+		# `string`: Corresponds to a single prefix.
+		# `array`: Corresponds to a multiple prefix.
+		# `function`: Corresponds to a other prefix. Ex: server custom prefix
+		
+		prefix = "l;"
+		# Used when prefix type is set to `string` or `function`.
+		# `string`: Use this setting as the prefix for all joined servers.
+		# `function`: Use this setting as the default prefix if the server has not already set it.
+		
+		prefixes = []
+		# Used when prefix type is set to `array`.
+		# If there are multiple prefixes, the longer prefix should be in the earlier position,
+		# otherwise the later prefix will not be triggered
+		
+		function_path = "core.prefix.get_prefix"
+		# Used when prefix type is set to `function`
+		# Full import path with function name from root dir of bot
+		
+		# DONT PUT YOUR FUNCTION IN ANY INTERNAL FILES!
+		# like `core.db.get_prefix`, `lrb_commands.dev.get_prefix`or `utils.toml_file.get_prefix`
+		# MAY CAUSE BOT NOT WORK!
 
-# prefix: when prefix type is string, use this setting
-#  when prefix type is "function", use this setting as default prefix
-# prefixes: when prefix type is "array", use this setting
-# function_path: when prefix type is "function", use this setting,
-#  full import path with function name from root dir of bot
-	[prefix.stable]
-	prefix = "l;"
-	prefixes = []
-	function_path = "core.prefix.get_prefix"
-	
-	[prefix.dev]
-	prefix = "l;"
-	prefixes = []
-	function_path = "core.prefix.get_prefix"
+	[prefix.DEV]
+		type = "function"
+		prefix = "l;"
+		prefixes = []
+		function_path = "core.prefix.get_prefix"
 
 [misc]
-# Owner(s) ID
-owner_ids = []
+	owner_ids = []
+	# Owner ID(s)
 
 [server]
-# Default language when join a new server
-default_lang_code = "en"
+	default_lang_code = "en"
+	# Default language when join a new server
