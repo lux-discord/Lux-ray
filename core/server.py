@@ -1,5 +1,5 @@
 from core.data import ServerData
-from core.language import GeneralLanguage, GLOBAL_DEFAULT_LANGUAGE
+from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 
 
 class Server:

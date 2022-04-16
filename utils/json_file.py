@@ -1,5 +1,5 @@
 from functools import cache
-from json import load, dump
+from json import dump, load
 
 __all__ = ["load_file", "dump_file"]
 

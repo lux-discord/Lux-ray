@@ -1,7 +1,8 @@
 from disnake import Message as Msg
 from disnake.ext.commands import command, has_permissions
-from utils.message import target_message
+
 from core.cog import GeneralCog
+from utils.message import target_message
 
 
 class Message(GeneralCog):
