@@ -35,15 +35,15 @@ class ApiEvent(GeneralCog):
             await message.channel.send(reply)
 
     """
-	# [Bug] bot won't recived event
-	@Cog.listener()
-	async def on_member_join(self, member: Member):
-		server = await self.get_server(member.guild.id)
-		
-		if auto_roles := server.role["auto_role"]:
-			roles = [member.guild.get_role(role_id) for role_id in auto_roles]
-			await member.add_roles(*roles)
-	"""
+    # [Bug] bot won't recived event
+    @Cog.listener()
+    async def on_member_join(self, member: Member):
+        server = await self.get_server(member.guild.id)
+
+        if auto_roles := server.role["auto_role"]:
+            roles = [member.guild.get_role(role_id) for role_id in auto_roles]
+            await member.add_roles(*roles)
+    """
 
 
 def setup(bot):
