@@ -38,15 +38,15 @@ def extract():
 
 def configure():
 	print("Configure...")
-	cli(configure_command, stdout=DEVNULL)
+	cli(configure_command, stdout=DEVNULL, check=True)
 	print("make install...")
-	cli(["make", "install"], stdout=DEVNULL)
+	cli(["make", "install"], stdout=DEVNULL, check=True)
 	print("Done")
 
 def cleanup():
 	print("Cleanup..")
-	cli(["rm", locale_file])
-	cli(["rm", "-r", extract_folder])
+	cli(["rm", locale_file], check=True)
+	cli(["rm", "-r", extract_folder], check=True)
 	print("Done")
 
 def main():
