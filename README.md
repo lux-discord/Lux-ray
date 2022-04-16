@@ -1,11 +1,9 @@
 # Lux-ray, A Discord Bot Write In Python
 ![Minimal Support Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10-blue?style=flat-square)
-<a href="https://github.com/Euxcbsks/Lux-ray/commits/main">
-  <img src="https://img.shields.io/github/commit-activity/w/euxcbsks/Lux-ray?style=flat-square">
-</a>
-<a href="https://github.com/DisnakeDev/disnake">
-  <img src="https://img.shields.io/badge/disnake-latest-blue?style=flat-square" alt="disnake">
-</a>
+[![Code style: black](https://img.shields.io/badge/code%20style-black-blue.svg?style=flat-square)](https://github.com/psf/black)
+[![Commit activity](https://img.shields.io/github/commit-activity/w/euxcbsks/Lux-ray?style=flat-square)](https://github.com/Euxcbsks/Lux-ray/commits/main)
+[![disnake latest](https://img.shields.io/badge/disnake-latest-blue?style=flat-square)](https://github.com/DisnakeDev/disnake)
+
 - [Lux-ray, A Discord Bot Write In Python](#lux-ray-a-discord-bot-write-in-python)
 - [Self-host](#self-host)
   - [If You Want Host Bot On Heroku](#if-you-want-host-bot-on-heroku)
@@ -16,6 +14,7 @@
   - [Setup Environment Variable](#setup-environment-variable)
   - [Invite Your Bot](#invite-your-bot)
   - [Run Your Bot On Local Machine](#run-your-bot-on-local-machine)
+
 # Self-host
 ## If You Want Host Bot On Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/Euxcbsks/Lux-ray)
