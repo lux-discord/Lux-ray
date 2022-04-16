@@ -105,16 +105,13 @@ class ConfigInvalid(LRBError):
 	def __str__(self) -> str:
 		return f"Invalid config, {self.config_name} can not be {self.config_value}"
 
-class TokenNotFound(LRBError):
-	def __init__(self, mode: str):
-		self.mode = mode
+class EnvVarNotFound(LRBError):
+	def __init__(self, variable_name):
+		self.variable_name = variable_name
 	
 	def __str__(self) -> str:
-		return f"Bot token not found, 'BOT_TOKEN_ALL' or 'BOT_TOKEN_{self.mode}' must be set in environment variables"
+		return f"Environment variable `{self.variable_name}` not found"
 
-class DatabaseSettingNotFound(LRBError):
-	def __init__(self, setting_item) -> None:
-		self.setting_item = setting_item
-	
-	def __str__(self):
-		return f"Database setting not found, '{self.setting_item}' must be set in environment variable"
+class TokenNotFound(EnvVarNotFound):
+	def __str__(self) -> str:
+		return f"Bot token not found, `BOT_TOKEN_ALL` or `BOT_TOKEN_{self.variable_name}` must be set in environment variables"
