@@ -19,8 +19,9 @@ def main():
 @main.command()
 @option("-M", "--mode", default="dev", show_default=True, help="Which mode should bot run on")
 @option("-C", "--config-path", default="bot-config.toml", show_default=True, type=ClickPath(exists=True, dir_okay=False, resolve_path=True), help="Path of config file")
-def run(mode="dev", config_path="bot-config.toml"):
+def run(mode:str="dev", config_path="bot-config.toml"):
 	# Prepare
+	mode = mode.upper()
 	config = get_bot_config(config_path)
 	token = get_bot_token(mode)
 	bot = setup_bot(config, mode)
@@ -29,7 +30,7 @@ def run(mode="dev", config_path="bot-config.toml"):
 	load_cogs(bot, cogs=config["cogs"]["file"], cog_folders=config["cogs"]["folder"])
 	
 	# Run
-	if mode == "stable":
+	if mode == "PROD":
 		from keep_alive import keep_alive
 		keep_alive()
 	bot.run(token)
