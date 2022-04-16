@@ -1,9 +1,10 @@
-from subprocess import run as cli
-from subprocess import DEVNULL
 from os import chdir
 from pathlib import Path
-from requests import get as rget
+from subprocess import DEVNULL
+from subprocess import run as cli
 from tarfile import open as topen
+
+from requests import get as rget
 
 python_version = "3.9.12"
 remote_url = (
