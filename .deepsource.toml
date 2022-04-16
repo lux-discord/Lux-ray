@@ -1,7 +1,5 @@
 version = 1
 
-exclude_patterns = ["keep_alive.py"]
-
 [[analyzers]]
 name = "python"
 enabled = true
@@ -11,4 +9,8 @@ enabled = true
 
 [[transformers]]
 name = "black"
+enabled = true
+
+[[transformers]]
+name = "isort"
 enabled = true
