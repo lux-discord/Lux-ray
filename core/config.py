@@ -1,6 +1,7 @@
 from os import getenv
 
 from disnake import Intents
+
 from exceptions import ConfigInvalid, EnvVarNotFound, TokenNotFound
 from utils.misc import import_from_path
 

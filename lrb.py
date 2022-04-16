@@ -1,10 +1,12 @@
+from pathlib import Path
 from sys import argv
 
-from pathlib import Path
-from click import Path as ClickPath, group, option
+from click import Path as ClickPath
+from click import group, option
+from dotenv import load_dotenv
+
 from core.config import get_bot_token
 from core.setup import get_bot_config, setup_bot
-from dotenv import load_dotenv
 from utils.cog import load_cogs
 
 ENV_FILE_PATH = Path(".env")
