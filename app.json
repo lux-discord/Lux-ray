@@ -31,6 +31,14 @@
     "DB_HOST_PROD":{
       "description":"Database host uri use when run on `production` mode."
     },
+    "DB_PORT_DEV": {
+      "description":"Database host port use when run on `dev` mode. (optional)",
+      "required":false
+    },
+    "DB_PORT_PROD": {
+      "description":"Database host port use when run on `production` mode. (optional)",
+      "required":false
+    },
     "DB_TYPE_DEV":{
       "description":"Database type use when run on `dev` mode. (optional)\nCurrent only support `mongodb` type.",
       "required":false
