@@ -1,1 +1,1 @@
-web: python lrb.py run --mode=stable
+web: python lrb.py run --mode=PROD
