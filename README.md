@@ -18,7 +18,9 @@
 ## If You Want Host Bot On Replit
 1. Import repo from github
 2. Setup python env(need 5~10 min)
+```Shell
 > python setup_python3.8+.py
+```
 
 ## Setup Database
 *Current only support MongoDB*
@@ -68,8 +70,14 @@ Or you can follow the step below
 
 ## Run Your Bot On Local Machine
 1. Install bot requirements
+```Shell
 > python3 -m pip install -r "requirements.txt"
+```
 2. Launch MongoDB(if your `DB_HOST_DEV` is set to `localhost:271017`)
+```Shell
 > mongod
+```
 3. Launch bot
+```Shell
 > python3 lrb.py
+```
