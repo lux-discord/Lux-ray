@@ -47,8 +47,6 @@ class Dev(GeneralCog):
 		
 		return await self.send_info(ctx, "Successfully reloaded all cogs")
 	
-	#@command()
-	#@is_owner()
 	async def test(self, ctx, *args):
 		for cog in self.bot.cogs.values():
 			await ctx.send(f"`{cog.__module__}`")
