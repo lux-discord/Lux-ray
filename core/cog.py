@@ -1,8 +1,8 @@
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
-from core.config import get_default_lang_code, get_default_prefix
-from core.data import PrefixData, ServerData
+from core.config import get_default_lang_code
+from core.data import ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
 from utils.token import Token
