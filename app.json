@@ -14,37 +14,37 @@
       "description":"Which port should Flask run on"
     },
     "TOKEN_ALL":{
-      "description":"Bot token use when run on both `dev` and `production` mode. (optional)\nWILL OVERWRITE OTHER TOKEN SETTINGS",
+      "description":"Bot token use when run on both `DEV` and `PROD`(production) mode. (optional)\nWILL OVERWRITE OTHER TOKEN SETTINGS",
       "required":false
     },
     "TOKEN_DEV":{
-      "description":"Bot token use when run on `dev` mode. (optional)",
+      "description":"Bot token use when run on `DEV` mode. (optional)",
       "required":false
     },
     "TOKEN_PROD":{
-      "description":"Bot token use when run on `production` mode."
+      "description":"Bot token use when run on `PROD`(production) mode."
     },
     "DB_HOST_DEV":{
-      "description":"Database host uri use when run on `dev` mode. (optional)",
+      "description":"Database host uri use when run on `DEV` mode. (optional)",
       "required":false
     },
     "DB_HOST_PROD":{
-      "description":"Database host uri use when run on `production` mode."
+      "description":"Database host uri use when run on `PROD`(production) mode."
     },
     "DB_PORT_DEV": {
-      "description":"Database host port use when run on `dev` mode. (optional)",
+      "description":"Database host port use when run on `DEV` mode. (optional)",
       "required":false
     },
     "DB_PORT_PROD": {
-      "description":"Database host port use when run on `production` mode. (optional)",
+      "description":"Database host port use when run on `PROD`(production) mode. (optional)",
       "required":false
     },
     "DB_TYPE_DEV":{
-      "description":"Database type use when run on `dev` mode. (optional)\nCurrent only support `mongodb` type.",
+      "description":"Database type use when run on `DEV` mode. (optional)\nCurrent only support `mongodb` type.",
       "required":false
     },
     "DB_TYPE_PROD":{
-      "description":"Database type use when run on `production` mode.\nCurrent only support `mongodb` type."
+      "description":"Database type use when run on `PROD`(production) mode.\nCurrent only support `mongodb` type."
     }
   },
   "buildpacks":[
