@@ -1,0 +1,13 @@
+{
+    "diffEditor.renderSideBySide": false,
+    "editor.minimap.enabled": false,
+    "python.analysis.extraPaths": [
+        "/root/code/Lux-ray/.venv/lib/python3.9/site-packages/"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/root/code/Lux-ray/.venv/lib/python3.9/site-packages/"
+    ],
+    "python.pythonPath": "/root/code/Lux-ray/.venv/bin/python",
+    "workbench.activityBar.visible": false,
+    "workbench.statusBar.visible": false
+}
