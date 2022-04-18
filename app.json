@@ -8,7 +8,7 @@
     "Bot"
   ],
   "repository":"https://github.com/Euxcbsks/Lux-ray",
-  "logo":"https://raw.githubusercontent.com/Euxcbsks/Lux-ray/main/img/Lux-ray-bot.png?s=200",
+  "logo":"https://imgur.com/a/rfoayAJ",
   "env":{
     "PORT":{
       "description":"Which port should Flask run on"
