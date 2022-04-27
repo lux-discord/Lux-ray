@@ -54,7 +54,7 @@ def get_db_client(mode: str):
     if not (db_host := getenv(key := f"DB_HOST_{mode}")):
         raise EnvVarNotFound(key)
 
-    db_port = getenv(f"DB_PORT_{mode}")
+    db_port = int(port) if (port := getenv(f"DB_PORT_{mode}")) else None
     dbclass = import_from_path(dbtype_to_class[dbtype])
     client = dbclass(db_host=db_host, db_port=db_port)
     return client
