@@ -24,6 +24,9 @@ class MongoDB:
         self.server = self.bot_db["server"]
         self.prefix = self.bot_db["prefix"]
 
+    def __getitem__(self, name):
+        return self.bot_db[name]
+
     # Prefix
     async def find_prefix(self, server_id: int) -> Optional[str]:
         """
