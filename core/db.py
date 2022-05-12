@@ -56,7 +56,7 @@ class MongoDB:
 
         Return type
         -----------
-        pumongo.results.InsertOneResult
+        pymongo.results.InsertOneResult
         """
         return await self.prefix.insert_one(prefix_data.to_dict())
 
