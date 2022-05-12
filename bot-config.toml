@@ -56,7 +56,7 @@
 
 	[prefix.DEV]
 		type = "function"
-		prefix = "l;"
+		prefix = "l:"
 		prefixes = []
 		function_path = "core.prefix.get_prefix"
 
