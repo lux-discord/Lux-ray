@@ -11,12 +11,6 @@ if TYPE_CHECKING:
     from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 
-class DataProfile:
-    def __init__(self, category: str, filter: dict) -> None:
-        self.category = category
-        self.filter = filter
-
-
 class MongoDB:
     def __init__(self, db_host, *, db_port=None) -> None:
         self.client = AsyncIOMotorClient(host=db_host, port=db_port)

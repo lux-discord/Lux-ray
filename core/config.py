@@ -46,7 +46,7 @@ def get_default_lang_code(config, mode):
 
 
 def get_db_client(mode: str):
-    dbtype_to_class = {"mongodb": "core.db.MongoDB"}
+    dbtype_to_class = {"mongodb": "core.database.mongodb.MongoDB"}
 
     if not (dbtype := getenv(key := f"DB_TYPE_{mode}")):
         raise EnvVarNotFound(key)
