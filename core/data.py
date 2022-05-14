@@ -63,8 +63,8 @@ class ServerData(BaseData):
     def __init__(self, **items):
         super().__init__(**items)
         self._lang_code: str = self.items["lang_code"]
-        self._role: dict[str, list] = self.items["role"]
-        self._keyword: dict[str, dict[str, str]] = self.items["keyword"]
+        self._role: dict[str, list] = self.items.get("role")
+        self._keyword: dict[str, dict[str, str]] = self.items.get("keyword")
 
     @property
     def lang_code(self):
@@ -75,20 +75,12 @@ class ServerData(BaseData):
         return self._role
 
     @property
-    def role_admin(self):
-        return self._role["admin"]
-
-    @property
-    def role_mod(self):
-        return self._role["mod"]
-
-    @property
     def role_member(self):
-        return self._role["member"]
+        return self._role["member"] if self._role else None
 
     @property
     def role_auto(self):
-        return self._role["auto_role"]
+        return self._role["auto_role"] if self._role else None
 
     @property
     def keyword(self) -> Optional[dict[str, dict[str, str]]]:
@@ -96,8 +88,8 @@ class ServerData(BaseData):
 
     @property
     def keyword_replys(self):
-        return self._keyword["replys"]
+        return self._keyword["replys"] if self._keyword else None
 
     @property
     def keyword_aliases(self):
-        return self._keyword["aliases"]
+        return self._keyword["aliases"] if self._keyword else None
