@@ -75,24 +75,24 @@ class ServerData(BaseData):
         return self._role
 
     @property
-    def admin(self):
+    def role_admin(self):
         return self._role["admin"]
 
     @property
-    def mod(self):
+    def role_mod(self):
         return self._role["mod"]
 
     @property
-    def member(self):
+    def role_member(self):
         return self._role["member"]
+
+    @property
+    def role_auto(self):
+        return self._role["auto_role"]
 
     @property
     def keyword(self):
         return self._keyword
-
-    @property
-    def auto_role(self):
-        return self._role["auto_role"]
 
     @property
     def keyword_replys(self):
