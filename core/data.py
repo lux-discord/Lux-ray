@@ -71,7 +71,7 @@ class ServerData(BaseData):
         return self._lang_code
 
     @property
-    def role(self) -> Optional[dict[str, list]]:
+    def role(self) -> "Optional[dict[str, list]]":
         return self._role
 
     @property
@@ -83,7 +83,7 @@ class ServerData(BaseData):
         return self._role["auto_role"] if self._role else None
 
     @property
-    def keyword(self) -> Optional[dict[str, dict[str, str]]]:
+    def keyword(self) -> "Optional[dict[str, dict[str, str]]]":
         return self._keyword
 
     @property
