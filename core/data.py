@@ -21,8 +21,16 @@ class BaseData:
         if require:
             raise ValueError(f"Require items: {', '.join(require)}")
 
-        self.items: dict[str, Any] = self.OPTIONAL_ITEMS | items
-        self.id: int = items["_id"]
+        self._items: dict[str, Any] = self.OPTIONAL_ITEMS | items
+        self._id: int = items["_id"]
+
+    @property
+    def items(self):
+        return self._items
+
+    @property
+    def id(self):
+        return self._id
 
     @classmethod
     def from_items(cls, items: dict):
@@ -37,7 +45,11 @@ class PrefixData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.prefix = self.items["prefix"]
+        self._prefix = self.items["prefix"]
+
+    @property
+    def prefix(self):
+        return self._prefix
 
 
 class ServerData(BaseData):
@@ -50,6 +62,42 @@ class ServerData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.lang_code: str = self.items["lang_code"]
-        self.role: dict = self.items["role"]
-        self.keyword: dict = self.items["keyword"]
+        self._lang_code: str = self.items["lang_code"]
+        self._role: dict[str, set] = self.items["role"]
+        self._keyword: dict = self.items["keyword"]
+
+    @property
+    def lang_code(self):
+        return self._lang_code
+
+    @property
+    def role(self):
+        return self._role
+
+    @property
+    def admin(self):
+        return self._role["admin"]
+
+    @property
+    def mod(self):
+        return self._role["mod"]
+
+    @property
+    def member(self):
+        return self._role["member"]
+
+    @property
+    def keyword(self):
+        return self._keyword
+
+    @property
+    def auto_role(self):
+        return self._role["auto_role"]
+
+    @property
+    def keyword_replys(self):
+        return self._keyword["replys"]
+
+    @property
+    def keyword_aliases(self):
+        return self._keyword["aliases"]
