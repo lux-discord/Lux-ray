@@ -1,7 +1,6 @@
 # All folder start with ".", except ".github", ".vscode"
 .*/
 !.github/
-!.vscode
 
 # Cache file
 *.pyc

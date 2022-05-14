@@ -1,8 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "/root/code/Lux-ray/.venv/lib/python3.9/site-packages/"
-    ],
-    "python.autoComplete.extraPaths": [
-        "/root/code/Lux-ray/.venv/lib/python3.9/site-packages/"
-    ]
-}
