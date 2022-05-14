@@ -4,6 +4,7 @@ from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 
 class Server:
     def __init__(self, server_data: ServerData) -> None:
+        self._data = server_data
         self._items = server_data.items
         self._id = server_data.id
         self._lang_code = server_data.lang_code
@@ -49,6 +50,10 @@ class Server:
 
         language = GeneralLanguage(self._lang_code)
         return language.request_message(message)
+
+    @property
+    def data(self):
+        return self._data
 
     @property
     def lang_code(self):
