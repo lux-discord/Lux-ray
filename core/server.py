@@ -5,10 +5,10 @@ from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 class Server:
     def __init__(self, server_data: ServerData) -> None:
         self.items = server_data.items
-        self.id: int = server_data.id
-        self.lang_code: str = server_data.lang_code
-        self.role: dict = server_data.role
-        self.keyword: dict = server_data.keyword
+        self.id = server_data.id
+        self.lang_code = server_data.lang_code
+        self.role = server_data.role
+        self.keyword = server_data.keyword
 
     def update(self, **update):
         """
