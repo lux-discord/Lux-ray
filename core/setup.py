@@ -1,7 +1,7 @@
 from os import getenv
 from pathlib import Path
 
-from tomli import load
+from tomli import load, loads
 
 from core.bot import LuxRay
 from core.config import get_prefix, intent_generater
@@ -16,7 +16,7 @@ def get_bot_config(config_path) -> dict:
     if Path(config_path).exists():
         with open(config_path, "rb") as f:
             return load(f)
-    return getenv("CONFIG")
+    return loads(getenv("CONFIG"))
 
 
 def setup_bot(config, mode):
