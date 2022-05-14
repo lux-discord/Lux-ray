@@ -33,7 +33,7 @@ def main():
     "--config-path",
     default="bot-config.toml",
     show_default=True,
-    type=ClickPath(exists=True, dir_okay=False, resolve_path=True),
+    type=ClickPath(dir_okay=False, resolve_path=True),
     help="Path of config file",
 )
 def run(mode: str = "dev", config_path="bot-config.toml"):
