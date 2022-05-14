@@ -4,11 +4,11 @@ from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 
 class Server:
     def __init__(self, server_data: ServerData) -> None:
-        self.items = server_data.items
-        self.id = server_data.id
-        self.lang_code = server_data.lang_code
-        self.role = server_data.role
-        self.keyword = server_data.keyword
+        self._items = server_data.items
+        self._id = server_data.id
+        self._lang_code = server_data.lang_code
+        self._role = server_data.role
+        self._keyword = server_data.keyword
 
     def update(self, **update):
         """
@@ -40,11 +40,23 @@ class Server:
         -----------
         str
         """
-        if self.lang_code == GLOBAL_DEFAULT_LANGUAGE:
+        if self._lang_code == GLOBAL_DEFAULT_LANGUAGE:
             return message
 
-        language = GeneralLanguage(self.lang_code)
+        language = GeneralLanguage(self._lang_code)
         return language.request_message(message)
+
+    @property
+    def lang_code(self):
+        return self._lang_code
+
+    @property
+    def role(self):
+        return self._role
+
+    @property
+    def keyword(self):
+        return self._keyword
 
     async def _send(self, ctx, message: str, *, delete_after=None, **_format):
         message = self.translate(message)
