@@ -55,9 +55,9 @@ class PrefixData(BaseData):
 class ServerData(BaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = {
-        "role": {"admin": [], "mod": [], "member": [], "auto_role": []},
-        "channel": {"on_member_join": int(), "on_member_leave": int()},
-        "keyword": {"replys": [], "aliases": {}},
+        "role": {"admin": set(), "mod": set(), "member": set(), "auto_role": set()},
+        "channel": {"on_member_join": 0, "on_member_leave": 0},
+        "keyword": {"replys": {}, "aliases": {}},
     }
 
     def __init__(self, **items):
