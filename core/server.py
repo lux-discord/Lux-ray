@@ -21,7 +21,7 @@ class Server:
 
         Return
         ------
-        A `ServerData` instance with `self.items | update`
+        A `ServerData` instance build with `self.items | update`
 
         Return type
         -----------
