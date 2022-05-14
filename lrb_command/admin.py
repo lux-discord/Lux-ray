@@ -43,8 +43,7 @@ class Admin(GeneralCog):
         server = await self.get_server(ctx.guild.id)
 
         if not roles:
-            server.role["auto_role"] = []
-            update = server.update(role=server.role)
+            update = server.update(role=[])
             await self.update_server(update)
             return await server.send_info(ctx, "Auto-roles cleared")
 
@@ -53,9 +52,7 @@ class Admin(GeneralCog):
         if set(server.role["auto_role"]) == role_ids:
             return await server.send_warning(ctx, "Auto-role did not change")
 
-        # Need improve
-        server.role["auto_role"] = list(role_ids)
-        update = server.update(role=server.role)
+        update = server.update(role=list(role_ids))
         await self.update_server(update)
         await self.send_info(
             ctx,
