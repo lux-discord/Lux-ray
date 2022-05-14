@@ -55,7 +55,7 @@ class PrefixData(BaseData):
 class ServerData(BaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = {
-        "role": {"admin": set(), "mod": set(), "member": set(), "auto_role": set()},
+        "role": {"admin": [], "mod": [], "member": [], "auto_role": []},
         "channel": {"on_member_join": 0, "on_member_leave": 0},
         "keyword": {"replys": {}, "aliases": {}},
     }
@@ -64,7 +64,7 @@ class ServerData(BaseData):
         super().__init__(**items)
         self._lang_code: str = self.items["lang_code"]
         self._role: dict[str, set] = self.items["role"]
-        self._keyword: dict = self.items["keyword"]
+        self._keyword: dict[str, dict] = self.items["keyword"]
 
     @property
     def lang_code(self):
