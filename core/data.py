@@ -64,7 +64,7 @@ class ServerData(BaseData):
         super().__init__(**items)
         self._lang_code: str = self.items["lang_code"]
         self._role: dict[str, list] = self.items["role"]
-        self._keyword: dict[str, dict] = self.items["keyword"]
+        self._keyword: dict[str, dict[str, str]] = self.items["keyword"]
 
     @property
     def lang_code(self):
