@@ -8,6 +8,7 @@ class Server:
         self.id = server_data.id
         self.lang_code = server_data.lang_code
         self.role = server_data.role
+        self.keyword = server_data.keyword
 
     def update(self, **update):
         """
