@@ -8,7 +8,11 @@ class Server:
         self._id = server_data.id
         self._lang_code = server_data.lang_code
         self._role = server_data.role
+        self._role_member = server_data.role_member
+        self._role_auto = server_data.role_auto
         self._keyword = server_data.keyword
+        self._keyword_aliases = server_data.keyword_aliases
+        self._keyword_replys = server_data.keyword_replys
 
     def update(self, **update):
         """
@@ -55,8 +59,20 @@ class Server:
         return self._role
 
     @property
-    def keyword(self):
-        return self._keyword
+    def role_member(self):
+        return self._role_member
+
+    @property
+    def role_auto(self):
+        return self._role_auto
+
+    @property
+    def keyword_replys(self):
+        return self._keyword_replys
+
+    @property
+    def keyword_aliases(self):
+        return self._keyword_aliases
 
     async def _send(self, ctx, message: str, *, delete_after=None, **_format):
         message = self.translate(message)
