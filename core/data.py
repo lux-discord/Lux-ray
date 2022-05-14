@@ -1,3 +1,9 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Any
+
+
 class BaseData:
     REQUIRE_ITEMS = []
     OPTIONAL_ITEMS = {}
@@ -15,8 +21,8 @@ class BaseData:
         if require:
             raise ValueError(f"Require items: {', '.join(require)}")
 
-        self.items = self.OPTIONAL_ITEMS | items
-        self.id = items["_id"]
+        self.items: dict[str, Any] = self.OPTIONAL_ITEMS | items
+        self.id: int = items["_id"]
 
     @classmethod
     def from_items(cls, items: dict):
@@ -44,6 +50,6 @@ class ServerData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.lang_code = self.items["lang_code"]
-        self.role = self.items["role"]
-        self.keyword = self.items["keyword"]
+        self.lang_code: str = self.items["lang_code"]
+        self.role: dict = self.items["role"]
+        self.keyword: dict = self.items["keyword"]
