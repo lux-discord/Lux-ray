@@ -49,7 +49,7 @@ class Admin(GeneralCog):
 
         role_ids = {role.id for role in roles}
 
-        if set(server.role["auto_role"]) == role_ids:
+        if set(server.role_auto) == role_ids:
             return await server.send_warning(ctx, "Auto-role did not change")
 
         update = server.update(role=list(role_ids))
