@@ -1,3 +1,6 @@
+from os import getenv
+from pathlib import Path
+
 from tomli import load
 
 from core.bot import LuxRay
@@ -10,8 +13,10 @@ def get_loading_message() -> list:
 
 
 def get_bot_config(config_path) -> dict:
-    with open(config_path, "rb") as f:
-        return load(f)
+    if Path(config_path).exists():
+        with open(config_path, "rb") as f:
+            return load(f)
+    return getenv("CONFIG")
 
 
 def setup_bot(config, mode):
