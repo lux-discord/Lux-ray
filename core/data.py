@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Any
+    from typing import Any, Optional
 
 
 class BaseData:
@@ -71,7 +71,7 @@ class ServerData(BaseData):
         return self._lang_code
 
     @property
-    def role(self):
+    def role(self) -> Optional[dict[str, list]]:
         return self._role
 
     @property
@@ -91,7 +91,7 @@ class ServerData(BaseData):
         return self._role["auto_role"]
 
     @property
-    def keyword(self):
+    def keyword(self) -> Optional[dict[str, dict[str, str]]]:
         return self._keyword
 
     @property
