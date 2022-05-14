@@ -72,6 +72,10 @@ class Server:
         return self._role_auto
 
     @property
+    def keyword(self):
+        return self._keyword
+
+    @property
     def keyword_replys(self):
         return self._keyword_replys
 
