@@ -39,9 +39,11 @@ class ServerData(BaseData):
     OPTIONAL_ITEMS = {
         "role": {"admin": [], "mod": [], "member": [], "auto_role": []},
         "channel": {"on_member_join": int(), "on_member_leave": int()},
+        "keyword": {"replys": [], "aliases": {}},
     }
 
     def __init__(self, **items):
         super().__init__(**items)
         self.lang_code = self.items["lang_code"]
         self.role = self.items["role"]
+        self.keyword = self.items["keyword"]
