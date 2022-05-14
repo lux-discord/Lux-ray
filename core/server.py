@@ -12,21 +12,18 @@ class Server:
 
     def update(self, **update):
         """
-        Update attribute and return a ServerData with updated `self.items`
+        Generate a `ServerData` instance with `update`
 
         Return
         ------
-        A ServerData instance base on updated `self.items`
+        A `ServerData` instance with `self.items | update`
 
         Return type
         -----------
         `core.data.ServerData`
         """
-        for item, value in update.items():
-            setattr(self, item, value)
-
-        self.items |= update
-        return ServerData.from_items(self.items)
+        new_items = self._items | update
+        return ServerData.from_items(new_items)
 
     def translate(self, message):
         """
