@@ -1,4 +1,4 @@
-# from disnake import Member
+from disnake import Member
 from disnake.ext.commands.cog import Cog
 
 from core.cog import GeneralCog
@@ -36,10 +36,9 @@ class ApiEvent(GeneralCog):
     async def on_member_join(self, member: Member):
         server = await self.get_server(member.guild.id)
 
-        if auto_roles := server.role["auto_role"]:
+        if auto_roles := server.role_auto:
             roles = [member.guild.get_role(role_id) for role_id in auto_roles]
             await member.add_roles(*roles)
-    """
 
 
 def setup(bot):
