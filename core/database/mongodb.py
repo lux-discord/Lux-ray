@@ -22,7 +22,7 @@ class MongoDB:
         return self.bot_db[name]
 
     # Prefix
-    async def find_prefix(self, server_id: int) -> Optional[str]:
+    async def find_prefix(self, server_id: int) -> "Optional[str]":
         """
         Find prefix by server id
 
@@ -42,7 +42,7 @@ class MongoDB:
         doc = await self.prefix.find_one({"_id": server_id})
         return doc["prefix"] if doc else None
 
-    async def insert_prefix(self, prefix_data: PrefixData) -> InsertOneResult:
+    async def insert_prefix(self, prefix_data: PrefixData) -> "InsertOneResult":
         """
         Insert prefix
 
@@ -57,7 +57,7 @@ class MongoDB:
         """
         return await self.prefix.insert_one(prefix_data.to_dict())
 
-    async def update_prefix(self, update: PrefixData) -> UpdateResult:
+    async def update_prefix(self, update: PrefixData) -> "UpdateResult":
         """
         Update prefix
 
@@ -73,7 +73,7 @@ class MongoDB:
         _update = {"$set": {"prefix": update.prefix}}
         return await self.prefix.update_one({"_id": update.id}, _update)
 
-    async def delete_prefix(self, server_id: int) -> DeleteResult:
+    async def delete_prefix(self, server_id: int) -> "DeleteResult":
         """
         Delete prefix
 
@@ -89,7 +89,7 @@ class MongoDB:
         return await self.prefix.delete_one({"_id": server_id})
 
     # Server
-    async def find_server(self, server_id: int) -> Optional[dict]:
+    async def find_server(self, server_id: int) -> "Optional[dict]":
         """
         Find server by server id
 
@@ -108,7 +108,7 @@ class MongoDB:
         """
         return await self.server.find_one({"_id": server_id})
 
-    async def insert_server(self, server_data: ServerData) -> InsertOneResult:
+    async def insert_server(self, server_data: ServerData) -> "InsertOneResult":
         """
         Argument
         --------
@@ -124,7 +124,7 @@ class MongoDB:
         """
         return await self.server.insert_one(server_data.to_dict())
 
-    async def update_server(self, update: ServerData) -> UpdateResult:
+    async def update_server(self, update: ServerData) -> "UpdateResult":
         """
         Update server
 
@@ -140,7 +140,7 @@ class MongoDB:
         _update = {"$set": update.to_dict()}
         return await self.server.update_one({"_id": update.id}, _update)
 
-    async def delete_server(self, server_id: int) -> DeleteResult:
+    async def delete_server(self, server_id: int) -> "DeleteResult":
         """
         Delete server data
 
