@@ -1,5 +1,4 @@
-from core.config import get_db_client
-from core.setup import get_bot_config
+from core.config import Config
 
 DEFAULT_PREFIX_VALIDATOR = {
     "$jsonSchema": {
@@ -59,8 +58,8 @@ def get_default_value():
 
 
 def setup_db(config_path, mode):
-    config = get_bot_config(config_path)
-    db_client = get_db_client(config, mode)
+    config = Config(config_path, mode)
+    db_client = config.get_database_client()
     return db_client["discord-bot"]
 
 

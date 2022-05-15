@@ -5,8 +5,8 @@ from click import Path as ClickPath
 from click import group, option
 from dotenv import load_dotenv
 
-from core.config import get_bot_token
-from core.setup import get_bot_config, setup_bot
+from core.bot import LuxRay
+from core.config import Config
 from utils.cog import load_cogs
 
 ENV_FILE_PATH = Path(".env")
@@ -37,21 +37,18 @@ def main():
     help="Path of config file",
 )
 def run(mode: str = "dev", config_path="bot-config.toml"):
-    # Prepare
     mode = mode.upper()
-    config = get_bot_config(config_path)
-    token = get_bot_token(mode)
-    bot = setup_bot(config, mode)
+    config = Config(config_path, mode)
+    bot = LuxRay(config)
 
-    # Load cogs
-    load_cogs(bot, cogs=config["cogs"]["file"], cog_folders=config["cogs"]["folder"])
+    load_cogs(bot, cogs=config.cog_files, cog_folders=config.cog_folders)
 
-    # Run
+    # Create a web servivce
     if mode == "PROD":
         from keep_alive import keep_alive
 
         keep_alive()
-    bot.run(token)
+    bot.run(config.bot_token)
 
 
 if len(argv) == 1:

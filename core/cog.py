@@ -1,7 +1,6 @@
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
-from core.config import get_default_lang_code
 from core.data import ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
@@ -89,7 +88,7 @@ class GeneralCog(Cog):
         else:
             server_data = ServerData(
                 _id=server_id,
-                lang_code=get_default_lang_code(self.bot.config, self.bot.mode),
+                lang_code=self.bot.config.default_lang_code,
             )
             await self.insert_server(server_data)
 

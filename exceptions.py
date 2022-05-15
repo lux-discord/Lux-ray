@@ -118,16 +118,3 @@ class ConfigInvalid(LRBError):
 
     def __str__(self) -> str:
         return f"Invalid config, {self.config_name} can not be {self.config_value}"
-
-
-class EnvVarNotFound(LRBError):
-    def __init__(self, variable_name):
-        self.variable_name = variable_name
-
-    def __str__(self) -> str:
-        return f"Environment variable `{self.variable_name}` not found"
-
-
-class TokenNotFound(EnvVarNotFound):
-    def __str__(self) -> str:
-        return f"Bot token not found, `BOT_TOKEN_ALL` or `BOT_TOKEN_{self.variable_name}` must be set in environment variables"
