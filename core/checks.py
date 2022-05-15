@@ -1,6 +1,5 @@
 from disnake import Permissions
-
-from exceptions import MissingPermissions
+from disnake.ext.commands import MissingPermissions
 
 
 def has_channel_permissions(ctx, channel, **perms: bool):

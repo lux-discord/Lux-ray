@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from exceptions import LanguageNotSupport
+from core.exceptions import LanguageNotSupport
 from utils.toml_file import load_file
 
 GLOBAL_LOCALES_DIR = Path("locales")

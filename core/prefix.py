@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from core.data import PrefixData
-from exceptions import ConfigInvalid
+from core.exceptions import ConfigInvalid
 
 if TYPE_CHECKING:
     from core.bot import LuxRay

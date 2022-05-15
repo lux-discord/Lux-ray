@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from disnake import Intents
 from tomli import load, loads
 
-from exceptions import ConfigInvalid
+from core.exceptions import ConfigInvalid
 from utils.misc import import_from_path
 
 if TYPE_CHECKING:

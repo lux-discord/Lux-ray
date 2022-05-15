@@ -4,7 +4,7 @@ from disnake.ext.commands.context import Context
 from disnake.message import DeletedReferencedMessage, Message
 
 from core.checks import has_channel_permissions
-from exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
+from core.exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 
 
 async def resolve_message_link(bot: Bot, message_link: str):
