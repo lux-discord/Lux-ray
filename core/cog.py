@@ -4,13 +4,11 @@ from core.bot import LuxRay
 from core.data import ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
-from utils.token import Token
 
 
 class GeneralCog(Cog):
     def __init__(self, bot: LuxRay) -> None:
         self.bot = bot
-        self.token = Token
 
         # Shortcuts of db
         self.db = bot.db
