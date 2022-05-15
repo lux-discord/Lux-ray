@@ -12,8 +12,8 @@ if TYPE_CHECKING:
 
 
 class MongoDB:
-    def __init__(self, db_host, *, db_port=None) -> None:
-        self.client = AsyncIOMotorClient(host=db_host, port=db_port)
+    def __init__(self, host, *, port=None) -> None:
+        self.client = AsyncIOMotorClient(host=host, port=port)
         self.bot_db: Database = self.client["discord-bot"]
         self.server = self.bot_db["server"]
         self.prefix = self.bot_db["prefix"]
