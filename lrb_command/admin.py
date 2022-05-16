@@ -1,5 +1,5 @@
+from disnake import Role
 from disnake.ext.commands import command, has_guild_permissions
-from disnake.role import Role
 
 from core.cog import GeneralCog
 from core.data import PrefixData
