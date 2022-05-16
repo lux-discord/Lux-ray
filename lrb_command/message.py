@@ -1,5 +1,6 @@
+from disnake import ApplicationCommandInteraction
 from disnake import Message as Msg
-from disnake.ext.commands import command, has_permissions
+from disnake.ext.commands import command, has_permissions, slash_command
 
 from core.cog import GeneralCog
 from utils.message import target_message
@@ -68,6 +69,98 @@ class Message(GeneralCog):
     async def delete_message(self, ctx, amount=1):
         await ctx.channel.purge(limit=amount + 1)
         await self.send_info(ctx, "`{amount}` message(s) deleted", amount=amount)
+
+    # Internal logic
+    async def __set_keyword_reply(self, guild_id: int, keywords: dict[str, str]):
+        server = await self.get_server(guild_id)
+        _keywords = server.keywords or {}
+        await self.update_server(server.update(keywords=_keywords | keywords))
+
+    async def __del_keyword_reply(self, guild_id: int, *keywords: str):
+        server = await self.get_server(guild_id)
+        _keywords = server.keywords or {}
+        [_keywords.pop(target, None) for target in keywords]
+        await self.update_server(server.update(keywords=_keywords))
+
+    # Slash command
+    async def keyword_autocom(
+        self, inter: ApplicationCommandInteraction, user_input: str = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        keywords: dict[str, str] = server.keywords
+        return (
+            keywords
+            if not user_input
+            else {
+                words: keywords[words]
+                for words in keywords
+                if user_input.lower() in words
+            }
+        )
+
+    @slash_command(dm_permission=False, guild_ids=[807191597732069378])
+    async def keyword(self, inter):
+        pass
+
+    @keyword.sub_command()
+    async def list_all(self, inter: ApplicationCommandInteraction):
+        server = await self.get_server(inter.guild_id)
+        keywords = server.keywords
+        await inter.send(
+            str(keywords)[1:-1].replace("'", "`").replace(", ", ",\n")
+        ) if keywords else await inter.send("No keywords have been set for this server")
+
+    @keyword.sub_command()
+    async def set_reply(
+        self, inter: ApplicationCommandInteraction, keyword: str, reply: str
+    ):
+        await self.__set_keyword_reply(inter.guild_id, {keyword: reply})
+        await inter.send(f"Set reply `{reply}` for keyword `{keyword}`")
+
+    @keyword.sub_command()
+    async def del_reply(
+        self,
+        inter: ApplicationCommandInteraction,
+        keyword: str,
+    ):
+        await self.__del_keyword_reply(inter.guild_id, keyword)
+        await inter.send(f"Deleted keyword `{keyword}`")
+
+    @keyword.sub_command()
+    async def reply(
+        self,
+        inter: ApplicationCommandInteraction,
+        keyword: str,
+    ):
+        await inter.send(keyword)
+
+    @del_reply.autocomplete("keyword")
+    async def del_reply_autocom(
+        self, inter: ApplicationCommandInteraction, user_input: str = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        keywords = list(server.keywords.keys())
+        return (
+            keywords
+            if not user_input
+            else [words for words in keywords if user_input.lower() in words]
+        )
+
+    @reply.autocomplete("keyword")
+    async def reply_autocom(
+        self, inter: ApplicationCommandInteraction, user_input: str = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        keywords: dict[str, str] = server.keywords
+        return (
+            keywords
+            if not user_input
+            else {
+                words: keywords[words]
+                for words in keywords
+                if user_input.lower() in words
+            }
+        )
 
 
 def setup(bot):
