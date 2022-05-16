@@ -1,7 +1,7 @@
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
-from core.data import ServerData
+from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
 
@@ -9,15 +9,8 @@ from core.server import Server
 class GeneralCog(Cog):
     def __init__(self, bot: LuxRay) -> None:
         self.bot = bot
-
-        # Shortcuts of db
         self.db = bot.db
-
-        self.update_prefix = bot.db.update_prefix
-
-        self.find_server = bot.db.find_server
-        self.insert_server = bot.db.insert_server
-        self.update_server = bot.db.update_server
+        self.__server_cache = {}
 
     @staticmethod
     def translate(lang_code: str, message: str) -> str:
@@ -62,6 +55,9 @@ class GeneralCog(Cog):
     async def send_error(self, ctx, message: str, **_format):
         return await self._send(ctx, message, delete_after=2, **_format)
 
+    async def update_prefix(self, update: PrefixData):
+        await self.db.update_prefix(update)
+
     async def get_server_data(self, server_id):
         """
         Get server data by server id
@@ -93,4 +89,18 @@ class GeneralCog(Cog):
         return server_data
 
     async def get_server(self, server_id):
-        return Server(await self.get_server_data(server_id))
+        if not (server := self.__server_cache.get(server_id)):
+            server = Server(await self.get_server_data(server_id))
+            self.__server_cache[server_id] = server
+
+        return server
+
+    async def find_server(self, server_id: int):
+        return await self.db.find_server(server_id)
+
+    async def insert_server(self, server_data: ServerData):
+        await self.db.insert_server(server_data)
+
+    async def update_server(self, update: ServerData):
+        await self.db.update_server(update)
+        self.__server_cache.pop(update.id, None)
