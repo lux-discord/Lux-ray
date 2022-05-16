@@ -20,16 +20,7 @@ class ApiEvent(GeneralCog):
 
         server = await self.get_server(message.guild.id)
 
-        def get_keyword_reply(message_content: str):
-            replys = server.keyword_replys
-
-            return (
-                replys[keyword]
-                if (keyword := server.keyword_aliases.get(message_content))
-                else replys.get(message_content)
-            )
-
-        if reply := get_keyword_reply(message.content):
+        if reply := server.keywords.get(message.content):
             await message.channel.send(reply)
 
     @Cog.listener()
