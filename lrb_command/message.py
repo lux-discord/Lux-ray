@@ -98,7 +98,7 @@ class Message(GeneralCog):
             }
         )
 
-    @slash_command(dm_permission=False, guild_ids=[807191597732069378])
+    @slash_command(dm_permission=False)
     async def keyword(self, inter):
         pass
 
