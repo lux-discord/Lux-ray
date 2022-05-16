@@ -57,14 +57,14 @@ class ServerData(BaseData):
     OPTIONAL_ITEMS = {
         "role": {"admin": [], "mod": [], "member": [], "auto_role": []},
         "channel": {"on_member_join": 0, "on_member_leave": 0},
-        "keyword": {"replys": {}, "aliases": {}},
+        "keyword": {},
     }
 
     def __init__(self, **items):
         super().__init__(**items)
         self._lang_code: str = self.items["lang_code"]
         self._role: dict[str, list[int]] = self.items.get("role")
-        self._keyword: dict[str, dict[str, str]] = self.items.get("keyword")
+        self._keywords: dict[str, str] = self.items.get("keywords")
 
     @property
     def lang_code(self):
@@ -83,13 +83,5 @@ class ServerData(BaseData):
         return self._role["auto_role"] if self._role else None
 
     @property
-    def keyword(self) -> "Optional[dict[str, dict[str, str]]]":
-        return self._keyword
-
-    @property
-    def keyword_replys(self):
-        return self._keyword["replys"] if self._keyword else None
-
-    @property
-    def keyword_aliases(self):
-        return self._keyword["aliases"] if self._keyword else None
+    def keywords(self):
+        return self._keywords
