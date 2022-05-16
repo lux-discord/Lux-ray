@@ -39,7 +39,7 @@ class MongoDB:
         -----------
         Optinoal[str]
         """
-        doc = await self.prefix.find_one({"_id": server_id})
+        doc = await self.prefix.find_one(server_id)
         return doc["prefix"] if doc else None
 
     async def insert_prefix(self, prefix_data: PrefixData) -> "InsertOneResult":
@@ -106,7 +106,7 @@ class MongoDB:
         -----------
         Optinoal[dict]
         """
-        return await self.server.find_one({"_id": server_id})
+        return await self.server.find_one(server_id)
 
     async def insert_server(self, server_data: ServerData) -> "InsertOneResult":
         """
