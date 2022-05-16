@@ -57,7 +57,7 @@ class ServerData(BaseData):
     OPTIONAL_ITEMS = {
         "role": {"admin": [], "mod": [], "member": [], "auto_role": []},
         "channel": {"on_member_join": 0, "on_member_leave": 0},
-        "keyword": {},
+        "keywords": {},
     }
 
     def __init__(self, **items):
