@@ -29,6 +29,7 @@ def load_config_data(config_path: "Union[str, Path]") -> dict:
 
 class Config:
     def __init__(self, config_path: "Union[str, Path]", mode: str) -> None:
+        print(f"Loading config data from '{config_path}'...")
         self.__data = load_config_data(config_path)
         self.__mode = mode
         self.__dev_mode = mode == "DEV"
@@ -121,6 +122,7 @@ class Config:
         return self.__owner_ids
 
     def get_database_client(self):
+        print("Creating database client...")
         type_to_path = {"mongodb": "core.database.mongodb.MongoDB"}
 
         if not (_type := getenv(f"DB_TYPE_{self.__mode}")):
@@ -138,6 +140,7 @@ class Config:
         return _class(host=host, port=port)
 
     def get_intents(self):
+        print("Creating intents instance...")
         data = self.__data["intent"]
         base = data["base"]
         items = data["items"]
