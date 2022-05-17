@@ -35,6 +35,7 @@ class Config:
         self.__cog_files = self.__data["cogs"]["file"]
         self.__cog_folders = self.__data["cogs"]["folder"]
         self.__bot_token = self.__get_bot_token()
+        self.__test_guilds = self.__data["server"]["test_guilds"]
         self.__default_lang_code = self.__data["server"]["default_lang_code"]
         self.__owner_ids = self.__data["misc"]["owner_ids"]
 
@@ -98,6 +99,10 @@ class Config:
     @property
     def bot_token(self):
         return self.__bot_token
+
+    @property
+    def test_guilds(self):
+        return self.__test_guilds
 
     @property
     def default_lang_code(self):
