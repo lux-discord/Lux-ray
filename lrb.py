@@ -41,7 +41,7 @@ def start(mode: str = "dev", config_path="bot-config.toml"):
     bot = LuxRay(config)
     bot.load_cogs(cog_files=config.cog_files, cog_folders=config.cog_folders)
 
-    if not bot.dev_mode:
+    if not bot.config.dev_mode:
         # Create a web service
         from keep_alive import keep_alive
 

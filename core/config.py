@@ -31,6 +31,7 @@ class Config:
     def __init__(self, config_path: "Union[str, Path]", mode: str) -> None:
         self.__data = load_config_data(config_path)
         self.__mode = mode
+        self.__dev_mode = mode == "DEV"
 
         prefix_data: dict = self.__data["prefix"][self.__mode]
         self.__prefix = self.__get_prefix(prefix_data)
@@ -82,6 +83,10 @@ class Config:
     @property
     def mode(self):
         return self.__mode
+
+    @property
+    def dev_mode(self):
+        return self.__dev_mode
 
     @property
     def cog_files(self):
