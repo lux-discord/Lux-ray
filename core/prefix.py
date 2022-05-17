@@ -16,6 +16,6 @@ async def get_prefix(bot: "LuxRay", message):
             await bot.db.insert_prefix(default_data)
             prefix = default_data.prefix
         else:
-            raise ConfigInvalid(f"prefix.{bot.mode}.prefix", "None")
+            raise ConfigInvalid(f"prefix.{bot.config.mode}.prefix", "None")
 
     return prefix + " ", prefix
