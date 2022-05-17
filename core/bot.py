@@ -10,18 +10,16 @@ if TYPE_CHECKING:
 
 class LuxRay(Bot):
     def __init__(self, config: "Config", **options):
-        self.config = config
-        self.db = config.get_database_client()
-        self.mode = config.mode
-        self.dev_mode = self.mode == "DEV"
-
         super().__init__(
-            command_prefix=self.config.prefix,
-            intents=self.config.get_intents(),
-            owner_ids=self.config.owner_ids,
-            test_guilds=self.config.test_guilds if self.dev_mode else None,
+            command_prefix=config.prefix,
+            intents=config.get_intents(),
+            owner_ids=config.owner_ids,
+            test_guilds=config.test_guilds if config.dev_mode else None,
             **options,
         )
+
+        self.config = config
+        self.db = config.get_database_client()
 
     def load_cogs(self, cog_files: list[str] = None, cog_folders: list[str] = None):
         CogLoader(self).load(files=cog_files, folders=cog_folders)
