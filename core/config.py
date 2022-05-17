@@ -12,8 +12,11 @@ if TYPE_CHECKING:
     from typing import Union
 
 
-def load_config_data(config_path) -> dict:
-    if Path(config_path).exists():
+def load_config_data(config_path: "Union[str, Path]") -> dict:
+    if not isinstance(config_path, Path):
+        config_path = Path(config_path)
+
+    if config_path.exists():
         with open(config_path, "rb") as f:
             return load(f)
     # When the environment variable contains special characters like newlines, tabs...etc
@@ -25,21 +28,21 @@ def load_config_data(config_path) -> dict:
 
 
 class Config:
-    def __init__(self, config_path, mode) -> None:
+    def __init__(self, config_path: "Union[str, Path]", mode: str) -> None:
         self.__data = load_config_data(config_path)
         self.__mode = mode
 
-        prefix_data = self.__data["prefix"][self.__mode]
+        prefix_data: dict = self.__data["prefix"][self.__mode]
         self.__prefix = self.__get_prefix(prefix_data)
         self.__default_prefix = self.__get_default_prefix(prefix_data)
-        self.__cog_files = self.__data["cogs"]["file"]
-        self.__cog_folders = self.__data["cogs"]["folder"]
+        self.__cog_files: list[str] = self.__data["cogs"]["file"]
+        self.__cog_folders: list[str] = self.__data["cogs"]["folder"]
         self.__bot_token = self.__get_bot_token()
-        self.__test_guilds = self.__data["server"]["test_guilds"]
-        self.__default_lang_code = self.__data["server"]["default_lang_code"]
-        self.__owner_ids = self.__data["misc"]["owner_ids"]
+        self.__test_guilds: list[int] = self.__data["server"]["test_guilds"]
+        self.__default_lang_code: str = self.__data["server"]["default_lang_code"]
+        self.__owner_ids: list[int] = self.__data["misc"]["owner_ids"]
 
-    def __get_prefix(self, data) -> "Union[str, list[str], function]":
+    def __get_prefix(self, data: dict) -> "Union[str, list[str], function]":
         type_to_key = {
             "string": "prefix",
             "array": "prefixes",
@@ -64,7 +67,7 @@ class Config:
 
         return prefix
 
-    def __get_default_prefix(self, data) -> str:
+    def __get_default_prefix(self, data: dict) -> str:
         return data["prefix"]
 
     def __get_bot_token(self):
@@ -135,7 +138,7 @@ class Config:
         items = data["items"]
 
         try:
-            base_intent = getattr(Intents, base)()
+            base_intent: Intents = getattr(Intents, base)()
         except AttributeError:
             raise ConfigInvalid("intent.base", base)
 
