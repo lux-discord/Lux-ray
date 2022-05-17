@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 
 from core.bot import LuxRay
 from core.config import Config
-from utils.cog import load_cogs
 
 ENV_FILE_PATH = Path(".env")
 
@@ -36,22 +35,22 @@ def main():
     type=ClickPath(dir_okay=False, resolve_path=True),
     help="Path of config file",
 )
-def run(mode: str = "dev", config_path="bot-config.toml"):
+def start(mode: str = "dev", config_path="bot-config.toml"):
     mode = mode.upper()
     config = Config(config_path, mode)
     bot = LuxRay(config)
+    bot.load_cogs(cog_files=config.cog_files, cog_folders=config.cog_folders)
 
-    load_cogs(bot, cogs=config.cog_files, cog_folders=config.cog_folders)
-
-    # Create a web servivce
-    if mode == "PROD":
+    if not bot.dev_mode:
+        # Create a web service
         from keep_alive import keep_alive
 
         keep_alive()
+
     bot.run(config.bot_token)
 
 
 if len(argv) == 1:
-    run()
+    start()
 else:
     main()

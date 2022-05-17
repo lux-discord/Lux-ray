@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING
 
 from disnake.ext.commands import Bot
 
+from utils.cog import CogLoader
+
 if TYPE_CHECKING:
     from core.config import Config
 
@@ -20,3 +22,6 @@ class LuxRay(Bot):
             test_guilds=self.config.test_guilds if self.dev_mode else None,
             **options,
         )
+
+    def load_cogs(self, cog_files: list[str] = None, cog_folders: list[str] = None):
+        CogLoader(self).load(files=cog_files, folders=cog_folders)
