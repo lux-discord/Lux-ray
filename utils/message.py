@@ -48,7 +48,7 @@ async def get_last_exist_message(channel: TextChannel) -> Message:
     return [message async for message in channel.history(limit=1)][0]
 
 
-class target_message:
+class TargetMessage:
     def __init__(self, ctx: Context, *, message_link: str = "", **perms: bool):
         """
         Parameter

@@ -6,7 +6,7 @@ from disnake.ext.commands import command
 
 from core.cog import GeneralCog
 from utils.embed import bot_color, embed_setup
-from utils.message import target_message
+from utils.message import TargetMessage
 
 
 class General(GeneralCog):
@@ -42,7 +42,7 @@ class General(GeneralCog):
         if emojis:
             return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
 
-        async with target_message(ctx) as message:
+        async with TargetMessage(ctx) as message:
             match_emojis = findall(
                 r"<a?:[a-zA-Z0-9\_]{1,32}:([0-9]{15,20})>$", message.content
             )

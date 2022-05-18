@@ -3,7 +3,7 @@ from disnake import Message as Msg
 from disnake.ext.commands import command, has_permissions, slash_command
 
 from core.cog import GeneralCog
-from utils.message import target_message
+from utils.message import TargetMessage
 
 
 class Message(GeneralCog):
@@ -32,7 +32,7 @@ class Message(GeneralCog):
             await self.delete_system_message(message.channel)
             await server.send_info(ctx, "Successful pinning message")
 
-        async with target_message(ctx) as message:
+        async with TargetMessage(ctx) as message:
             if message.pinned:
                 return await server.send_warning(ctx, "Message pinned")
             await do_pin(message)
@@ -54,14 +54,14 @@ class Message(GeneralCog):
             await self.delete_system_message(message.channel)
             await server.send_info(ctx, "Successful unpinning message")
 
-        async with target_message(ctx) as message:
+        async with TargetMessage(ctx) as message:
             if not message.pinned:
                 return await server.send_warning(ctx, "Message not pinned")
             await unpin_message(message)
 
     @command(aliases=["mes_link", "msg_link"])
     async def message_link(self, ctx):
-        async with target_message(ctx) as message:
+        async with TargetMessage(ctx) as message:
             return await ctx.send(message.jump_url)
 
     @command(aliases=["del_mes", "del_msg", "purge"])
