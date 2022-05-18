@@ -1,4 +1,4 @@
-from disnake import Member
+from disnake import Member, Message
 from disnake.ext.commands.cog import Cog
 
 from core.cog import GeneralCog
@@ -14,7 +14,7 @@ class ApiEvent(GeneralCog):
         print("Bot is ready")
 
     @Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message: Message):
         if message.author.id == self.bot.user.id:
             return
 
