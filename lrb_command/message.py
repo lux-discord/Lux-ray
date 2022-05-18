@@ -1,9 +1,10 @@
 from disnake import ApplicationCommandInteraction
 from disnake import Message as Msg
 from disnake import TextChannel
-from disnake.ext.commands import Context, command, has_permissions, slash_command
+from disnake.ext.commands import Context, Param, command, has_permissions, slash_command
 
 from core.cog import GeneralCog
+from utils.auto_completer import bool_autocom
 from utils.message import TargetMessage
 
 
@@ -162,6 +163,24 @@ class Message(GeneralCog):
                 if user_input.lower() in words
             }
         )
+
+    @slash_command()
+    async def listen_message(
+        self,
+        inter: ApplicationCommandInteraction,
+        choose: str = Param(autocomplete=bool_autocom),
+    ):
+        choose_to_bool = {"True": True, "False": False}
+
+        if choose not in choose_to_bool:
+            return inter.send(f"Invalid value: `{choose}`")
+
+        server = await self.get_server(inter.guild_id)
+
+        if not server.listen_message == (choose := choose_to_bool[choose]):
+            await self.update_server(server.update(listen_message=choose))
+            return await inter.send(f"Set listen message to {choose}")
+        await inter.send("Value not change")
 
 
 def setup(bot):
