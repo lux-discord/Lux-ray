@@ -20,7 +20,8 @@ class ApiEvent(GeneralCog):
 
         server = await self.get_server(message.guild.id)
 
-        if reply := server.keywords.get(message.content):
+        if server.listen_message:
+            reply = server.keywords.get(message.content)
             await message.channel.send(reply)
 
     @Cog.listener()
