@@ -65,5 +65,6 @@
 	# Owner ID(s)
 
 [server]
+	test_guilds = []
 	default_lang_code = "en"
 	# Default language when join a new server
