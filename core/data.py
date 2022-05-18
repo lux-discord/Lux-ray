@@ -1,12 +1,6 @@
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Any, Optional
-
-
 class BaseData:
     REQUIRE_ITEMS = []
-    OPTIONAL_ITEMS = {}
+    OPTIONAL_ITEMS = []
 
     def __init__(self, **items):
         # Valid check
@@ -21,7 +15,7 @@ class BaseData:
         if require:
             raise ValueError(f"Require items: {', '.join(require)}")
 
-        self._items: dict[str, Any] = self.OPTIONAL_ITEMS | items
+        self._items = items
         self._id: int = items["_id"]
 
     @property
@@ -54,12 +48,12 @@ class PrefixData(BaseData):
 
 class ServerData(BaseData):
     REQUIRE_ITEMS = ["lang_code"]
-    OPTIONAL_ITEMS = {
+    OPTIONAL_ITEMS = [
         "listen_message",
         "role",
         "channel",
         "keywords",
-    }
+    ]
 
     def __init__(self, **items):
         super().__init__(**items)
