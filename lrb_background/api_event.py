@@ -15,7 +15,7 @@ class ApiEvent(GeneralCog):
 
     @Cog.listener()
     async def on_message(self, message: Message):
-        if message.author.id == self.bot.user.id:
+        if message.author.bot:
             return
 
         server = await self.get_server(message.guild.id)
