@@ -8,6 +8,7 @@ class Server:
         self._items = server_data.items
         self._id = server_data.id
         self._lang_code = server_data.lang_code
+        self._listen_message = server_data.listen_message
         self._role = server_data.role
         self._role_member = server_data.role_member
         self._role_auto = server_data.role_auto
@@ -56,6 +57,10 @@ class Server:
     @property
     def lang_code(self):
         return self._lang_code
+
+    @property
+    def listen_message(self):
+        return self._listen_message
 
     @property
     def role(self):
