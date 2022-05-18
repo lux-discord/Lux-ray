@@ -57,15 +57,15 @@ class ServerData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self._lang_code: str = self.items["lang_code"]
-        self._listen_message: bool = self.items.get("listen_message", False)
-        self._role: dict[str, list[int]] = self.items.get(
+        self._lang_code: str = items["lang_code"]
+        self._listen_message: bool = items.get("listen_message", False)
+        self._role: dict[str, list[int]] = items.get(
             "role", {"admin": [], "mod": [], "member": [], "auto_role": []}
         )
-        self._channel: dict[str, int] = self.items.get(
+        self._channel: dict[str, int] = items.get(
             "channel", {"on_member_join": 0, "on_member_leave": 0}
         )
-        self._keywords: dict[str, str] = self.items.get("keywords", {})
+        self._keywords: dict[str, str] = items.get("keywords", {})
 
     @property
     def lang_code(self):
