@@ -55,17 +55,22 @@ class PrefixData(BaseData):
 class ServerData(BaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = {
-        "listen_message": bool,
-        "role": {"admin": [], "mod": [], "member": [], "auto_role": []},
-        "channel": {"on_member_join": 0, "on_member_leave": 0},
-        "keywords": {},
+        "listen_message",
+        "role",
+        "channel",
+        "keywords",
     }
 
     def __init__(self, **items):
         super().__init__(**items)
         self._lang_code: str = self.items["lang_code"]
         self._listen_message: bool = self.items.get("listen_message", False)
-        self._role: dict[str, list[int]] = self.items.get("role", {})
+        self._role: dict[str, list[int]] = self.items.get(
+            "role", {"admin": [], "mod": [], "member": [], "auto_role": []}
+        )
+        self._channel: dict[str, int] = self.items.get(
+            "channel", {"on_member_join": 0, "on_member_leave": 0}
+        )
         self._keywords: dict[str, str] = self.items.get("keywords", {})
 
     @property
@@ -77,7 +82,7 @@ class ServerData(BaseData):
         return self._listen_message
 
     @property
-    def role(self) -> "Optional[dict[str, list]]":
+    def role(self):
         return self._role
 
     @property
@@ -87,6 +92,10 @@ class ServerData(BaseData):
     @property
     def role_auto(self):
         return self._role["auto_role"] if self._role else None
+
+    @property
+    def channel(self):
+        return self._channel
 
     @property
     def keywords(self):
