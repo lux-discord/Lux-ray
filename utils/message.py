@@ -1,7 +1,5 @@
-from disnake.channel import TextChannel
-from disnake.ext.commands import Bot
-from disnake.ext.commands.context import Context
-from disnake.message import DeletedReferencedMessage, Message
+from disnake import DeletedReferencedMessage, Message, TextChannel
+from disnake.ext.commands import Bot, Context
 
 from core.checks import has_channel_permissions
 from core.exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
