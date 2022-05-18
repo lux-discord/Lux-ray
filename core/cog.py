@@ -5,12 +5,13 @@ from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
 
+server_cache = {}
+
 
 class GeneralCog(Cog):
     def __init__(self, bot: LuxRay) -> None:
         self.bot = bot
         self.db = bot.db
-        self.__server_cache = {}
 
     @staticmethod
     def translate(lang_code: str, message: str) -> str:
@@ -89,9 +90,9 @@ class GeneralCog(Cog):
         return server_data
 
     async def get_server(self, server_id):
-        if not (server := self.__server_cache.get(server_id)):
+        if not (server := server_cache.get(server_id)):
             server = Server(await self.get_server_data(server_id))
-            self.__server_cache[server_id] = server
+            server_cache[server_id] = server
 
         return server
 
@@ -102,5 +103,5 @@ class GeneralCog(Cog):
         await self.db.insert_server(server_data)
 
     async def update_server(self, update: ServerData):
+        server_cache.pop(update.id, None)
         await self.db.update_server(update)
-        self.__server_cache.pop(update.id, None)
