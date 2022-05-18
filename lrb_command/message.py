@@ -1,6 +1,7 @@
 from disnake import ApplicationCommandInteraction
 from disnake import Message as Msg
-from disnake.ext.commands import command, has_permissions, slash_command
+from disnake import TextChannel
+from disnake.ext.commands import Context, command, has_permissions, slash_command
 
 from core.cog import GeneralCog
 from utils.message import TargetMessage
@@ -8,7 +9,7 @@ from utils.message import TargetMessage
 
 class Message(GeneralCog):
     @staticmethod
-    async def delete_system_message(channel):
+    async def delete_system_message(channel: TextChannel):
         async for message in channel.history(limit=5):
             if message.is_system():
                 await message.delete()
@@ -16,7 +17,7 @@ class Message(GeneralCog):
 
     @command()
     @has_permissions(manage_messages=True)
-    async def pin(self, ctx):
+    async def pin(self, ctx: Context):
         await ctx.message.delete()
         server = await self.get_server(ctx.guild.id)
 
@@ -39,7 +40,7 @@ class Message(GeneralCog):
 
     @command()
     @has_permissions(manage_messages=True)
-    async def unpin(self, ctx):
+    async def unpin(self, ctx: Context):
         await ctx.message.delete()
         server = await self.get_server(ctx.guild.id)
 
@@ -60,13 +61,13 @@ class Message(GeneralCog):
             await unpin_message(message)
 
     @command(aliases=["mes_link", "msg_link"])
-    async def message_link(self, ctx):
+    async def message_link(self, ctx: Context):
         async with TargetMessage(ctx) as message:
             return await ctx.send(message.jump_url)
 
     @command(aliases=["del_mes", "del_msg", "purge"])
     @has_permissions(manage_messages=True)
-    async def delete_message(self, ctx, amount=1):
+    async def delete_message(self, ctx: Context, amount: int = 1):
         await ctx.channel.purge(limit=amount + 1)
         await self.send_info(ctx, "`{amount}` message(s) deleted", amount=amount)
 
@@ -126,14 +127,6 @@ class Message(GeneralCog):
         await self.__del_keyword_reply(inter.guild_id, keyword)
         await inter.send(f"Deleted keyword `{keyword}`")
 
-    @keyword.sub_command()
-    async def reply(
-        self,
-        inter: ApplicationCommandInteraction,
-        keyword: str,
-    ):
-        await inter.send(keyword)
-
     @del_reply.autocomplete("keyword")
     async def del_reply_autocom(
         self, inter: ApplicationCommandInteraction, user_input: str = None
@@ -145,6 +138,14 @@ class Message(GeneralCog):
             if not user_input
             else [words for words in keywords if user_input.lower() in words]
         )
+
+    @keyword.sub_command()
+    async def reply(
+        self,
+        inter: ApplicationCommandInteraction,
+        keyword: str,
+    ):
+        await inter.send(keyword)
 
     @reply.autocomplete("keyword")
     async def reply_autocom(
