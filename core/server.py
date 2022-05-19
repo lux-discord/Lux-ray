@@ -55,6 +55,10 @@ class Server:
         return self._data
 
     @property
+    def id(self):
+        return self._id
+
+    @property
     def lang_code(self):
         return self._lang_code
 
