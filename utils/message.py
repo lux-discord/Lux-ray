@@ -33,12 +33,12 @@ async def resolve_message_link(bot: Bot, message_link: str):
 
             if not (channel := bot.get_channel(channel_id)):
                 raise InvalidChannelID(channel_id)
-
             if not (message := await channel.fetch_message(message_id)):
                 raise InvalidMessageID(message_id)
 
             return message
         except ValueError:
+            # Split failure
             raise InvalidMessageLink(message_link)
     else:
         raise InvalidMessageLink(message_link)
@@ -74,7 +74,7 @@ class TargetMessage:
             message = await resolve_message_link(self.ctx.bot, self.message_link)
 
             if not self.perms or has_channel_permissions(
-                self.ctx, message.channel, **self.perms
+                self.ctx.author, message.channel, **self.perms
             ):
                 return message
         if ref_msg := self.ctx.message.reference:
