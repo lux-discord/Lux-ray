@@ -1,4 +1,4 @@
-from core.data import ServerData
+from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 
 
@@ -28,6 +28,9 @@ class Server:
         """
         new_items = self._items | update
         return ServerData.from_items(new_items)
+
+    def update_prefix(self, prefix: str):
+        return PrefixData(_id=self._id, prefix=prefix)
 
     def translate(self, message):
         """
