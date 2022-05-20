@@ -16,22 +16,9 @@ class CogLoader:
         print(f"{self.indent}File: {cog}")
         self.bot.load_extension(cog)
 
-    def folder_loader(self, folder: Path, *, indent_lv=None):
-        indent_lv = indent_lv or 1
-        print(f"{self.indent*indent_lv}Folder: {folder.name}")
-
-        for item in folder.iterdir():
-            if (
-                item.is_file()
-                and item.suffix == ".py"
-                and not item.name.startswith("_")
-            ):
-                print(f"{self.indent*(indent_lv+1)}File: {item.stem}")
-                # replace "/" with "." and remove suffix
-                cog_file_path = ".".join(item.with_name(item.stem).parts)
-                self.bot.load_extension(cog_file_path)
-            elif item.is_dir() and not item.name.startswith("_"):
-                self.folder_loader(item, indent_lv=indent_lv + 1)
+    def folder_loader(self, folder: Path):
+        print(f"{self.indent}Folder: {folder.name}")
+        self.bot.load_extensions(folder)
 
     def load(
         self, *, files: "Union[str, Path]" = None, folders: "Union[str, Path]" = None
