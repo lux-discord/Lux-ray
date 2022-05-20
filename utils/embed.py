@@ -1,4 +1,4 @@
-bot_color = 0x66E8E4
+BOT_COLOR = 0x66E8E4
 
 
 def embed_setup(embed, *, fields: list, image_url=None):
