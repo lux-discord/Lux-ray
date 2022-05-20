@@ -1,42 +1,55 @@
-from pathlib import Path
-from typing import TYPE_CHECKING
-
 from disnake.ext.commands import Bot
-
-if TYPE_CHECKING:
-    from typing import Union
+from disnake.utils import search_directory
 
 
 class CogManager:
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.indent = "    "
+        self.file_message = f"{self.indent}File: "
+        self.folder_message = f"{self.indent}Folder: "
 
-    def file_loader(self, cog: Path):
-        print(f"{self.indent}File: {cog}")
-        self.bot.load_extension(cog)
+    def load_file(self, name: str):
+        print(self.file_message + name)
+        self.bot.load_extension(name)
 
-    def folder_loader(self, folder: Path):
-        print(f"{self.indent}Folder: {folder.name}")
-        self.bot.load_extensions(folder)
+    def load_folder(self, path: str):
+        print(self.folder_message + path)
+        self.bot.load_extensions(path)
 
-    def load(
-        self, *, files: "Union[str, Path]" = None, folders: "Union[str, Path]" = None
-    ):
+    def unload_file(self, name: str):
+        print(self.file_message + name)
+        self.bot.unload_extension(name)
+
+    def unload_folder(self, path: str):
+        print(self.folder_message + path)
+        [self.bot.unload_extension(cog) for cog in search_directory(path)]
+
+    def load(self, *, files: str = None, folders: str = None):
         print("Loading cog files and folders...")
 
         if files:
-            [
-                self.file_loader(file)
-                if isinstance(file, Path)
-                else self.file_loader(Path(file))
-                for file in files
-            ]
+            [self.load_file(file) for file in files]
 
         if folders:
-            [
-                self.folder_loader(folder)
-                if isinstance(folder, Path)
-                else self.folder_loader(Path(folder))
-                for folder in folders
-            ]
+            [self.load_folder(folder) for folder in folders]
+
+    def unload(self, *, files: str = None, folders: str = None):
+        print("Unloading cog files and folders...")
+
+        if files:
+            [self.unload_file(file) for file in files]
+
+        if folders:
+            [self.unload_folder(folder) for folder in folders]
+
+    def reload(self, *, files: str = None, folders: str = None):
+        print("Reloading cog files and folders...")
+
+        if files:
+            [self.unload_file(file) for file in files]
+            [self.load_file(file) for file in files]
+
+        if folders:
+            [self.unload_folder(folder) for folder in folders]
+            [self.load_folder(folder) for folder in folders]
