@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from typing import Union
 
 
-class CogLoader:
+class CogManager:
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.indent = "    "
