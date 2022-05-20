@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from disnake import ApplicationCommandInteraction
 from disnake import Message as Msg
 from disnake import Permissions, TextChannel
@@ -11,6 +13,9 @@ from utils.auto_completer import (
 )
 from utils.converter import STR_TO_BOOL
 from utils.message import TargetMessageInter
+
+if TYPE_CHECKING:
+    from core.bot import LuxRay
 
 
 class Message(GeneralCog):
@@ -174,5 +179,5 @@ class Message(GeneralCog):
         await inter.send("Value not change")
 
 
-def setup(bot):
+def setup(bot: "LuxRay"):
     bot.add_cog(Message(bot))

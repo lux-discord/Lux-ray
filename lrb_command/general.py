@@ -1,4 +1,5 @@
 from re import findall
+from typing import TYPE_CHECKING
 
 from disnake.embeds import Embed
 from disnake.emoji import Emoji
@@ -7,6 +8,9 @@ from disnake.ext.commands import command
 from core.cog import GeneralCog
 from utils.embed import bot_color, embed_setup
 from utils.message import TargetMessage
+
+if TYPE_CHECKING:
+    from core.bot import LuxRay
 
 
 class General(GeneralCog):
@@ -56,5 +60,5 @@ class General(GeneralCog):
             ]
 
 
-def setup(bot):
+def setup(bot: "LuxRay"):
     bot.add_cog(General(bot))

@@ -1,6 +1,9 @@
-from disnake.ext.commands.core import command, is_owner
+from typing import TYPE_CHECKING
 
 from core.cog import GeneralCog
+
+if TYPE_CHECKING:
+    from core.bot import LuxRay
 
 
 class Dev(GeneralCog):
@@ -60,5 +63,5 @@ class Dev(GeneralCog):
             break
 
 
-def setup(bot):
+def setup(bot: "LuxRay"):
     bot.add_cog(Dev(bot))

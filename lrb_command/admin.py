@@ -1,9 +1,14 @@
+from typing import TYPE_CHECKING
+
 from disnake import ApplicationCommandInteraction, Permissions, Role
 from disnake.ext.commands import Param, slash_command
 
 from core.cog import GeneralCog
 from core.language import GLOBAL_SUPPORT_LANGUAGE
 from utils.auto_completer import lang_code_autocom
+
+if TYPE_CHECKING:
+    from core.bot import LuxRay
 
 
 class Admin(GeneralCog):
@@ -98,5 +103,5 @@ class Admin(GeneralCog):
         )
 
 
-def setup(bot):
+def setup(bot: "LuxRay"):
     bot.add_cog(Admin(bot))
