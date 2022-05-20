@@ -31,11 +31,7 @@ def choose_mapping_generater(chooses: "Mapping[str, str]", user_input: str):
 
 
 async def bool_autocom(inter: ApplicationCommandInteraction, user_input: str = None):
-    return (
-        BOOL_CHOOSES
-        if not user_input
-        else [choose for choose in BOOL_CHOOSES if user_input.lower() in choose]
-    )
+    return choose_list_generater(BOOL_CHOOSES, user_input)
 
 
 async def lang_code_autocom(
