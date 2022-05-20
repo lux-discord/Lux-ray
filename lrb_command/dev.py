@@ -1,66 +1,89 @@
 from typing import TYPE_CHECKING
 
+from disnake import ApplicationCommandInteraction
+from disnake.ext.commands import Param, slash_command
+
 from core.cog import GeneralCog
+from utils.auto_completer import cog_file_autocom, cog_folder_autocom
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
 
 
 class Dev(GeneralCog):
-    @command()
-    @is_owner()
-    async def reload(self, ctx, *cog_names):
-        if not cog_names:
-            return await self.send_error(ctx, "At least one cog name must be entered")
+    def cog_unload(self) -> None:
+        print(f"`{self.qualified_name}` cog must be loaded, auto reload")
+        self.bot.load_extension(self.qualified_name)
 
-        for cog_name in cog_names:
-            self.bot.reload_extension("lrb_command." + cog_name)
+    @slash_command(guild_ids=[807191597732069378])
+    async def cog(self, inter):
+        pass
 
-        await self.send_info(
-            ctx, "Successfully reloaded {cog_names}", cog_names=", ".join(cog_names)
-        )
+    @cog.sub_command()
+    async def load(
+        self,
+        inter: ApplicationCommandInteraction,
+        file: str = Param(autocomplete=cog_file_autocom, default=None),
+        folder: str = Param(autocomplete=cog_folder_autocom, default=None),
+    ):
+        message = "Successfully loaded"
 
-    @command()
-    @is_owner()
-    async def load(self, ctx, *cog_names):
-        if not cog_names:
-            return await self.send_error(ctx, "At least one cog name must be entered")
+        if not (file or folder):
+            self.bot.load_cogs(self.bot.cogs, self.bot.config.cog_folders)
+            return await inter.send(message + " all cog files and folders")
 
-        for cog_name in cog_names:
-            self.bot.load_extension("lrb_command." + cog_name)
+        if file:
+            message += f" cog file `{file}`"
+        if folder:
+            message += f" cog folder `{folder}`"
 
-        await self.send_info(
-            ctx, "Successfully loaded {cog_names}", cog_names=", ".join(cog_names)
-        )
+        self.bot.load_cogs([file] if file else None, [folder] if folder else None)
+        await inter.send(message)
 
-    @command()
-    @is_owner()
-    async def unload(self, ctx, *cog_names):
-        if not cog_names:
-            return await self.send_error(ctx, "At least one cog name must be entered")
+    @cog.sub_command()
+    async def unload(
+        self,
+        inter: ApplicationCommandInteraction,
+        file: str = Param(autocomplete=cog_file_autocom, default=None),
+        folder: str = Param(autocomplete=cog_folder_autocom, default=None),
+    ):
+        message = "Successfully unloaded"
 
-        for cog_name in cog_names:
-            self.bot.unload_extension("lrb_command." + cog_name)
+        if not (file or folder):
+            self.bot.unload_cogs(self.bot.cogs, self.bot.config.cog_folders)
+            return await inter.send(message + " all cog files and folders")
 
-        await self.send_info(
-            ctx, "Successfully unloaded {cog_names}", cog_names=", ".join(cog_names)
-        )
+        if file:
+            message += f" cog file `{file}`"
+        if folder:
+            message += f" cog folder `{folder}`"
 
-    @command()
-    @is_owner()
-    async def reload_all(self, ctx):
-        cogs = dict(self.bot.cogs).copy().values()
+        self.bot.unload_cogs([file] if file else None, [folder] if folder else None)
+        await inter.send(message)
 
-        for cog in cogs:
-            if cog.__module__.startswith("lrb_command"):
-                self.bot.reload_extension(cog.__module__)
+    @cog.sub_command()
+    async def reload(
+        self,
+        inter: ApplicationCommandInteraction,
+        file: str = Param(autocomplete=cog_file_autocom, default=None),
+        folder: str = Param(autocomplete=cog_folder_autocom, default=None),
+    ):
+        message = "Successfully reloaded"
 
-        return await self.send_info(ctx, "Successfully reloaded all cogs")
+        if not (file or folder):
+            self.bot.reload_cogs(self.bot.cogs, self.bot.config.cog_folders)
+            return await inter.send(message + " all cog files and folders")
 
-    async def test(self, ctx, *args):
-        for cog in self.bot.cogs.values():
-            await ctx.send(f"`{cog.__module__}`")
-            break
+        if file:
+            message += f" cog file `{file}`"
+        if folder:
+            message += f" cog folder `{folder}`"
+
+        self.bot.reload_cogs([file] if file else None, [folder] if folder else None)
+        await inter.send(message)
+
+    async def test(self, inter: ApplicationCommandInteraction):
+        await inter.send(type(inter.bot))
 
 
 def setup(bot: "LuxRay"):
