@@ -81,11 +81,11 @@ class ServerData(BaseData):
 
     @property
     def role_member(self):
-        return self._role["member"] if self._role else None
+        return self._role.get("member", []) if self._role else None
 
     @property
     def role_auto(self):
-        return self._role["auto_role"] if self._role else None
+        return self._role.get("auto", []) if self._role else None
 
     @property
     def channel(self):
