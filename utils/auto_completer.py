@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING
 
 from disnake import ApplicationCommandInteraction
 
+from core.language import GLOBAL_SUPPORT_LANGUAGE
+
 if TYPE_CHECKING:
     from typing import Iterable, Mapping
 
@@ -34,3 +36,12 @@ async def bool_autocom(inter: ApplicationCommandInteraction, user_input: str = N
         if not user_input
         else [choose for choose in BOOL_CHOOSES if user_input.lower() in choose]
     )
+
+
+async def lang_code_autocom(
+    inter: ApplicationCommandInteraction,
+    user_input: str = None,
+    *,
+    support_language: "Iterable[str]" = GLOBAL_SUPPORT_LANGUAGE,
+):
+    return choose_list_generater(support_language, user_input)
