@@ -5,7 +5,7 @@ from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
 
-server_cache = {}
+server_cache: dict[int, Server] = {}
 
 
 class GeneralCog(Cog):
