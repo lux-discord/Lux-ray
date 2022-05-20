@@ -19,7 +19,16 @@ class Server:
         self._role_auto = server_data.role_auto
         self._keywords = server_data.keywords
 
-    def update(self, **update):
+    def __update(self, target: dict[str], update: dict[str]):
+        for key, value in update.items():
+            if "." in key:
+                main, sub = key.split(".", 1)
+                target[main] = self.__update(target.get(main, {}), {sub: value})
+            else:
+                target[key] = value
+        return target
+
+    def update(self, updates=None, **update):
         """
         Generate a `ServerData` instance with `update`
 
@@ -32,6 +41,10 @@ class Server:
         `core.data.ServerData`
         """
         new_items = self._items | update
+
+        if updates:
+            self.__update(new_items, updates)
+
         return ServerData.from_items(new_items)
 
     def update_prefix(self, prefix: str):
