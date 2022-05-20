@@ -5,6 +5,7 @@ from disnake.ext.commands import Context, Param, command, has_permissions, slash
 
 from core.cog import GeneralCog
 from utils.auto_completer import bool_autocom
+from utils.converter import STR_TO_BOOL
 from utils.message import TargetMessage
 
 
@@ -180,15 +181,14 @@ class Message(GeneralCog):
         inter: ApplicationCommandInteraction,
         choose: str = Param(autocomplete=bool_autocom),
     ):
-        choose_to_bool = {"True": True, "False": False}
-
-        if choose not in choose_to_bool:
+        if choose not in STR_TO_BOOL:
             return inter.send(f"Invalid value: `{choose}`")
 
         server = await self.get_server(inter.guild_id)
+        bool_choose = STR_TO_BOOL[choose]
 
-        if not server.listen_message == (choose := choose_to_bool[choose]):
-            await self.update_server(server.update(listen_message=choose))
+        if server.listen_message != bool_choose:
+            await self.update_server(server.update(listen_message=bool_choose))
             return await inter.send(f"Set listen message to {choose}")
         await inter.send("Value not change")
 
