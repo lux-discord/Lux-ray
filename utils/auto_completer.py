@@ -1,8 +1,11 @@
 from disnake import ApplicationCommandInteraction
 
+BOOL_CHOOSES = ["true", "false"]
+
 
 async def bool_autocom(inter: ApplicationCommandInteraction, user_input: str = None):
-    chooses = ["True", "False"]
-    if not user_input:
-        return chooses
-    return [choose for choose in chooses if user_input.capitalize() in chooses]
+    return (
+        BOOL_CHOOSES
+        if not user_input
+        else [choose for choose in BOOL_CHOOSES if user_input.lower() in choose]
+    )
