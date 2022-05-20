@@ -1,4 +1,9 @@
-from disnake import DeletedReferencedMessage, Message, TextChannel
+from disnake import (
+    ApplicationCommandInteraction,
+    DeletedReferencedMessage,
+    Message,
+    TextChannel,
+)
 from disnake.ext.commands import Bot, Context
 
 from core.checks import has_channel_permissions
@@ -81,6 +86,55 @@ class TargetMessage:
             if not isinstance((message := ref_msg.resolved), DeletedReferencedMessage):
                 return message
         return await get_last_exist_message(self.ctx.message.channel)
+
+    async def __aexit__(self, type_, value, traceback):
+        pass
+
+
+class TargetMessageInter:
+    def __init__(
+        self,
+        inter: ApplicationCommandInteraction,
+        *,
+        last_message: bool = True,
+        message_link: str = "",
+        **perms: bool,
+    ):
+        """
+        Parameter
+        ---------
+        ctx: `Context`
+                The context that command received
+        message_link: `str` `[optional]`
+                The link that needs to be resolved as a Message
+        perms: `dict[str, bool]` `[optional]` `[for message_link]`
+                The permission check of command author
+
+        Raise
+        -----
+        InvalidMessageLink:
+                when command author don't have enough permissions
+        """
+        if not (last_message or message_link):
+            raise ValueError(
+                "One of `last_message`/`message_link` must be True/non-empty"
+            )
+
+        self.inter = inter
+        self.last_message = last_message
+        self.message_link = message_link
+        self.perms = perms
+
+    async def __aenter__(self) -> Message:
+        if self.message_link:
+            message = await resolve_message_link(self.inter.bot, self.message_link)
+
+            if not self.perms or has_channel_permissions(
+                self.inter.author, message.channel, **self.perms
+            ):
+                return message
+        if self.last_message:
+            return await get_last_exist_message(self.inter.channel)
 
     async def __aexit__(self, type_, value, traceback):
         pass
