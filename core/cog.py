@@ -1,9 +1,14 @@
+from typing import TYPE_CHECKING
+
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
 from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 from core.server import Server
+
+if TYPE_CHECKING:
+    from utils.type_hint import SendAble
 
 server_cache: dict[int, Server] = {}
 
@@ -38,23 +43,25 @@ class GeneralCog(Cog):
 
         return language.request_message(message)
 
-    async def _send(self, ctx, message: str, *, delete_after=None, **_format):
-        server_data = await self.get_server_data(ctx.guild.id)
+    async def _send(
+        self, send_able: "SendAble", message: str, *, delete_after=None, **_format
+    ):
+        server_data = await self.get_server_data(send_able.guild.id)
         message = self.translate(server_data.lang_code, message)
 
         if _format:
             message = message.format(**_format)
 
-        await ctx.send(message, delete_after=delete_after)
+        await send_able.send(message, delete_after=delete_after)
 
-    async def send_info(self, ctx, message: str, **_format):
-        return await self._send(ctx, message, delete_after=2, **_format)
+    async def send_info(self, send_able: "SendAble", message: str, **_format):
+        return await self._send(send_able, message, delete_after=2, **_format)
 
-    async def send_warning(self, ctx, message: str, **_format):
-        return await self._send(ctx, message, delete_after=6, **_format)
+    async def send_warning(self, send_able: "SendAble", message: str, **_format):
+        return await self._send(send_able, message, delete_after=6, **_format)
 
-    async def send_error(self, ctx, message: str, **_format):
-        return await self._send(ctx, message, delete_after=2, **_format)
+    async def send_error(self, send_able: "SendAble", message: str, **_format):
+        return await self._send(send_able, message, delete_after=2, **_format)
 
     async def update_prefix(self, update: PrefixData):
         await self.db.update_prefix(update)
