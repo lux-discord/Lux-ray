@@ -1,5 +1,10 @@
+from typing import TYPE_CHECKING
+
 from disnake.ext.commands import Bot
 from disnake.utils import search_directory
+
+if TYPE_CHECKING:
+    from typing import Iterable
 
 
 class CogManager:
@@ -33,16 +38,15 @@ class CogManager:
         print(f"{self.indent}Reload {self.folder} {path}")
         [self.bot.reload_extension(cog) for cog in search_directory(path)]
 
-    def load(self, *, files: str = None, folders: str = None):
+    def load(self, *, files: "Iterable[str]" = None, folders: "Iterable[str]" = None):
         print("Loading cog files and folders...")
 
         if files:
             [self.load_file(file) for file in files]
-
         if folders:
             [self.load_folder(folder) for folder in folders]
 
-    def unload(self, *, files: str = None, folders: str = None):
+    def unload(self, *, files: "Iterable[str]" = None, folders: "Iterable[str]" = None):
         print("Unloading cog files and folders...")
 
         if files:
@@ -51,7 +55,7 @@ class CogManager:
         if folders:
             [self.unload_folder(folder) for folder in folders]
 
-    def reload(self, *, files: str = None, folders: str = None):
+    def reload(self, *, files: "Iterable[str]" = None, folders: "Iterable[str]" = None):
         print("Reloading cog files and folders...")
 
         if files:
