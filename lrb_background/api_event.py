@@ -28,8 +28,9 @@ class ApiEvent(GeneralCog):
         server = await self.get_server(member.guild.id)
 
         if auto_roles := server.role_auto:
-            roles = [member.guild.get_role(role_id) for role_id in auto_roles]
-            await member.add_roles(*roles)
+            await member.add_roles(
+                member.guild.get_role(role_id) for role_id in auto_roles
+            )
 
 
 def setup(bot):
