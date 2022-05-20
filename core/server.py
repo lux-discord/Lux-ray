@@ -4,12 +4,7 @@ from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
 
 if TYPE_CHECKING:
-    from typing import Union
-
-    from disnake import Interaction, SyncWebhook, Webhook
-    from disnake.abc import Messageable
-
-    SendAble = Union[Interaction, SyncWebhook, Webhook, Messageable]
+    from utils.type_hint import SendAble
 
 
 class Server:
