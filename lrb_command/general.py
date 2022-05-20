@@ -1,63 +1,64 @@
 from re import findall
 from typing import TYPE_CHECKING
 
+from disnake import ApplicationCommandInteraction
 from disnake.embeds import Embed
 from disnake.emoji import Emoji
-from disnake.ext.commands import command
+from disnake.ext.commands import slash_command
 
 from core.cog import GeneralCog
-from utils.embed import bot_color, embed_setup
-from utils.message import TargetMessage
+from utils.embed import BOT_COLOR
+from utils.message import TargetMessageInter
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
 
 
 class General(GeneralCog):
-    @command(aliases=["emoji"])
-    async def emoji_info(self, ctx, *emojis: Emoji):
-        server = await self.get_server(ctx.guild.id)
+    @slash_command()
+    async def emoji_info(
+        self, inter: ApplicationCommandInteraction, emoji: Emoji = None
+    ):
+        server = await self.get_server(inter.guild_id)
         embed_text = {
             "Emoji info": server.translate("Emoji info"),
             "Name": server.translate("Name"),
             "Created at": server.translate("Created at"),
             "Url": server.translate("Url"),
         }
+        base_embed = Embed(title=embed_text["Emoji info"], color=BOT_COLOR)
         base_emoji_url = "https://cdn.discordapp.com/emojis/"
 
-        def generate_embed(emoji: Emoji):
-            embed = Embed(title=embed_text["Emoji info"], color=bot_color)
-            fields = [
-                [embed_text["Name"], f"`{emoji.name}`"],
-                [
+        def generate_emoji_embed(emoji: Emoji):
+            return (
+                base_embed.add_field(embed_text["Name"], f"`{emoji.name}`")
+                .add_field(
                     embed_text["Created at"],
-                    emoji.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                ],
-                [embed_text["Url"], emoji.url, False],
-            ]
+                    f"`{emoji.created_at.strftime('%Y-%m-%d %H:%M:%S')}`",
+                )
+                .add_field(embed_text["Url"], emoji.url, inline=False)
+            )
 
-            return embed_setup(embed, fields=fields)
+        if emoji:
+            return await inter.send(embed=generate_emoji_embed(emoji))
 
-        def generate_embed_with_id(emoji_id: int):
-            embed = Embed(title=embed_text["Emoji info"], color=bot_color)
-            fields = [[embed_text["Url"], base_emoji_url + str(emoji_id), False]]
-            return embed_setup(embed, fields=fields)
-
-        if emojis:
-            return [await ctx.send(embed=generate_embed(emoji)) for emoji in emojis]
-
-        async with TargetMessage(ctx) as message:
+        async with TargetMessageInter(inter) as message:
             match_emojis = findall(
                 r"<a?:[a-zA-Z0-9\_]{1,32}:([0-9]{15,20})>$", message.content
             )
-            return [
-                await ctx.send(
-                    embed=generate_embed(emoji)
-                    if (emoji := self.bot.get_emoji(int(emoji_id)))
-                    else generate_embed_with_id(int(emoji_id))
+
+            [
+                await inter.send(embed=generate_emoji_embed(emoji))
+                if (emoji := self.bot.get_emoji(int(emoji_id)))
+                else await inter.send(
+                    embed=base_embed.add_field(
+                        embed_text["Url"], base_emoji_url + emoji_id, inline=False
+                    )
                 )
                 for emoji_id in match_emojis
-            ]
+            ] if match_emojis else await inter.send(
+                f"There is not emoji in the last message of this channel"
+            )
 
 
 def setup(bot: "LuxRay"):
