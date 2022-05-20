@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from disnake import Intents
+from disnake.utils import search_directory
 from tomli import load, loads
 
 from core.exceptions import ConfigInvalid
@@ -39,6 +40,9 @@ class Config:
         self.__default_prefix = self.__get_default_prefix(prefix_data)
         self.__cog_files: list[str] = self.__data["cogs"]["file"]
         self.__cog_folders: list[str] = self.__data["cogs"]["folder"]
+        self.__all_cog_files = self.__cog_files + [
+            file for path in self.__cog_folders for file in search_directory(path)
+        ]
         self.__bot_token = self.__get_bot_token()
         self.__test_guilds: list[int] = self.__data["server"]["test_guilds"]
         self.__default_lang_code: str = self.__data["server"]["default_lang_code"]
@@ -96,6 +100,10 @@ class Config:
     @property
     def cog_folders(self):
         return self.__cog_folders
+
+    @property
+    def all_cog_files(self):
+        return self.__all_cog_files
 
     @property
     def prefix(self):
