@@ -1,5 +1,15 @@
+from typing import TYPE_CHECKING
+
 from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
+
+if TYPE_CHECKING:
+    from typing import Union
+
+    from disnake import Interaction, SyncWebhook, Webhook
+    from disnake.abc import Messageable
+
+    SendAble = Union[Interaction, SyncWebhook, Webhook, Messageable]
 
 
 class Server:
@@ -85,19 +95,21 @@ class Server:
     def keywords(self):
         return self._keywords
 
-    async def _send(self, ctx, message: str, *, delete_after=None, **_format):
+    async def _send(
+        self, send_able: "SendAble", message: str, *, delete_after=None, **_format
+    ):
         message = self.translate(message)
 
         if _format:
             message = message.format(**_format)
 
-        return await ctx.send(message, delete_after=delete_after)
+        return await send_able.send(message, delete_after=delete_after)
 
-    async def send_info(self, ctx, message: str, **_format):
-        return await self._send(ctx, message, delete_after=2, **_format)
+    async def send_info(self, send_able: "SendAble", message: str, **_format):
+        return await self._send(send_able, message, delete_after=2, **_format)
 
-    async def send_warning(self, ctx, message: str, **_format):
-        return await self._send(ctx, message, delete_after=6, **_format)
+    async def send_warning(self, send_able: "SendAble", message: str, **_format):
+        return await self._send(send_able, message, delete_after=6, **_format)
 
-    async def send_error(self, ctx, message: str, **_format):
-        return await self._send(ctx, message, delete_after=10, **_format)
+    async def send_error(self, send_able: "SendAble", message: str, **_format):
+        return await self._send(send_able, message, delete_after=10, **_format)
