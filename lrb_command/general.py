@@ -40,7 +40,10 @@ class General(GeneralCog):
             )
 
         if emoji:
-            return await inter.send(embed=generate_emoji_embed(emoji))
+            return await inter.send(
+                embed=generate_emoji_embed(emoji),
+                ephemeral=True,
+            )
 
         async with TargetMessageInter(inter) as message:
             match_emojis = findall(
@@ -48,16 +51,21 @@ class General(GeneralCog):
             )
 
             [
-                await inter.send(embed=generate_emoji_embed(emoji))
+                await inter.send(
+                    embed=generate_emoji_embed(emoji),
+                    ephemeral=True,
+                )
                 if (emoji := self.bot.get_emoji(int(emoji_id)))
                 else await inter.send(
                     embed=base_embed.add_field(
                         embed_text["Url"], base_emoji_url + emoji_id, inline=False
-                    )
+                    ),
+                    ephemeral=True,
                 )
                 for emoji_id in match_emojis
             ] if match_emojis else await inter.send(
-                f"There is not emoji in the last message of this channel"
+                "There is not emoji in the last message of this channel",
+                ephemeral=True,
             )
 
 

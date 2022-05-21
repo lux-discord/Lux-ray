@@ -90,9 +90,17 @@ class Message(GeneralCog):
 
         async with TargetMessageInter(inter) as message:
             if message.pinned:
-                return await server.send_warning(inter, "Message pinned")
+                return await server.send(
+                    inter,
+                    "Message pinned",
+                    ephemeral=True,
+                )
             await pin(message)
-            await server.send_info(inter, "Successful pinning message")
+            await server.send(
+                inter,
+                "Successful pinning message",
+                ephemeral=True,
+            )
 
     @slash_command(
         default_member_permissions=Permissions(manage_messages=True), name="unpin"
@@ -113,9 +121,17 @@ class Message(GeneralCog):
 
         async with TargetMessageInter(inter) as message:
             if not message.pinned:
-                return await server.send_warning(inter, "Message not pinned")
+                return await server.send(
+                    inter,
+                    "Message not pinned",
+                    ephemeral=True,
+                )
             await unpin(message)
-            await server.send_info(inter, "Successful unpinning message")
+            await server.send(
+                inter,
+                "Successful unpinning message",
+                ephemeral=True,
+            )
 
     @slash_command(
         default_member_permissions=Permissions(manage_messages=True),
@@ -125,7 +141,7 @@ class Message(GeneralCog):
         self, inter: ApplicationCommandInteraction, amount: int = 1
     ):
         await inter.channel.purge(limit=amount + 1)
-        await self.send_info(inter, "`{amount}` message(s) deleted", amount=amount)
+        await inter.send(f"`{amount}` message(s) deleted", ephemeral=True)
 
     ## Keyword
     @slash_command(
@@ -140,7 +156,10 @@ class Message(GeneralCog):
         self, inter: ApplicationCommandInteraction, keyword: str, reply: str
     ):
         await self.__set_keyword_reply(inter.guild_id, {keyword: reply})
-        await inter.send(f"Set reply `{reply}` for keyword `{keyword}`")
+        await inter.send(
+            f"Set reply `{reply}` for keyword `{keyword}`",
+            ephemeral=True,
+        )
 
     @keyword_edit.sub_command(name="remove")
     async def remove_reply(
@@ -149,7 +168,10 @@ class Message(GeneralCog):
         keyword: str,
     ):
         await self.__del_keyword_reply(inter.guild_id, keyword)
-        await inter.send(f"Deleted keyword `{keyword}`")
+        await inter.send(
+            f"Deleted keyword `{keyword}`",
+            ephemeral=True,
+        )
 
     @remove_reply.autocomplete("keyword")
     async def remove_reply_autocom(
@@ -168,15 +190,24 @@ class Message(GeneralCog):
         choose: str = Param(autocomplete=bool_autocom),
     ):
         if choose not in STR_TO_BOOL:
-            return inter.send(f"Invalid value: `{choose}`")
+            return inter.send(
+                f"Invalid value: `{choose}`",
+                ephemeral=True,
+            )
 
         server = await self.get_server(inter.guild_id)
         bool_choose = STR_TO_BOOL[choose]
 
         if server.listen_message != bool_choose:
             await self.update_server(server.ServerData(listen_message=bool_choose))
-            return await inter.send(f"Set listen message to {choose}")
-        await inter.send("Value not change")
+            return await inter.send(
+                f"Set listen message to {choose}",
+                ephemeral=True,
+            )
+        await inter.send(
+            "Value not change",
+            ephemeral=True,
+        )
 
 
 def setup(bot: "LuxRay"):

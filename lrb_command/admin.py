@@ -24,13 +24,23 @@ class Admin(GeneralCog):
         server_prefix = await self.bot.db.find_prefix(inter.guild_id)
 
         if not prefix:
-            return await inter.send(f"Prefix of this server if `{server_prefix}`")
+            return await inter.send(
+                f"Prefix of this server if `{server_prefix}`",
+                ephemeral=True,
+            )
         if prefix == server_prefix:
-            return await server.send_warning(inter, "Prefix did not change")
+            return await server.send(
+                inter,
+                "Prefix did not change",
+                ephemeral=True,
+            )
 
         await self.update_prefix(server.PrefixData(prefix))
-        await server.send_info(
-            inter, "Successful set prefix to `{prefix}`", prefix=prefix
+        await server.send(
+            inter,
+            "Successful set prefix to `{prefix}`",
+            message_format={"prefix": prefix},
+            ephemeral=True,
         )
 
     @config.sub_command()
@@ -42,15 +52,25 @@ class Admin(GeneralCog):
         server = await self.get_server(inter.guild_id)
 
         if lang_code not in GLOBAL_SUPPORT_LANGUAGE:
-            return await server.send_error(
-                inter, "Language code `{lang_code}` is not support", lang_code=lang_code
+            return await server.send(
+                inter,
+                "Language code `{lang_code}` is not support",
+                message_format={"lang_code": lang_code},
+                ephemeral=True,
             )
         if server.lang_code == lang_code:
-            return await server.send_warning(inter, "Language did not change")
+            return await server.send(
+                inter,
+                "Language did not change",
+                ephemeral=True,
+            )
 
         await self.update_server(server.ServerData(lang_code=lang_code))
-        await server.send_info(
-            inter, "Successful set language to `{lang_code}`", lang_code=lang_code
+        await server.send(
+            inter,
+            "Successful set language to `{lang_code}`",
+            message_format={"lang_code": lang_code},
+            ephemeral=True,
         )
 
     @config.sub_command_group(name="auto_role")
@@ -71,17 +91,20 @@ class Admin(GeneralCog):
                 str([inter.guild.get_role(role_id).name for role_id in auto_roles])[
                     1:-1
                 ].replace("'", "`")
-                or "No auto-roles have been set for this server"
+                or "No auto-roles have been set for this server",
+                ephemeral=True,
             )
         if (role_id := role.id) in auto_roles:
             return await inter.send(
-                f"Role `{role.name}(ID: {role_id})` Already in auto-roles"
+                f"Role `{role.name}(ID: {role_id})` Already in auto-roles",
+                ephemeral=True,
             )
 
         auto_roles.append(role_id)
         await self.update_server(server.ServerData({"role.auto": auto_roles}))
         await inter.send(
-            f"Successful add role `{role.name}(ID: {role_id})` to auto-roles"
+            f"Successful add role `{role.name}(ID: {role_id})` to auto-roles",
+            ephemeral=True,
         )
 
     @auto_roles.sub_command(name="remove")
@@ -93,13 +116,15 @@ class Admin(GeneralCog):
             index = auto_roles.index(role_id := role.id)
         except ValueError:
             return await inter.send(
-                f"Role `{role.name}(ID: {role_id})` not in auto-roles"
+                f"Role `{role.name}(ID: {role_id})` not in auto-roles",
+                ephemeral=True,
             )
 
         auto_roles.pop(index)
         await self.update_server(server.ServerData({"role.auto": auto_roles}))
         await inter.send(
-            f"Successful remove role `{role.name}(ID: {role_id})` from auto-roles"
+            f"Successful remove role `{role.name}(ID: {role_id})` from auto-roles",
+            ephemeral=True,
         )
 
 

@@ -31,7 +31,10 @@ class Dev(GeneralCog):
 
         if not (file or folder):
             self.bot.load_cogs(self.bot.cogs, self.bot.config.cog_folders)
-            return await inter.send(message + " all cog files and folders")
+            return await inter.send(
+                message + " all cog files and folders",
+                ephemeral=True,
+            )
 
         if file:
             message += f" cog file `{file}`"
@@ -39,7 +42,10 @@ class Dev(GeneralCog):
             message += f" cog folder `{folder}`"
 
         self.bot.load_cogs([file] if file else None, [folder] if folder else None)
-        await inter.send(message)
+        await inter.send(
+            message,
+            ephemeral=True,
+        )
 
     @cog.sub_command()
     async def unload(
@@ -52,7 +58,10 @@ class Dev(GeneralCog):
 
         if not (file or folder):
             self.bot.unload_cogs(self.bot.cogs, self.bot.config.cog_folders)
-            return await inter.send(message + " all cog files and folders")
+            return await inter.send(
+                message + " all cog files and folders",
+                ephemeral=True,
+            )
 
         if file:
             message += f" cog file `{file}`"
@@ -60,7 +69,10 @@ class Dev(GeneralCog):
             message += f" cog folder `{folder}`"
 
         self.bot.unload_cogs([file] if file else None, [folder] if folder else None)
-        await inter.send(message)
+        await inter.send(
+            message,
+            ephemeral=True,
+        )
 
     @cog.sub_command()
     async def reload(
@@ -73,7 +85,10 @@ class Dev(GeneralCog):
 
         if not (file or folder):
             self.bot.reload_cogs(self.bot.cogs, self.bot.config.cog_folders)
-            return await inter.send(message + " all cog files and folders")
+            return await inter.send(
+                message + " all cog files and folders",
+                ephemeral=True,
+            )
 
         if file:
             message += f" cog file `{file}`"
@@ -81,7 +96,10 @@ class Dev(GeneralCog):
             message += f" cog folder `{folder}`"
 
         self.bot.reload_cogs([file] if file else None, [folder] if folder else None)
-        await inter.send(message)
+        await inter.send(
+            message,
+            ephemeral=True,
+        )
 
     @cog.sub_command()
     async def test(self, inter: ApplicationCommandInteraction):
