@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from disnake import ApplicationCommandInteraction
-from disnake.ext.commands import Param, slash_command
+from disnake.ext.commands import Param, is_owner, slash_command
 
 from core.cog import GeneralCog
 from utils.auto_completer import cog_file_autocom, cog_folder_autocom
@@ -15,7 +15,8 @@ class Dev(GeneralCog):
         print(f"`{self.qualified_name}` cog must be loaded, auto reload")
         self.bot.load_extension(self.qualified_name)
 
-    @slash_command(guild_ids=[807191597732069378])
+    @slash_command()
+    @is_owner()
     async def cog(self, inter):
         pass
 
