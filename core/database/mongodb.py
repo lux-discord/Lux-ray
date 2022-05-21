@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from core.data import PrefixData, ServerData
+from core.data import PrefixData, ServerData, UserData
 
 if TYPE_CHECKING:
     from typing import Optional
@@ -14,9 +14,10 @@ if TYPE_CHECKING:
 class MongoDB:
     def __init__(self, host, *, port=None) -> None:
         self.client = AsyncIOMotorClient(host=host, port=port)
-        self.bot_db: Database = self.client["discord-bot"]
-        self.server = self.bot_db["server"]
+        self.bot_db: "Database" = self.client["discord-bot"]
         self.prefix = self.bot_db["prefix"]
+        self.server = self.bot_db["server"]
+        self.user = self.bot_db["user"]
 
     def __getitem__(self, name):
         return self.bot_db[name]
@@ -154,3 +155,17 @@ class MongoDB:
         `pymongo.results.DeleteResult`
         """
         return await self.server.delete_one({"_id": server_id})
+
+    # User
+    async def find_user(self, user_id: int) -> "Optional[dict]":
+        return await self.user.find_one(user_id)
+
+    async def insert_user(self, user_data: UserData) -> "InsertOneResult":
+        return await self.user.insert_one(user_data.to_dict())
+
+    async def update_user(self, update: UserData) -> "UpdateResult":
+        _update = {"$set": update.to_dict()}
+        return await self.user.update_one({"_id": update.id}, _update)
+
+    async def delete_user(self, user_id: int) -> "DeleteResult":
+        return await self.user.delete_one({"_id": user_id})
