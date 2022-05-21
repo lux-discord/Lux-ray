@@ -11,8 +11,8 @@ class CogManager:
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.indent = "    "
-        self.file = f"file:"
-        self.folder = f"folder:"
+        self.file = "file:"
+        self.folder = "folder:"
 
     def load_file(self, name: str):
         print(f"{self.indent}Load {self.file} {name}")
