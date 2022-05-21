@@ -9,13 +9,7 @@ GLOBAL_SUPPORT_LANGUAGE = {
 }
 GLOBAL_DEFAULT_LANGUAGE = "en"
 
-# For custom locale file
-def get_support_language(locale_dir: Path):
-    return {locale_file.stem for locale_file in locale_dir.iterdir()}
-
-
-def language_support_check(locale_dir: Path, lang_code: str):
-    return lang_code in get_support_language(locale_dir)
+global_language_cache: dict[str] = {}
 
 
 class LanguageBase:
@@ -40,3 +34,22 @@ class GeneralLanguage(LanguageBase):
             support_language=GLOBAL_SUPPORT_LANGUAGE,
             locale_dir=GLOBAL_LOCALES_DIR,
         )
+
+
+# For GeneralLanugage
+def get_language(lang_code: str) -> GeneralLanguage:
+    if lang_code not in global_language_cache:
+        global_language_cache[lang_code] = GeneralLanguage(lang_code)
+    return global_language_cache[lang_code]
+
+
+# `get_language` function for other subclass of LanguageBase is in plan
+
+
+# For custom locale file
+def get_support_language(locale_dir: Path):
+    return {locale_file.stem for locale_file in locale_dir.iterdir()}
+
+
+def language_support_check(locale_dir: Path, lang_code: str):
+    return lang_code in get_support_language(locale_dir)
