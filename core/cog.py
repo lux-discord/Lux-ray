@@ -121,7 +121,7 @@ class GeneralCog(Cog):
     # User
     async def get_user_data(self, user_id: int):
         if raw_user_data := await self.find_user(user_id):
-            user_data = UserData(raw_user_data)
+            user_data = UserData(**raw_user_data)
         else:
             user_data = UserData(_id=user_id)
             await self.insert_user(user_data)

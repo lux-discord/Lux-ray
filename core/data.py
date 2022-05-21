@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 
 class BaseData:
@@ -104,7 +104,9 @@ class UserData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__last_login: str = items.get("last_login", str(date.today()))
+        self.__last_login: str = items.get(
+            "last_login", str(date.today() - timedelta(days=1))
+        )
         self.__login_days: int = items.get("login_days", 0)
 
     @property
