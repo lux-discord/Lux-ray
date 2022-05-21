@@ -104,21 +104,21 @@ class Server:
     def keywords(self):
         return self._keywords
 
-    async def _send(
-        self, send_able: "SendAble", message: str, *, delete_after=None, **_format
+    async def send(
+        self, send_able: "SendAble", message: str=None, *, **options
     ):
         message = self.translate(message)
 
-        if _format:
+        if _format := options.pop("message_format"):
             message = message.format(**_format)
+        
+        return await send_able.send(message, **options)
 
-        return await send_able.send(message, delete_after=delete_after)
+    async def send_info(self, send_able: "SendAble", message: str=None, *, **options):
+        return await self.send(send_able, message, delete_after=2, **options)
 
-    async def send_info(self, send_able: "SendAble", message: str, **_format):
-        return await self._send(send_able, message, delete_after=2, **_format)
+    async def send_warning(self, send_able: "SendAble", message: str=None, *, **options):
+        return await self.send(send_able, message, delete_after=6, **options)
 
-    async def send_warning(self, send_able: "SendAble", message: str, **_format):
-        return await self._send(send_able, message, delete_after=6, **_format)
-
-    async def send_error(self, send_able: "SendAble", message: str, **_format):
-        return await self._send(send_able, message, delete_after=10, **_format)
+    async def send_error(self, send_able: "SendAble", message: str=None, **options):
+        return await self.send(send_able, message, delete_after=10, **options)
