@@ -9,17 +9,17 @@ if TYPE_CHECKING:
 
 class Server:
     def __init__(self, server_data: ServerData) -> None:
-        self._data = server_data
-        self._items = server_data.items
-        self._id = server_data.id
-        self._lang_code = server_data.lang_code
-        self._listen_message = server_data.listen_message
-        self._role = server_data.role
-        self._role_member = server_data.role_member
-        self._role_auto = server_data.role_auto
-        self._keywords = server_data.keywords
+        self.__data = server_data
+        self.__items = server_data.items
+        self.__id = server_data.id
+        self.__lang_code = server_data.lang_code
+        self.__listen_message = server_data.listen_message
+        self.__role = server_data.role
+        self.__role_member = server_data.role_member
+        self.__role_auto = server_data.role_auto
+        self.__keywords = server_data.keywords
 
-        self.language = get_language(self._lang_code)
+        self.language = get_language(self.__lang_code)
 
     def __update(self, target: dict[str], update: dict[str]):
         for key, value in update.items():
@@ -42,7 +42,7 @@ class Server:
         -----------
         `core.data.ServerData`
         """
-        new_items = self._items | update
+        new_items = self.__items | update
 
         if updates:
             self.__update(new_items, updates)
@@ -50,7 +50,7 @@ class Server:
         return ServerData.from_items(new_items)
 
     def PrefixData(self, prefix: str):
-        return PrefixData(_id=self._id, prefix=prefix)
+        return PrefixData(_id=self.__id, prefix=prefix)
 
     def translate(self, message):
         """
@@ -67,42 +67,42 @@ class Server:
         -----------
         str
         """
-        if self._lang_code == GLOBAL_DEFAULT_LANGUAGE:
+        if self.__lang_code == GLOBAL_DEFAULT_LANGUAGE:
             return message
 
         return self.language.request_message(message)
 
     @property
     def data(self):
-        return self._data
+        return self.__data
 
     @property
     def id(self):
-        return self._id
+        return self.__id
 
     @property
     def lang_code(self):
-        return self._lang_code
+        return self.__lang_code
 
     @property
     def listen_message(self):
-        return self._listen_message
+        return self.__listen_message
 
     @property
     def role(self):
-        return self._role
+        return self.__role
 
     @property
     def role_member(self):
-        return self._role_member
+        return self.__role_member
 
     @property
     def role_auto(self):
-        return self._role_auto
+        return self.__role_auto
 
     @property
     def keywords(self):
-        return self._keywords
+        return self.__keywords
 
     async def send(self, send_able: "SendAble", message: str = None, **options):
         message = self.translate(message)
