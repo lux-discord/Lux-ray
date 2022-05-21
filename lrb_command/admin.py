@@ -28,7 +28,7 @@ class Admin(GeneralCog):
         if prefix == server_prefix:
             return await server.send_warning(inter, "Prefix did not change")
 
-        await self.update_prefix(server.update_prefix(prefix))
+        await self.update_prefix(server.PrefixData(prefix))
         await server.send_info(
             inter, "Successful set prefix to `{prefix}`", prefix=prefix
         )

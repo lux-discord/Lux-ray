@@ -47,7 +47,7 @@ class Server:
 
         return ServerData.from_items(new_items)
 
-    def update_prefix(self, prefix: str):
+    def PrefixData(self, prefix: str):
         return PrefixData(_id=self._id, prefix=prefix)
 
     def translate(self, message):
