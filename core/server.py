@@ -104,21 +104,19 @@ class Server:
     def keywords(self):
         return self._keywords
 
-    async def send(
-        self, send_able: "SendAble", message: str=None, *, **options
-    ):
+    async def send(self, send_able: "SendAble", message: str = None, **options):
         message = self.translate(message)
 
         if _format := options.pop("message_format"):
             message = message.format(**_format)
-        
+
         return await send_able.send(message, **options)
 
-    async def send_info(self, send_able: "SendAble", message: str=None, *, **options):
+    async def send_info(self, send_able: "SendAble", message: str = None, **options):
         return await self.send(send_able, message, delete_after=2, **options)
 
-    async def send_warning(self, send_able: "SendAble", message: str=None, *, **options):
+    async def send_warning(self, send_able: "SendAble", message: str = None, **options):
         return await self.send(send_able, message, delete_after=6, **options)
 
-    async def send_error(self, send_able: "SendAble", message: str=None, **options):
+    async def send_error(self, send_able: "SendAble", message: str = None, **options):
         return await self.send(send_able, message, delete_after=10, **options)
