@@ -1,3 +1,6 @@
+from datetime import date
+
+
 class BaseData:
     REQUIRE_ITEMS = []
     OPTIONAL_ITEMS = []
@@ -94,3 +97,20 @@ class ServerData(BaseData):
     @property
     def keywords(self):
         return self._keywords
+
+
+class UserData(BaseData):
+    OPTIONAL_ITEMS = ["last_login", "login_days"]
+
+    def __init__(self, **items):
+        super().__init__(**items)
+        self.__last_login: str = items.get("last_login", str(date.today()))
+        self.__login_days: int = items.get("login_days", 0)
+
+    @property
+    def last_login(self):
+        return self.__last_login
+
+    @property
+    def login_days(self):
+        return self.__login_days
