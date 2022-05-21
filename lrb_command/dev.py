@@ -83,8 +83,9 @@ class Dev(GeneralCog):
         self.bot.reload_cogs([file] if file else None, [folder] if folder else None)
         await inter.send(message)
 
+    @cog.sub_command()
     async def test(self, inter: ApplicationCommandInteraction):
-        await inter.send(type(inter.bot))
+        pass
 
 
 def setup(bot: "LuxRay"):
