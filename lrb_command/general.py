@@ -1,9 +1,8 @@
+from datetime import date
 from re import findall
 from typing import TYPE_CHECKING
 
-from disnake import ApplicationCommandInteraction
-from disnake.embeds import Embed
-from disnake.emoji import Emoji
+from disnake import ApplicationCommandInteraction, Embed, Emoji
 from disnake.ext.commands import slash_command
 
 from core.cog import GeneralCog
@@ -67,6 +66,23 @@ class General(GeneralCog):
                 "There is not emoji in the last message of this channel",
                 ephemeral=True,
             )
+
+    @slash_command()
+    async def login(self, inter: ApplicationCommandInteraction):
+        user = await self.get_user(inter.author.id)
+        today = str(date.today())
+
+        if user.last_login == today:
+            return await inter.send(
+                f"You are already logged in today. Days: {user.login_days}",
+                ephemeral=True,
+            )
+
+        login_days = user.login_days + 1
+        await self.update_user(user.UserData(login_days=login_days, last_login=today))
+        await inter.send(
+            f"Login success, you already login {login_days} days", ephemeral=True
+        )
 
 
 def setup(bot: "LuxRay"):
