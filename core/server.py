@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from core.data import PrefixData, ServerData
-from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
+from core.language import GLOBAL_DEFAULT_LANGUAGE, get_language
 
 if TYPE_CHECKING:
     from utils.type_hint import SendAble
@@ -18,6 +18,8 @@ class Server:
         self._role_member = server_data.role_member
         self._role_auto = server_data.role_auto
         self._keywords = server_data.keywords
+
+        self.language = get_language(self._lang_code)
 
     def __update(self, target: dict[str], update: dict[str]):
         for key, value in update.items():
@@ -68,8 +70,7 @@ class Server:
         if self._lang_code == GLOBAL_DEFAULT_LANGUAGE:
             return message
 
-        language = GeneralLanguage(self._lang_code)
-        return language.request_message(message)
+        return self.language.request_message(message)
 
     @property
     def data(self):

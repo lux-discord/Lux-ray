@@ -4,7 +4,7 @@ from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
 from core.data import PrefixData, ServerData
-from core.language import GLOBAL_DEFAULT_LANGUAGE, GeneralLanguage
+from core.language import GLOBAL_DEFAULT_LANGUAGE, get_language
 from core.server import Server
 
 if TYPE_CHECKING:
@@ -39,7 +39,7 @@ class GeneralCog(Cog):
         if lang_code == GLOBAL_DEFAULT_LANGUAGE:
             return message
 
-        language = GeneralLanguage(lang_code)
+        language = get_language(lang_code)
 
         return language.request_message(message)
 
