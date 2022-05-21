@@ -28,7 +28,7 @@ class Server:
                 target[key] = value
         return target
 
-    def update(self, updates=None, **update):
+    def ServerData(self, updates=None, **update):
         """
         Generate a `ServerData` instance with `update`
 

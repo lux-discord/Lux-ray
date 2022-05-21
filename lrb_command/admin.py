@@ -48,7 +48,7 @@ class Admin(GeneralCog):
         if server.lang_code == lang_code:
             return await server.send_warning(inter, "Language did not change")
 
-        await self.update_server(server.update(lang_code=lang_code))
+        await self.update_server(server.ServerData(lang_code=lang_code))
         await server.send_info(
             inter, "Successful set language to `{lang_code}`", lang_code=lang_code
         )
@@ -79,7 +79,7 @@ class Admin(GeneralCog):
             )
 
         auto_roles.append(role_id)
-        await self.update_server(server.update({"role.auto": auto_roles}))
+        await self.update_server(server.ServerData({"role.auto": auto_roles}))
         await inter.send(
             f"Successful add role `{role.name}(ID: {role_id})` to auto-roles"
         )
@@ -97,7 +97,7 @@ class Admin(GeneralCog):
             )
 
         auto_roles.pop(index)
-        await self.update_server(server.update({"role.auto": auto_roles}))
+        await self.update_server(server.ServerData({"role.auto": auto_roles}))
         await inter.send(
             f"Successful remove role `{role.name}(ID: {role_id})` from auto-roles"
         )
