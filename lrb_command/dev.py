@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from disnake import ApplicationCommandInteraction
+from disnake import ApplicationCommandInteraction, Permissions
 from disnake.ext.commands import Param, is_owner, slash_command
 
 from core.cog import GeneralCog
@@ -15,7 +15,8 @@ class Dev(GeneralCog):
         print(f"`{self.qualified_name}` cog must be loaded, auto reload")
         self.bot.load_extension(self.qualified_name)
 
-    @slash_command()
+    # Cog
+    @slash_command(default_member_permissions=Permissions())
     @is_owner()
     async def cog(self, inter):
         pass
@@ -101,7 +102,8 @@ class Dev(GeneralCog):
             ephemeral=True,
         )
 
-    @cog.sub_command()
+    @slash_command(default_member_permissions=Permissions())
+    @is_owner()
     async def test(self, inter: ApplicationCommandInteraction):
         pass
 
