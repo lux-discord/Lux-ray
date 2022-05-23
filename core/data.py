@@ -114,9 +114,9 @@ class ChannelData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__category_request = items.get("category_request", 0)
-        self.__member_join = items.get("member_join", 0)
-        self.__member_leave = items.get("member_leave", 0)
+        self.__category_request: int = items.get("category_request", 0)
+        self.__member_join: int = items.get("member_join", 0)
+        self.__member_leave: int = items.get("member_leave", 0)
 
     @property
     def category_request(self):
