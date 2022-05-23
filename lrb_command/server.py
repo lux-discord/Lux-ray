@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 
 class Server(GeneralCog):
+    # Config
     @slash_command(
         default_member_permissions=Permissions(manage_guild=True, manage_messages=True)
     )
@@ -73,6 +74,7 @@ class Server(GeneralCog):
             ephemeral=True,
         )
 
+    # Auto-role
     @config.sub_command_group(name="auto-role")
     async def auto_role(self, inter):
         pass
