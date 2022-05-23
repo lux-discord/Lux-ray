@@ -18,16 +18,16 @@ class BaseData:
         if require:
             raise ValueError(f"Require items: {', '.join(require)}")
 
-        self._items = items
-        self._id: int = items["_id"]
+        self.__items = items
+        self.__id: int = items["_id"]
 
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @property
     def id(self):
-        return self._id
+        return self.__id
 
     @classmethod
     def from_items(cls, items: dict):
@@ -42,11 +42,11 @@ class PrefixData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self._prefix = self.items["prefix"]
+        self.__prefix = self.items["prefix"]
 
     @property
     def prefix(self):
-        return self._prefix
+        return self.__prefix
 
 
 class ServerData(BaseData):
@@ -60,43 +60,44 @@ class ServerData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self._lang_code: str = items["lang_code"]
-        self._listen_message: bool = items.get("listen_message", False)
-        self._role: dict[str, list[int]] = items.get(
+        self.__lang_code: str = items["lang_code"]
+        self.__listen_message: bool = items.get("listen_message", False)
+        self.__role: dict[str, list[int]] = items.get(
             "role", {"admin": [], "mod": [], "member": [], "auto_role": []}
         )
-        self._channel: dict[str, int] = items.get(
+        self.__channel: dict[str, int] = items.get(
             "channel", {"on_member_join": 0, "on_member_leave": 0}
         )
-        self._keywords: dict[str, str] = items.get("keywords", {})
+        self.__keywords: dict[str, str] = items.get("keywords", {})
 
     @property
     def lang_code(self):
-        return self._lang_code
+        return self.__lang_code
 
     @property
     def listen_message(self):
-        return self._listen_message
+        return self.__listen_message
 
     @property
     def role(self):
-        return self._role
+        return self.__role
 
     @property
     def role_member(self):
-        return self._role.get("member", []) if self._role else None
+        return self.__role.get("member", []) if self.__role else None
 
     @property
     def role_auto(self):
-        return self._role.get("auto", []) if self._role else None
+        return self.__role.get("auto", []) if self.__role else None
 
     @property
     def channel(self):
-        return self._channel
+        return self.__channel
 
     @property
     def keywords(self):
-        return self._keywords
+        return self.__keywords
+
 
 
 class UserData(BaseData):
