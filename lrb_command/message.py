@@ -30,13 +30,13 @@ class Message(GeneralCog):
     async def __set_keyword_reply(self, guild_id: int, keywords: dict[str, str]):
         server = await self.get_server(guild_id)
         _keywords = server.keywords or {}
-        await self.update_server(server.ServerData(keywords=_keywords | keywords))
+        await self.update_server(server.Data(keywords=_keywords | keywords))
 
     async def __del_keyword_reply(self, guild_id: int, *keywords: str):
         server = await self.get_server(guild_id)
         _keywords = server.keywords or {}
         [_keywords.pop(target, None) for target in keywords]
-        await self.update_server(server.ServerData(keywords=_keywords))
+        await self.update_server(server.Data(keywords=_keywords))
 
     # For normal user
     ## Keyword
@@ -187,7 +187,7 @@ class Message(GeneralCog):
         bool_choose = STR_TO_BOOL[choose]
 
         if server.message.listen != bool_choose:
-            await self.update_server(server.ServerData({"message.listen": bool_choose}))
+            await self.update_server(server.Data({"message.listen": bool_choose}))
             return await inter.send(
                 f"Set listen message to {choose}",
                 ephemeral=True,

@@ -66,7 +66,7 @@ class Server(GeneralCog):
                 ephemeral=True,
             )
 
-        await self.update_server(server.ServerData(lang_code=lang_code))
+        await self.update_server(server.Data(lang_code=lang_code))
         await server.send(
             inter,
             "Successful set language to `{lang_code}`",
@@ -103,7 +103,7 @@ class Server(GeneralCog):
             )
 
         auto_roles.append(role_id)
-        await self.update_server(server.ServerData({"role.auto": auto_roles}))
+        await self.update_server(server.Data({"role.auto": auto_roles}))
         await inter.send(
             f"Successful add role `{role.name}(ID: {role_id})` to auto-roles",
             ephemeral=True,
@@ -123,7 +123,7 @@ class Server(GeneralCog):
             )
 
         auto_roles.pop(index)
-        await self.update_server(server.ServerData({"role.auto": auto_roles}))
+        await self.update_server(server.Data({"role.auto": auto_roles}))
         await inter.send(
             f"Successful remove role `{role.name}(ID: {role_id})` from auto-roles",
             ephemeral=True,
