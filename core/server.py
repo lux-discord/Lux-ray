@@ -13,11 +13,9 @@ class Server:
         self.__items = server_data.items
         self.__id = server_data.id
         self.__lang_code = server_data.lang_code
-        self.__listen_message = server_data.listen_message
-        self.__role = server_data.role
-        self.__role_member = server_data.role_member
-        self.__role_auto = server_data.role_auto
         self.__keywords = server_data.keywords
+        self.__role = server_data.role
+        self.__message = server_data.message
 
         self.language = get_language(self.__lang_code)
 
@@ -85,24 +83,16 @@ class Server:
         return self.__lang_code
 
     @property
-    def listen_message(self):
-        return self.__listen_message
+    def keywords(self):
+        return self.__keywords
 
     @property
     def role(self):
         return self.__role
 
     @property
-    def role_member(self):
-        return self.__role_member
-
-    @property
-    def role_auto(self):
-        return self.__role_auto
-
-    @property
-    def keywords(self):
-        return self.__keywords
+    def message(self):
+        return self.__message
 
     async def send(self, send_able: "SendAble", message: str = None, **options):
         message = self.translate(message)

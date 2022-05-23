@@ -61,43 +61,81 @@ class ServerData(BaseData):
     def __init__(self, **items):
         super().__init__(**items)
         self.__lang_code: str = items["lang_code"]
-        self.__listen_message: bool = items.get("listen_message", False)
-        self.__role: dict[str, list[int]] = items.get(
-            "role", {"admin": [], "mod": [], "member": [], "auto_role": []}
-        )
-        self.__channel: dict[str, int] = items.get(
-            "channel", {"on_member_join": 0, "on_member_leave": 0}
-        )
         self.__keywords: dict[str, str] = items.get("keywords", {})
+        self.__role = RoleData(items.get("role", {}))
+        self.__channel = ChannelData(items.get("channel"), {})
+        self.__message = MessageData(items.get("message"), {})
 
     @property
     def lang_code(self):
         return self.__lang_code
 
     @property
-    def listen_message(self):
-        return self.__listen_message
+    def keywords(self):
+        return self.__keywords
 
     @property
     def role(self):
         return self.__role
 
     @property
-    def role_member(self):
-        return self.__role.get("member", []) if self.__role else None
-
-    @property
-    def role_auto(self):
-        return self.__role.get("auto", []) if self.__role else None
-
-    @property
     def channel(self):
         return self.__channel
 
     @property
-    def keywords(self):
-        return self.__keywords
+    def message(self):
+        return self.__message
 
+
+class RoleData(BaseData):
+    OPTIONAL_ITEMS = ["admin", "member", "auto"]
+
+    def __init__(self, **items):
+        super().__init__(**items)
+        self.__admin: list[int] = items.get("admin", [])
+        self.__member: list[int] = items.get("member", [])
+        self.__auto: list[int] = items.get("auto", [])
+
+    @property
+    def admin(self):
+        return self.__admin
+
+    @property
+    def member(self):
+        return self.__member
+
+    @property
+    def auto(self):
+        return self.__auto
+
+
+class ChannelData(BaseData):
+    OPTIONAL_ITEMS = ["member_join", "member_leave"]
+
+    def __init__(self, **items):
+        super().__init__(**items)
+        self.__member_join = items.get("member_join", 0)
+        self.__member_leave = items.get("member_leave", 0)
+
+    @property
+    def member_join(self):
+        return self.__member_join
+
+    @property
+    def member_leave(self):
+        return self.__member_leave
+
+
+class MessageData(BaseData):
+    OPTIONAL_ITEMS = ["listen"]
+
+    def __init__(self, **items):
+        super().__init__(**items)
+        self.__listen: bool = items.get("listen", False)
+
+    @property
+    def listen(self):
+        return self.__listen
 
 
 class UserData(BaseData):

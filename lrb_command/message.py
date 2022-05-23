@@ -198,8 +198,8 @@ class Message(GeneralCog):
         server = await self.get_server(inter.guild_id)
         bool_choose = STR_TO_BOOL[choose]
 
-        if server.listen_message != bool_choose:
-            await self.update_server(server.ServerData(listen_message=bool_choose))
+        if server.message.listen != bool_choose:
+            await self.update_server(server.ServerData({"message.listen": bool_choose}))
             return await inter.send(
                 f"Set listen message to {choose}",
                 ephemeral=True,

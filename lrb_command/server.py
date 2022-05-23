@@ -84,7 +84,7 @@ class Server(GeneralCog):
         role: Role = None,
     ):
         server = await self.get_server(inter.guild_id)
-        auto_roles = server.role_auto or []
+        auto_roles = server.role.auto or []
 
         if not role:
             return await inter.send(

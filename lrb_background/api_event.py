@@ -20,14 +20,14 @@ class ApiEvent(GeneralCog):
 
         server = await self.get_server(message.guild.id)
 
-        if server.listen_message and (reply := server.keywords.get(message.content)):
+        if server.message.listen and (reply := server.keywords.get(message.content)):
             await message.channel.send(reply)
 
     @Cog.listener()
     async def on_member_join(self, member: Member):
         server = await self.get_server(member.guild.id)
 
-        if auto_roles := server.role_auto:
+        if auto_roles := server.role.auto:
             await member.add_roles(
                 member.guild.get_role(role_id) for role_id in auto_roles
             )
