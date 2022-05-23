@@ -74,10 +74,10 @@ class Server(GeneralCog):
         )
 
     @config.sub_command_group(name="auto_role")
-    async def auto_roles(self, inter):
+    async def auto_role(self, inter):
         pass
 
-    @auto_roles.sub_command(name="add")
+    @auto_role.sub_command(name="add")
     async def add_auto_role(
         self,
         inter: ApplicationCommandInteraction,
@@ -107,7 +107,7 @@ class Server(GeneralCog):
             ephemeral=True,
         )
 
-    @auto_roles.sub_command(name="remove")
+    @auto_role.sub_command(name="remove")
     async def remove_auto_role(self, inter: ApplicationCommandInteraction, role: Role):
         server = await self.get_server(inter.guild_id)
         auto_roles = server.role_auto or []
