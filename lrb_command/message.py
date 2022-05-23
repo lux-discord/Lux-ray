@@ -38,7 +38,8 @@ class Message(GeneralCog):
         [_keywords.pop(target, None) for target in keywords]
         await self.update_server(server.ServerData(keywords=_keywords))
 
-    # General command
+    # For normal user
+    ## Keyword
     @slash_command(dm_permission=False)
     async def keyword(self, inter):
         pass
@@ -61,6 +62,7 @@ class Message(GeneralCog):
             )
         await inter.send(keyword)
 
+    ## Auto-complete
     @reply.autocomplete("keyword")
     async def reply_autocom(
         self, inter: ApplicationCommandInteraction, user_input: str = None
@@ -69,11 +71,16 @@ class Message(GeneralCog):
         keywords: dict[str, str] = server.keywords
         return choose_mapping_generater(keywords, user_input)
 
-    # Manage messages
-    ## General
+    # For messages manager
+    ## Message
     @slash_command(
-        default_member_permissions=Permissions(manage_messages=True), name="pin"
+        dm_permission=False,
+        default_member_permissions=Permissions(manage_messages=True),
     )
+    async def message(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @message.sub_command()
     async def pin(self, inter: ApplicationCommandInteraction):
         server = await self.get_server(inter.guild_id)
 
@@ -102,9 +109,7 @@ class Message(GeneralCog):
                 ephemeral=True,
             )
 
-    @slash_command(
-        default_member_permissions=Permissions(manage_messages=True), name="unpin"
-    )
+    @message.sub_command()
     async def unpin(self, inter: ApplicationCommandInteraction):
         server = await self.get_server(inter.guild_id)
 
@@ -133,21 +138,13 @@ class Message(GeneralCog):
                 ephemeral=True,
             )
 
-    @slash_command(
-        default_member_permissions=Permissions(manage_messages=True),
-        name="delete_message",
-    )
-    async def delete_message(
-        self, inter: ApplicationCommandInteraction, amount: int = 1
-    ):
+    @message.sub_command(name="purge")
+    async def purge(self, inter: ApplicationCommandInteraction, amount: int = 1):
         await inter.channel.purge(limit=amount + 1)
         await inter.send(f"`{amount}` message(s) deleted", ephemeral=True)
 
     ## Keyword
-    @slash_command(
-        dm_permission=False,
-        default_member_permissions=Permissions(manage_messages=True),
-    )
+    @message.sub_command_group(name="keyword")
     async def keyword_edit(self, inter):
         pass
 
@@ -173,18 +170,9 @@ class Message(GeneralCog):
             ephemeral=True,
         )
 
-    @remove_reply.autocomplete("keyword")
-    async def remove_reply_autocom(
-        self, inter: ApplicationCommandInteraction, user_input: str = None
-    ):
-        server = await self.get_server(inter.guild_id)
-        keywords = list(server.keywords.keys())
-        return choose_list_generater(keywords, user_input)
-
-    @slash_command(
-        dm_permission=False, default_member_permissions=Permissions(administrator=True)
-    )
-    async def listen_message(
+    ## Other
+    @message.sub_command()
+    async def listen(
         self,
         inter: ApplicationCommandInteraction,
         choose: str = Param(autocomplete=bool_autocom),
@@ -208,6 +196,15 @@ class Message(GeneralCog):
             "Value not change",
             ephemeral=True,
         )
+
+    ## Auto-complete
+    @remove_reply.autocomplete("keyword")
+    async def remove_reply_autocom(
+        self, inter: ApplicationCommandInteraction, user_input: str = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        keywords = list(server.keywords.keys())
+        return choose_list_generater(keywords, user_input)
 
 
 def setup(bot: "LuxRay"):
