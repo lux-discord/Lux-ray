@@ -62,9 +62,9 @@ class ServerData(BaseData):
         super().__init__(**items)
         self.__lang_code: str = items["lang_code"]
         self.__keywords: dict[str, str] = items.get("keywords", {})
-        self.__role = RoleData(items.get("role", {}))
-        self.__channel = ChannelData(items.get("channel"), {})
-        self.__message = MessageData(items.get("message"), {})
+        self.__role = RoleData.from_items(items.get("role", {}))
+        self.__channel = ChannelData.from_items(items.get("channel"), {})
+        self.__message = MessageData.from_items(items.get("message"), {})
 
     @property
     def lang_code(self):
