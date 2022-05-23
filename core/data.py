@@ -5,9 +5,9 @@ class BaseData:
     REQUIRE_ITEMS = []
     OPTIONAL_ITEMS = []
 
-    def __init__(self, **items):
+    def __init__(self, **items) -> None:
         # Valid check
-        invalid = set(items) - {*self.REQUIRE_ITEMS, "_id"} - set(self.OPTIONAL_ITEMS)
+        invalid = set(items) - set(self.REQUIRE_ITEMS) - set(self.OPTIONAL_ITEMS)
 
         if invalid:
             raise TypeError(f"Invalid item(s): {', '.join(invalid)}")
@@ -19,15 +19,10 @@ class BaseData:
             raise ValueError(f"Require items: {', '.join(require)}")
 
         self.__items = items
-        self.__id: int = items["_id"]
 
     @property
     def items(self):
         return self.__items
-
-    @property
-    def id(self):
-        return self.__id
 
     @classmethod
     def from_items(cls, items: dict):
@@ -37,7 +32,18 @@ class BaseData:
         return self.__items
 
 
-class PrefixData(BaseData):
+class IdBaseData(BaseData):
+    def __init__(self, **items) -> None:
+        self.REQUIRE_ITEMS.append("_id")
+        super().__init__(**items)
+        self.__id = items["_id"]
+
+    @property
+    def id(self):
+        return self.__id
+
+
+class PrefixData(IdBaseData):
     REQUIRE_ITEMS = ["prefix"]
 
     def __init__(self, **items):
@@ -49,7 +55,7 @@ class PrefixData(BaseData):
         return self.__prefix
 
 
-class ServerData(BaseData):
+class ServerData(IdBaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = [
         "keywords",
@@ -153,7 +159,7 @@ class MessageData(BaseData):
         return self.__listen
 
 
-class UserData(BaseData):
+class UserData(IdBaseData):
     OPTIONAL_ITEMS = ["last_login", "login_days"]
 
     def __init__(self, **items):
