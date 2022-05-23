@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from disnake import ApplicationCommandInteraction, Permissions, Role
+from disnake import ApplicationCommandInteraction, Permissions, Role, TextChannel
 from disnake.ext.commands import Param, slash_command
 
 from core.cog import GeneralCog
@@ -14,7 +14,9 @@ if TYPE_CHECKING:
 class Server(GeneralCog):
     # Config
     @slash_command(
-        default_member_permissions=Permissions(manage_guild=True, manage_messages=True)
+        default_member_permissions=Permissions(
+            manage_guild=True, manage_channels=True, manage_messages=True
+        )
     )
     async def config(self, inter: ApplicationCommandInteraction):
         pass
@@ -127,6 +129,51 @@ class Server(GeneralCog):
         await inter.send(
             f"Successful remove role `{role.name}(ID: {role_id})` from auto-roles",
             ephemeral=True,
+        )
+
+    # Set channel
+    @config.sub_command_group(name="set-channel")
+    async def set_channel(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @set_channel.sub_command(name="category-request")
+    async def category_request(
+        self, inter: ApplicationCommandInteraction, channel: TextChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        await self.update_server(server.Data({"channel.category_request": channel.id}))
+        await inter.send(
+            f"Set `category request` channel to {channel.mention}", ephemeral=True
+        )
+
+    @set_channel.sub_command(name="channel-request")
+    async def channel_request(
+        self, inter: ApplicationCommandInteraction, channel: TextChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        await self.update_server(server.Data({"channel.channel_request": channel.id}))
+        await inter.send(
+            f"Set `channel request` channel to {channel.mention}", ephemeral=True
+        )
+
+    @set_channel.sub_command(name="member-join-message")
+    async def member_join_message(
+        self, inter: ApplicationCommandInteraction, channel: TextChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        await self.update_server(server.Data({"channel.member_join": channel.id}))
+        await inter.send(
+            f"Set `member join message` channel to {channel.mention}", ephemeral=True
+        )
+
+    @set_channel.sub_command(name="member-leave-message")
+    async def member_leave_message(
+        self, inter: ApplicationCommandInteraction, channel: TextChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        await self.update_server(server.Data({"channel.member_leave": channel.id}))
+        await inter.send(
+            f"Set `member leave message` channel to {channel.mention}", ephemeral=True
         )
 
 
