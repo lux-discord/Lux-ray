@@ -67,23 +67,6 @@ class General(GeneralCog):
                 ephemeral=True,
             )
 
-    @slash_command()
-    async def login(self, inter: ApplicationCommandInteraction):
-        user = await self.get_user(inter.author.id)
-        today = str(date.today())
-
-        if user.last_login == today:
-            return await inter.send(
-                f"You are already logged in today. Days: {user.login_days}",
-                ephemeral=True,
-            )
-
-        login_days = user.login_days + 1
-        await self.update_user(user.UserData(login_days=login_days, last_login=today))
-        await inter.send(
-            f"Login success, you already login {login_days} days", ephemeral=True
-        )
-
 
 def setup(bot: "LuxRay"):
     bot.add_cog(General(bot))
