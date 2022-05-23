@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class General(GeneralCog):
-    @slash_command()
+    @slash_command(name="emoji-info")
     async def emoji_info(
         self, inter: ApplicationCommandInteraction, emoji: Emoji = None
     ):
