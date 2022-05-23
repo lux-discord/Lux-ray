@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from core.bot import LuxRay
 
 
-class Admin(GeneralCog):
+class Server(GeneralCog):
     @slash_command(
         default_member_permissions=Permissions(manage_guild=True, manage_messages=True)
     )
@@ -129,4 +129,4 @@ class Admin(GeneralCog):
 
 
 def setup(bot: "LuxRay"):
-    bot.add_cog(Admin(bot))
+    bot.add_cog(Server(bot))
