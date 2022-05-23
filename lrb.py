@@ -30,14 +30,16 @@ def main():
 @option(
     "-C",
     "--config-path",
-    default="bot-config.toml",
-    show_default=True,
+    default=None,
     type=ClickPath(dir_okay=False, resolve_path=True),
     help="Path of config file",
 )
-def start(mode: str = "dev", config_path="bot-config.toml"):
+def start(mode: str = "dev", config_path=None):
     mode = mode.upper()
-    config = Config(config_path, mode)
+    config = Config(
+        config_path or "bot-config.toml" if mode != "DEV" else "bot-config-dev.toml",
+        mode,
+    )
     bot = LuxRay(config)
     bot.load_cogs(cog_files=config.cog_files, cog_folders=config.cog_folders)
 
