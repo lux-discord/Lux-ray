@@ -34,7 +34,7 @@ class BaseData:
         return cls(**items)
 
     def to_dict(self):
-        return self.items
+        return self.__items
 
 
 class PrefixData(BaseData):
