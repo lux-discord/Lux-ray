@@ -6,7 +6,7 @@ from disnake import (
 )
 from disnake.ext.commands import Bot, Context
 
-from core.checks import has_channel_permissions
+from utils.checks import has_channel_permissions
 from core.exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 
 
