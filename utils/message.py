@@ -6,8 +6,8 @@ from disnake import (
 )
 from disnake.ext.commands import Bot, Context
 
-from utils.checks import has_channel_permissions
 from core.exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
+from utils.checks import has_channel_permissions
 
 
 async def resolve_message_link(bot: Bot, message_link: str):
