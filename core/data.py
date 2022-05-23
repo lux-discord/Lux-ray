@@ -52,10 +52,10 @@ class PrefixData(BaseData):
 class ServerData(BaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = [
-        "listen_message",
+        "keywords",
         "role",
         "channel",
-        "keywords",
+        "message",
     ]
 
     def __init__(self, **items):
