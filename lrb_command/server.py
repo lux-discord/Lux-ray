@@ -73,7 +73,7 @@ class Server(GeneralCog):
             ephemeral=True,
         )
 
-    @config.sub_command_group(name="auto_role")
+    @config.sub_command_group(name="auto-role")
     async def auto_role(self, inter):
         pass
 
