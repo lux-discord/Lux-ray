@@ -9,7 +9,6 @@ if TYPE_CHECKING:
 
 class Server:
     def __init__(self, server_data: ServerData) -> None:
-        self.__data = server_data
         self.__items = server_data.items
         self.__id = server_data.id
         self.__lang_code = server_data.lang_code
@@ -70,10 +69,6 @@ class Server:
             return message
 
         return self.language.request_message(message)
-
-    @property
-    def data(self):
-        return self.__data
 
     @property
     def id(self):
