@@ -110,12 +110,17 @@ class RoleData(BaseData):
 
 
 class ChannelData(BaseData):
-    OPTIONAL_ITEMS = ["member_join", "member_leave"]
+    OPTIONAL_ITEMS = ["category_request", "member_join", "member_leave"]
 
     def __init__(self, **items):
         super().__init__(**items)
+        self.__category_request = items.get("category_request", 0)
         self.__member_join = items.get("member_join", 0)
         self.__member_leave = items.get("member_leave", 0)
+
+    @property
+    def category_request(self):
+        return self.__category_request
 
     @property
     def member_join(self):
