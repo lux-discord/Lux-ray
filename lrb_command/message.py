@@ -2,16 +2,11 @@ from typing import TYPE_CHECKING
 
 from disnake import ApplicationCommandInteraction
 from disnake import Message as Msg
-from disnake import Permissions, TextChannel
-from disnake.ext.commands import Param, slash_command
+from disnake import TextChannel
+from disnake.ext.commands import has_permissions, slash_command
 
 from core.cog import GeneralCog
-from utils.auto_completer import (
-    bool_autocom,
-    choose_list_generater,
-    choose_mapping_generater,
-)
-from utils.converter import STR_TO_BOOL
+from utils.auto_completer import choose_mapping_generater
 from utils.message import TargetMessageInter
 
 if TYPE_CHECKING:
@@ -27,25 +22,9 @@ class Message(GeneralCog):
                 await message.delete()
                 break
 
-    async def __set_keyword_reply(self, guild_id: int, keywords: dict[str, str]):
-        server = await self.get_server(guild_id)
-        _keywords = server.keywords or {}
-        await self.update_server(server.Data(keywords=_keywords | keywords))
-
-    async def __del_keyword_reply(self, guild_id: int, *keywords: str):
-        server = await self.get_server(guild_id)
-        _keywords = server.keywords or {}
-        [_keywords.pop(target, None) for target in keywords]
-        await self.update_server(server.Data(keywords=_keywords))
-
-    # For normal user
-    ## Keyword
-    @slash_command(dm_permission=False)
-    async def keyword(self, inter):
-        pass
-
-    @keyword.sub_command()
-    async def reply(
+    # Commands
+    @slash_command(dm_permission=False, name="keyword-reply")
+    async def keyword_reply(
         self,
         inter: ApplicationCommandInteraction,
         keyword: str = None,
@@ -62,21 +41,9 @@ class Message(GeneralCog):
             )
         await inter.send(keyword)
 
-    ## Auto-complete
-    @reply.autocomplete("keyword")
-    async def reply_autocom(
-        self, inter: ApplicationCommandInteraction, user_input: str = None
-    ):
-        server = await self.get_server(inter.guild_id)
-        keywords: dict[str, str] = server.keywords
-        return choose_mapping_generater(keywords, user_input)
-
-    # For messages manager
-    ## Message
-    @slash_command(
-        dm_permission=False,
-        default_member_permissions=Permissions(manage_messages=True),
-    )
+    ## message
+    @slash_command(dm_permission=False)
+    @has_permissions(manage_messages=True)
     async def message(self, inter: ApplicationCommandInteraction):
         pass
 
@@ -138,73 +105,19 @@ class Message(GeneralCog):
                 ephemeral=True,
             )
 
-    @message.sub_command(name="purge")
+    @message.sub_command()
     async def purge(self, inter: ApplicationCommandInteraction, amount: int = 1):
         await inter.channel.purge(limit=amount + 1)
         await inter.send(f"`{amount}` message(s) deleted", ephemeral=True)
 
-    ## Keyword
-    @message.sub_command_group(name="keyword")
-    async def keyword_edit(self, inter):
-        pass
-
-    @keyword_edit.sub_command(name="set")
-    async def set_reply(
-        self, inter: ApplicationCommandInteraction, keyword: str, reply: str
-    ):
-        await self.__set_keyword_reply(inter.guild_id, {keyword: reply})
-        await inter.send(
-            f"Set reply `{reply}` for keyword `{keyword}`",
-            ephemeral=True,
-        )
-
-    @keyword_edit.sub_command(name="remove")
-    async def remove_reply(
-        self,
-        inter: ApplicationCommandInteraction,
-        keyword: str,
-    ):
-        await self.__del_keyword_reply(inter.guild_id, keyword)
-        await inter.send(
-            f"Deleted keyword `{keyword}`",
-            ephemeral=True,
-        )
-
-    ## Other
-    @message.sub_command()
-    async def listen(
-        self,
-        inter: ApplicationCommandInteraction,
-        choose: str = Param(autocomplete=bool_autocom),
-    ):
-        if choose not in STR_TO_BOOL:
-            return inter.send(
-                f"Invalid value: `{choose}`",
-                ephemeral=True,
-            )
-
-        server = await self.get_server(inter.guild_id)
-        bool_choose = STR_TO_BOOL[choose]
-
-        if server.message.listen != bool_choose:
-            await self.update_server(server.Data({"message.listen": bool_choose}))
-            return await inter.send(
-                f"Set listen message to {choose}",
-                ephemeral=True,
-            )
-        await inter.send(
-            "Value not change",
-            ephemeral=True,
-        )
-
     ## Auto-complete
-    @remove_reply.autocomplete("keyword")
-    async def remove_reply_autocom(
+    @keyword_reply.autocomplete("keyword")
+    async def reply_autocom(
         self, inter: ApplicationCommandInteraction, user_input: str = None
     ):
         server = await self.get_server(inter.guild_id)
-        keywords = list(server.keywords.keys())
-        return choose_list_generater(keywords, user_input)
+        keywords: dict[str, str] = server.keywords
+        return choose_mapping_generater(keywords, user_input)
 
 
 def setup(bot: "LuxRay"):

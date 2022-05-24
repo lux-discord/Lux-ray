@@ -5,23 +5,37 @@ from disnake.ext.commands import Param, slash_command
 
 from core.cog import GeneralCog
 from core.language import GLOBAL_SUPPORT_LANGUAGE
-from utils.auto_completer import lang_code_autocom
+from utils.auto_completer import bool_autocom, choose_list_generater, lang_code_autocom
+from utils.converter import STR_TO_BOOL
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
 
 
 class Server(GeneralCog):
-    # Config
+    # Internal logic
+    async def __set_keyword_reply(self, guild_id: int, keywords: dict[str, str]):
+        server = await self.get_server(guild_id)
+        _keywords = server.keywords or {}
+        await self.update_server(server.Data(keywords=_keywords | keywords))
+
+    async def __del_keyword_reply(self, guild_id: int, *keywords: str):
+        server = await self.get_server(guild_id)
+        _keywords = server.keywords or {}
+        [_keywords.pop(target, None) for target in keywords]
+        await self.update_server(server.Data(keywords=_keywords))
+
+    # Commands
+    ## config-server
     @slash_command(
-        default_member_permissions=Permissions(
-            manage_guild=True, manage_channels=True, manage_messages=True
-        )
+        default_member_permissions=Permissions(manage_guild=True),
+        dm_permission=False,
+        name="config-server",
     )
-    async def config(self, inter: ApplicationCommandInteraction):
+    async def config_server(self, inter: ApplicationCommandInteraction):
         pass
 
-    @config.sub_command()
+    @config_server.sub_command()
     async def prefix(self, inter: ApplicationCommandInteraction, prefix: str = None):
         server = await self.get_server(inter.guild_id)
         server_prefix = await self.bot.db.find_prefix(inter.guild_id)
@@ -46,7 +60,7 @@ class Server(GeneralCog):
             ephemeral=True,
         )
 
-    @config.sub_command()
+    @config_server.sub_command()
     async def language(
         self,
         inter: ApplicationCommandInteraction,
@@ -76,8 +90,16 @@ class Server(GeneralCog):
             ephemeral=True,
         )
 
-    # Auto-role
-    @config.sub_command_group(name="auto-role")
+    ## config-role
+    @slash_command(
+        default_member_permissions=Permissions(manage_guild=True, manage_roles=True),
+        dm_permission=False,
+        name="config-role",
+    )
+    async def config_role(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @config_role.sub_command_group(name="auto")
     async def auto_role(self, inter):
         pass
 
@@ -131,8 +153,78 @@ class Server(GeneralCog):
             ephemeral=True,
         )
 
-    # Set channel
-    @config.sub_command_group(name="set-channel")
+    ## config-message
+    @slash_command(
+        default_member_permissions=Permissions(manage_guild=True, manage_messages=True),
+        dm_permission=False,
+        name="config-message",
+    )
+    async def config_message(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @config_message.sub_command()
+    async def listen(
+        self,
+        inter: ApplicationCommandInteraction,
+        choose: str = Param(autocomplete=bool_autocom),
+    ):
+        if choose not in STR_TO_BOOL:
+            return inter.send(
+                f"Invalid value: `{choose}`",
+                ephemeral=True,
+            )
+
+        server = await self.get_server(inter.guild_id)
+        bool_choose = STR_TO_BOOL[choose]
+
+        if server.message.listen != bool_choose:
+            await self.update_server(server.Data({"message.listen": bool_choose}))
+            return await inter.send(
+                f"Set listen message to {choose}",
+                ephemeral=True,
+            )
+        await inter.send(
+            "Value not change",
+            ephemeral=True,
+        )
+
+    ### keyword
+    @config_message.sub_command_group()
+    async def keyword(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @keyword.sub_command(name="set")
+    async def set_keyword(
+        self, inter: ApplicationCommandInteraction, keyword: str, reply: str
+    ):
+        await self.__set_keyword_reply(inter.guild_id, {keyword: reply})
+        await inter.send(
+            f"Set reply `{reply}` for keyword `{keyword}`",
+            ephemeral=True,
+        )
+
+    @keyword.sub_command(name="remove")
+    async def remove_keyword(
+        self,
+        inter: ApplicationCommandInteraction,
+        keyword: str,
+    ):
+        await self.__del_keyword_reply(inter.guild_id, keyword)
+        await inter.send(
+            f"Deleted keyword `{keyword}`",
+            ephemeral=True,
+        )
+
+    ## config-channel
+    @slash_command(
+        default_member_permissions=Permissions(manage_guild=True, manage_channels=True),
+        dm_permission=False,
+        name="config-channel",
+    )
+    async def config_channel(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @config_channel.sub_command_group(name="set")
     async def set_channel(self, inter: ApplicationCommandInteraction):
         pass
 
@@ -175,6 +267,15 @@ class Server(GeneralCog):
         await inter.send(
             f"Set `member leave message` channel to {channel.mention}", ephemeral=True
         )
+
+    # Auto-complete
+    @remove_keyword.autocomplete("keyword")
+    async def remove_keyword_autocom(
+        self, inter: ApplicationCommandInteraction, user_input: str = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        keywords = list(server.keywords.keys())
+        return choose_list_generater(keywords, user_input)
 
 
 def setup(bot: "LuxRay"):
