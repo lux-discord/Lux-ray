@@ -110,7 +110,7 @@ class Message(GeneralCog):
         await inter.channel.purge(limit=amount + 1)
         await inter.send(f"`{amount}` message(s) deleted", ephemeral=True)
 
-    ## Auto-complete
+    # Auto-complete
     @keyword_reply.autocomplete("keyword")
     async def reply_autocom(
         self, inter: ApplicationCommandInteraction, user_input: str = None
