@@ -97,7 +97,7 @@ class Server:
     async def send(self, send_able: "SendAble", message: str = None, **options):
         message = self.translate(message)
 
-        if _format := options.pop("message_format"):
+        if _format := options.pop("message_format", None):
             message = message.format(**_format)
 
         return await send_able.send(message, **options)
