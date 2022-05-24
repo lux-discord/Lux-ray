@@ -152,7 +152,7 @@ class MessageData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__listen: bool = items.get("listen", False)
+        self.__listen: bool = items.get("listen", True)
 
     @property
     def listen(self):
