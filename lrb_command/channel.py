@@ -46,8 +46,15 @@ class Channel(GeneralCog):
                 ephemeral=True,
             )
 
-        await self.bot.get_channel(server.channel.channel_request).send(
-            f"New request! {inter.author.mention} request a channel with name `{name}`"
+        if channel_request_ch := self.bot.get_channel(server.channel.channel_request):
+            await channel_request_ch.send(
+                f"New request! {inter.author.mention} request a channel with name `{name}`"
+            )
+
+        await inter.send(
+            "This server has not yet set up a channel to process channel requests.\n"
+            "Use `/config-channel process channel-request` to set one",
+            ephemeral=True,
         )
 
 
