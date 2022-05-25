@@ -119,6 +119,7 @@ class ChannelData(BaseData):
     OPTIONAL_ITEMS = [
         "category_request",
         "channel_request",
+        "requestable_category",
         "member_join",
         "member_leave",
     ]
@@ -127,6 +128,7 @@ class ChannelData(BaseData):
         super().__init__(**items)
         self.__category_request: int = items.get("category_request", 0)
         self.__channel_request: int = items.get("channel_request", 0)
+        self.__requestable_category: list[int] = items.get("requestable_category", [])
         self.__member_join: int = items.get("member_join", 0)
         self.__member_leave: int = items.get("member_leave", 0)
 
@@ -137,6 +139,10 @@ class ChannelData(BaseData):
     @property
     def channel_request(self):
         return self.__channel_request
+
+    @property
+    def requestable_category(self):
+        return self.__requestable_category
 
     @property
     def member_join(self):
