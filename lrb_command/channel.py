@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from disnake import ApplicationCommandInteraction, CategoryChannel, PermissionOverwrite
+from disnake import ApplicationCommandInteraction, CategoryChannel
 from disnake.ext.commands import slash_command
 
 from core.cog import GeneralCog
@@ -35,6 +35,12 @@ class Channel(GeneralCog):
                 ephemeral=True,
             )
 
+        await self.bot.get_channel(server.channel.channel_request).send(
+            f"New request! {inter.author.mention} request a channel with name `{name}`"
+        )
+
+
+"""
         overwrites = {
             inter.author: PermissionOverwrite(manage_channels=True, send_messages=True)
         }
@@ -50,6 +56,7 @@ class Channel(GeneralCog):
             f"Channel {channel.mention} created in category `{category.name}`",
             ephemeral=True,
         )
+"""
 
 
 def setup(bot: "LuxRay"):
