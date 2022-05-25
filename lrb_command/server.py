@@ -1,6 +1,12 @@
 from typing import TYPE_CHECKING
 
-from disnake import ApplicationCommandInteraction, Permissions, Role, TextChannel
+from disnake import (
+    ApplicationCommandInteraction,
+    CategoryChannel,
+    Permissions,
+    Role,
+    TextChannel,
+)
 from disnake.ext.commands import Param, slash_command
 
 from core.cog import GeneralCog
@@ -224,29 +230,10 @@ class Server(GeneralCog):
     async def config_channel(self, inter: ApplicationCommandInteraction):
         pass
 
+    ### set-channel
     @config_channel.sub_command_group(name="set")
     async def set_channel(self, inter: ApplicationCommandInteraction):
         pass
-
-    @set_channel.sub_command(name="category-request")
-    async def category_request(
-        self, inter: ApplicationCommandInteraction, channel: TextChannel
-    ):
-        server = await self.get_server(inter.guild_id)
-        await self.update_server(server.Data({"channel.category_request": channel.id}))
-        await inter.send(
-            f"Set `category request` channel to {channel.mention}", ephemeral=True
-        )
-
-    @set_channel.sub_command(name="channel-request")
-    async def channel_request(
-        self, inter: ApplicationCommandInteraction, channel: TextChannel
-    ):
-        server = await self.get_server(inter.guild_id)
-        await self.update_server(server.Data({"channel.channel_request": channel.id}))
-        await inter.send(
-            f"Set `channel request` channel to {channel.mention}", ephemeral=True
-        )
 
     @set_channel.sub_command(name="member-join-message")
     async def member_join_message(
@@ -266,6 +253,87 @@ class Server(GeneralCog):
         await self.update_server(server.Data({"channel.member_leave": channel.id}))
         await inter.send(
             f"Set `member leave message` channel to {channel.mention}", ephemeral=True
+        )
+
+    ### requestable
+    @config_channel.sub_command_group(name="requestable-category")
+    async def requestable_category(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @requestable_category.sub_command(name="add")
+    async def add_requestable_category(
+        self, inter: ApplicationCommandInteraction, category: CategoryChannel = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        requestable_category = server.channel.requestable_category
+
+        if not category:
+            return await inter.send(
+                ", ".join(
+                    [self.bot.get_channel(cid).name for cid in requestable_category]
+                )
+                or "No requestable category have been set for this server",
+                ephemeral=True,
+            )
+
+        if (category_id := category.id) not in requestable_category:
+            requestable_category.append(category_id)
+            await self.update_server(
+                server.Data({"channel.requestable_category": requestable_category})
+            )
+            return await inter.send(
+                f"Added `{category.name}` to requestable categories", ephemeral=True
+            )
+
+        await inter.send(
+            f"`{category.name}` already in requestable categories", ephemeral=True
+        )
+
+    @requestable_category.sub_command(name="remove")
+    async def remove_requestable_category(
+        self, inter: ApplicationCommandInteraction, category: CategoryChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        requestable_category = server.channel.requestable_category
+
+        try:
+            index = requestable_category.index(category.id)
+        except ValueError:
+            return await inter.send(
+                f"`{category.name}` not in requetable categories", ephemeral=True
+            )
+
+        requestable_category.pop(index)
+        await self.update_server(
+            server.Data({"channel.requestable_category": requestable_category})
+        )
+        await inter.send(
+            f"Removed `{category.name}` from requestable categories", ephemeral=True
+        )
+
+    ### process
+    @config_channel.sub_command_group()
+    async def process(self, inter: ApplicationCommandInteraction):
+        pass
+
+    @process.sub_command(name="category-request")
+    async def category_request(
+        self, inter: ApplicationCommandInteraction, channel: TextChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        await self.update_server(server.Data({"channel.category_request": channel.id}))
+        await inter.send(
+            f"Set `category request` channel to {channel.mention}", ephemeral=True
+        )
+
+    @process.sub_command(name="channel-request")
+    async def channel_request(
+        self, inter: ApplicationCommandInteraction, channel: TextChannel
+    ):
+        server = await self.get_server(inter.guild_id)
+        await self.update_server(server.Data({"channel.channel_request": channel.id}))
+        await inter.send(
+            f"Set `channel request` channel to {channel.mention}", ephemeral=True
         )
 
     # Auto-complete
