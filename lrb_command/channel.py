@@ -16,7 +16,18 @@ class Channel(GeneralCog):
 
     @request.sub_command()
     async def category(self, inter: ApplicationCommandInteraction, name: str):
-        pass
+        server = await self.get_server(inter.guild_id)
+
+        if category_request_ch := self.bot.get_channel(server.channel.category_request):
+            return await category_request_ch.send(
+                f"New request! {inter.author.mention} request a category with name `{name}`"
+            )
+
+        await inter.send(
+            "This server has not yet set up a channel to process category requests.\n"
+            "Use `/config-channel process category-request` to set one",
+            ephemeral=True,
+        )
 
     @request.sub_command()
     async def channel(
