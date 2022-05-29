@@ -6,7 +6,7 @@ from disnake.ext.commands import slash_command
 
 from core.cog import GeneralCog
 from utils.embed import BOT_COLOR
-from utils.message import TargetMessageInter
+from utils.message import TargetMessage
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
@@ -47,7 +47,7 @@ class General(GeneralCog):
                 ephemeral=True,
             )
 
-        async with TargetMessageInter(inter) as message:
+        async with TargetMessage(inter) as message:
             match_emojis = findall(
                 r"<a?:[a-zA-Z0-9\_]{1,32}:([0-9]{15,20})>$", message.content
             )

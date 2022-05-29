@@ -7,7 +7,7 @@ from disnake.ext.commands import has_permissions, slash_command
 
 from core.cog import GeneralCog
 from utils.auto_completer import choose_mapping_generater
-from utils.message import TargetMessageInter
+from utils.message import TargetMessage
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
@@ -62,7 +62,7 @@ class Message(GeneralCog):
             )
             await self.delete_system_message(message.channel)
 
-        async with TargetMessageInter(inter) as message:
+        async with TargetMessage(inter) as message:
             if message.pinned:
                 return await server.send(
                     inter,
@@ -91,7 +91,7 @@ class Message(GeneralCog):
             )
             await self.delete_system_message(message.channel)
 
-        async with TargetMessageInter(inter) as message:
+        async with TargetMessage(inter) as message:
             if not message.pinned:
                 return await server.send(
                     inter,
