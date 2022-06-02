@@ -44,8 +44,9 @@ async def resolve_message_link(bot: Bot, message_link: str):
         raise InvalidMessageLink(message_link)
 
 
-async def get_last_exist_message(channel: TextChannel) -> Message:
-    return [message async for message in channel.history(limit=1)][0]
+async def get_last_exist_message(channel: TextChannel):
+    messages = await channel.history(limit=1).flatten()
+    return messages[0]
 
 
 class TargetMessage:
