@@ -54,7 +54,7 @@ class TargetMessage:
         self,
         inter: ApplicationCommandInteraction,
         *,
-        last_message: bool = True,
+        last_message: bool = False,
         message_link: str = "",
         **perms: bool,
     ):
