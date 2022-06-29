@@ -18,29 +18,21 @@ class BaseData:
         if require:
             raise ValueError(f"Require items: {', '.join(require)}")
 
-        self.__items = items
-
-    @property
-    def items(self):
-        return self.__items
+        self.items = items
 
     @classmethod
     def from_items(cls, items: dict):
         return cls(**items)
 
     def to_dict(self):
-        return self.__items
+        return self.items
 
 
 class IdBaseData(BaseData):
     def __init__(self, **items) -> None:
         self.REQUIRE_ITEMS.append("_id")
         super().__init__(**items)
-        self.__id = items["_id"]
-
-    @property
-    def id(self):
-        return self.__id
+        self.id = items["_id"]
 
 
 class PrefixData(IdBaseData):
@@ -48,11 +40,7 @@ class PrefixData(IdBaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__prefix = self.items["prefix"]
-
-    @property
-    def prefix(self):
-        return self.__prefix
+        self.prefix = self.items["prefix"]
 
 
 class ServerData(IdBaseData):
@@ -66,31 +54,11 @@ class ServerData(IdBaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__lang_code: str = items["lang_code"]
-        self.__keywords: dict[str, str] = items.get("keywords", {})
-        self.__role = RoleData.from_items(items.get("role", {}))
-        self.__channel = ChannelData.from_items(items.get("channel", {}))
-        self.__message = MessageData.from_items(items.get("message", {}))
-
-    @property
-    def lang_code(self):
-        return self.__lang_code
-
-    @property
-    def keywords(self):
-        return self.__keywords
-
-    @property
-    def role(self):
-        return self.__role
-
-    @property
-    def channel(self):
-        return self.__channel
-
-    @property
-    def message(self):
-        return self.__message
+        self.lang_code: str = items["lang_code"]
+        self.keywords: dict[str, str] = items.get("keywords", {})
+        self.role = RoleData.from_items(items.get("role", {}))
+        self.channel = ChannelData.from_items(items.get("channel", {}))
+        self.message = MessageData.from_items(items.get("message", {}))
 
 
 class RoleData(BaseData):
@@ -98,21 +66,9 @@ class RoleData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__admin: list[int] = items.get("admin", [])
-        self.__member: list[int] = items.get("member", [])
-        self.__auto: list[int] = items.get("auto", [])
-
-    @property
-    def admin(self):
-        return self.__admin
-
-    @property
-    def member(self):
-        return self.__member
-
-    @property
-    def auto(self):
-        return self.__auto
+        self.admin: list[int] = items.get("admin", [])
+        self.member: list[int] = items.get("member", [])
+        self.auto: list[int] = items.get("auto", [])
 
 
 class ChannelData(BaseData):
@@ -126,31 +82,11 @@ class ChannelData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__category_request: int = items.get("category_request", 0)
-        self.__channel_request: int = items.get("channel_request", 0)
-        self.__requestable_category: list[int] = items.get("requestable_category", [])
-        self.__member_join: int = items.get("member_join", 0)
-        self.__member_leave: int = items.get("member_leave", 0)
-
-    @property
-    def category_request(self):
-        return self.__category_request
-
-    @property
-    def channel_request(self):
-        return self.__channel_request
-
-    @property
-    def requestable_category(self):
-        return self.__requestable_category
-
-    @property
-    def member_join(self):
-        return self.__member_join
-
-    @property
-    def member_leave(self):
-        return self.__member_leave
+        self.category_request: int = items.get("category_request", 0)
+        self.channel_request: int = items.get("channel_request", 0)
+        self.requestable_category: list[int] = items.get("requestable_category", [])
+        self.member_join: int = items.get("member_join", 0)
+        self.member_leave: int = items.get("member_leave", 0)
 
 
 class MessageData(BaseData):
@@ -158,11 +94,7 @@ class MessageData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__listen: bool = items.get("listen", True)
-
-    @property
-    def listen(self):
-        return self.__listen
+        self.listen: bool = items.get("listen", True)
 
 
 class UserData(IdBaseData):
@@ -170,15 +102,7 @@ class UserData(IdBaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.__last_login: str = items.get(
+        self.last_login: str = items.get(
             "last_login", str(date.today() - timedelta(days=1))
         )
-        self.__login_days: int = items.get("login_days", 0)
-
-    @property
-    def last_login(self):
-        return self.__last_login
-
-    @property
-    def login_days(self):
-        return self.__login_days
+        self.login_days: int = items.get("login_days", 0)
