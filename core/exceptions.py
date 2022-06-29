@@ -31,6 +31,12 @@ class ConfigInvalid(LRBError):
         super().__init__(f"Invalid config, {name} can not be {value}")
 
 
+class DatabaseError(LRBError):
+    def __init__(self, operate) -> None:
+        # TODO better error message
+        super().__init__(f"Operate `{operate}` failure")
+
+
 # Invalid user input
 class InvalidUserInput(LRBError):
     """
