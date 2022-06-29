@@ -90,15 +90,16 @@ class GeneralCog(Cog):
         -----------
         `core.data.ServerData`
         """
-        if raw_server_data := await self.find_server(server_id):
-            server_data = ServerData(**raw_server_data)
-        else:
-            server_data = ServerData(
-                _id=server_id,
-                lang_code=self.bot.config.default_lang_code,
-            )
-            await self.insert_server(server_data)
+        if raw_data := await self.find_server(server_id):
+            return ServerData(**raw_data)
 
+        raw_data = {
+            "_id": server_id,
+            "lang_code": self.bot.config.default_lang_code,
+        }
+
+        server_data = ServerData(**raw_data)
+        await self.insert_server(server_data)
         return server_data
 
     async def get_server(self, server_id):
