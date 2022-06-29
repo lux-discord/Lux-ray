@@ -102,7 +102,6 @@ class UserData(IdBaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.last_login: str = items.get(
-            "last_login", str(date.today() - timedelta(days=1))
-        )
+        default_last_login = str(date.today() - timedelta(days=1))
+        self.last_login: str = items.get("last_login", default_last_login)
         self.login_days: int = items.get("login_days", 0)
