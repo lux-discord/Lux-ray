@@ -19,7 +19,10 @@ class General(GeneralCog):
 
     @tools.sub_command(name="emoji-info")
     async def emoji_info(
-        self, inter: ApplicationCommandInteraction, emoji: Emoji = None
+        self,
+        inter: ApplicationCommandInteraction,
+        emoji: Emoji = None,
+        message_link: str = "",
     ):
         server = await self.get_server(inter.guild_id)
         embed_text = {
@@ -51,7 +54,9 @@ class General(GeneralCog):
                 ephemeral=True,
             )
 
-        async with TargetMessage(inter, last_message=True) as message:
+        async with TargetMessage(
+            inter, message_link=message_link, last_message=True
+        ) as message:
             if match_emoji_ids := findall(emoji_pattern, message.content):
                 return [
                     await inter.send(
