@@ -30,43 +30,38 @@ class General(GeneralCog):
         }
         base_embed = Embed(title=embed_text["Emoji info"], color=BOT_COLOR)
         base_emoji_url = "https://cdn.discordapp.com/emojis/"
+        emoji_pattern = r"<a?:[a-zA-Z0-9\_]{1,32}:([0-9]{15,20})>$"
 
-        def generate_emoji_embed(emoji: Emoji):
-            return (
-                base_embed.add_field(embed_text["Name"], f"`{emoji.name}`")
-                .add_field(
-                    embed_text["Created at"],
-                    f"`{emoji.created_at.strftime('%Y-%m-%d %H:%M:%S')}`",
+        def emoji_info_embed(emoji_id: int):
+            if emoji := self.bot.get_emoji(emoji_id):
+                emoji_create_time = emoji.created_at.strftime("%Y-%m-%d %H:%M:%S")
+
+                return (
+                    base_embed.add_field(embed_text["Name"], f"`{emoji.name}`")
+                    .add_field(embed_text["Created at"], f"`{emoji_create_time}`")
+                    .add_field(embed_text["Url"], emoji.url, inline=False)
                 )
-                .add_field(embed_text["Url"], emoji.url, inline=False)
+            return base_embed.add_field(
+                embed_text["Url"], base_emoji_url + emoji_id, inline=False
             )
 
         if emoji:
             return await inter.send(
-                embed=generate_emoji_embed(emoji),
+                embed=emoji_info_embed(emoji.id),
                 ephemeral=True,
             )
 
-        async with TargetMessage(inter) as message:
-            match_emojis = findall(
-                r"<a?:[a-zA-Z0-9\_]{1,32}:([0-9]{15,20})>$", message.content
-            )
+        async with TargetMessage(inter, last_message=True) as message:
+            if match_emoji_ids := findall(emoji_pattern, message.content):
+                return [
+                    await inter.send(
+                        embed=emoji_info_embed(int(emoji_id)), ephemeral=True
+                    )
+                    for emoji_id in match_emoji_ids
+                ]
 
-            [
-                await inter.send(
-                    embed=generate_emoji_embed(emoji),
-                    ephemeral=True,
-                )
-                if (emoji := self.bot.get_emoji(int(emoji_id)))
-                else await inter.send(
-                    embed=base_embed.add_field(
-                        embed_text["Url"], base_emoji_url + emoji_id, inline=False
-                    ),
-                    ephemeral=True,
-                )
-                for emoji_id in match_emojis
-            ] if match_emojis else await inter.send(
-                "There is not emoji in the last message of this channel",
+            await inter.send(
+                "There is no emoji in the last message of this channel",
                 ephemeral=True,
             )
 
