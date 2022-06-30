@@ -12,7 +12,6 @@ class Server:
         self.__items = server_data.items
         self.__id = server_data.id
         self.__lang_code = server_data.lang_code
-        self.__keywords = server_data.keywords
         self.__role = server_data.role
         self.__channel = server_data.channel
         self.__message = server_data.message
@@ -77,10 +76,6 @@ class Server:
     @property
     def lang_code(self):
         return self.__lang_code
-
-    @property
-    def keywords(self):
-        return self.__keywords
 
     @property
     def role(self):

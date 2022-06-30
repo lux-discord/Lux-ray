@@ -31,7 +31,7 @@ class Message(GeneralCog):
     ):
         if not keyword:
             server = await self.get_server(inter.guild_id)
-            keywords = server.keywords
+            keywords = server.message.keywords
             return (
                 await inter.send(
                     str(keywords)[1:-1].replace("'", "`").replace(", ", ",\n")
@@ -116,7 +116,7 @@ class Message(GeneralCog):
         self, inter: ApplicationCommandInteraction, user_input: str = None
     ):
         server = await self.get_server(inter.guild_id)
-        keywords: dict[str, str] = server.keywords
+        keywords: dict[str, str] = server.message.keywords
         return choose_mapping_generater(keywords, user_input)
 
 

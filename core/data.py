@@ -46,7 +46,6 @@ class PrefixData(IdBaseData):
 class ServerData(IdBaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = [
-        "keywords",
         "role",
         "channel",
         "message",
@@ -55,7 +54,6 @@ class ServerData(IdBaseData):
     def __init__(self, **items):
         super().__init__(**items)
         self.lang_code: str = items["lang_code"]
-        self.keywords: dict[str, str] = items.get("keywords", {})
         self.role = RoleData.from_items(items.get("role", {}))
         self.channel = ChannelData.from_items(items.get("channel", {}))
         self.message = MessageData.from_items(items.get("message", {}))
@@ -90,10 +88,11 @@ class ChannelData(BaseData):
 
 
 class MessageData(BaseData):
-    OPTIONAL_ITEMS = ["listen"]
+    OPTIONAL_ITEMS = ["keywords", "listen"]
 
     def __init__(self, **items):
         super().__init__(**items)
+        self.keywords: dict[str, str] = items.get("keywords", {})
         self.listen: bool = items.get("listen", True)
 
 

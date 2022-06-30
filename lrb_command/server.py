@@ -22,12 +22,12 @@ class Server(GeneralCog):
     # Internal logic
     async def __set_keyword_reply(self, guild_id: int, keywords: dict[str, str]):
         server = await self.get_server(guild_id)
-        _keywords = server.keywords or {}
+        _keywords = server.message.keywords or {}
         await self.update_server(server.Data(keywords=_keywords | keywords))
 
     async def __del_keyword_reply(self, guild_id: int, *keywords: str):
         server = await self.get_server(guild_id)
-        _keywords = server.keywords or {}
+        _keywords = server.message.keywords or {}
         [_keywords.pop(target, None) for target in keywords]
         await self.update_server(server.Data(keywords=_keywords))
 
@@ -342,7 +342,7 @@ class Server(GeneralCog):
         self, inter: ApplicationCommandInteraction, user_input: str = None
     ):
         server = await self.get_server(inter.guild_id)
-        keywords = list(server.keywords.keys())
+        keywords = list(server.message.keywords.keys())
         return choose_list_generater(keywords, user_input)
 
 

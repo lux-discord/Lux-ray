@@ -23,7 +23,7 @@ class ApiEvent(GeneralCog):
         if (
             message.content
             and server.message.listen
-            and (reply := server.keywords.get(message.content))
+            and (reply := server.message.keywords.get(message.content))
         ):
             await message.channel.send(reply)
 
