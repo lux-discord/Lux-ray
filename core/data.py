@@ -71,8 +71,8 @@ class RoleData(BaseData):
 
 class ChannelData(BaseData):
     OPTIONAL_ITEMS = [
-        "category_request",
-        "channel_request",
+        "category_request_process_channel",
+        "channel_request_process_channel",
         "requestable_category",
         "member_join",
         "member_leave",
@@ -80,8 +80,12 @@ class ChannelData(BaseData):
 
     def __init__(self, **items):
         super().__init__(**items)
-        self.category_request: int = items.get("category_request", 0)
-        self.channel_request: int = items.get("channel_request", 0)
+        self.category_request_process_channel: int = items.get(
+            "category_request_process_channel", 0
+        )
+        self.channel_request_process_channel: int = items.get(
+            "channel_request_process_channel", 0
+        )
         self.requestable_category: list[int] = items.get("requestable_category", [])
         self.member_join: int = items.get("member_join", 0)
         self.member_leave: int = items.get("member_leave", 0)
