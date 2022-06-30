@@ -45,7 +45,7 @@ class General(GeneralCog):
                     .add_field(embed_text["Url"], emoji.url, inline=False)
                 )
             return base_embed.add_field(
-                embed_text["Url"], base_emoji_url + emoji_id, inline=False
+                embed_text["Url"], base_emoji_url + str(emoji_id), inline=False
             )
 
         if emoji:
