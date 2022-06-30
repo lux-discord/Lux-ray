@@ -1,7 +1,8 @@
 from pathlib import Path
 
+from tomli import load
+
 from core.exceptions import LanguageNotSupport
-from utils.toml_file import load_file
 
 GLOBAL_LOCALES_DIR = Path("locales")
 GLOBAL_SUPPORT_LANGUAGE = {
@@ -18,7 +19,9 @@ class LanguageBase:
             raise LanguageNotSupport(lang_code)
 
         self.lang_code = lang_code
-        self.data = load_file(locale_dir / (lang_code + ".toml"))
+
+        with open(locale_dir / (lang_code + ".toml"), "rb") as f:
+            self.data = load(f)
 
     def request_message(self, token: str) -> str:
         return self.data[token]

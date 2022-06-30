@@ -1,3 +1,4 @@
+from importlib import import_module
 from os import getenv
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -7,10 +8,14 @@ from disnake.utils import search_directory
 from tomli import load, loads
 
 from core.exceptions import ConfigInvalid
-from utils.misc import import_from_path
 
 if TYPE_CHECKING:
     from typing import Union
+
+
+def import_from_path(import_path: str):
+    module, name = import_path.rsplit(".", 1)
+    return getattr(import_module(module), name)
 
 
 def load_config_data(config_path: "Union[str, Path]") -> dict:
