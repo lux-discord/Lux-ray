@@ -323,9 +323,12 @@ class Server(GeneralCog):
         self, inter: ApplicationCommandInteraction, channel: TextChannel
     ):
         server = await self.get_server(inter.guild_id)
-        await self.update_server(server.Data({"channel.category_request": channel.id}))
+        await self.update_server(
+            server.Data({"channel.category_request_process_channel": channel.id})
+        )
         await inter.send(
-            f"Set `category request` channel to {channel.mention}", ephemeral=True
+            f"Set `category request` process channel to {channel.mention}",
+            ephemeral=True,
         )
 
     @process.sub_command(name="channel-request")
@@ -333,9 +336,12 @@ class Server(GeneralCog):
         self, inter: ApplicationCommandInteraction, channel: TextChannel
     ):
         server = await self.get_server(inter.guild_id)
-        await self.update_server(server.Data({"channel.channel_request": channel.id}))
+        await self.update_server(
+            server.Data({"channel.channel_request_process_channel": channel.id})
+        )
         await inter.send(
-            f"Set `channel request` channel to {channel.mention}", ephemeral=True
+            f"Set `channel request` process channel to {channel.mention}",
+            ephemeral=True,
         )
 
     # Auto-complete
