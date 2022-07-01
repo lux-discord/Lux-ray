@@ -54,6 +54,7 @@ class Channel(GeneralCog):
             await channel_request_ch.send(
                 f"New request! {inter.author.mention} request a channel with name `{name}`"
             )
+            return await inter.send("Request sent!", ephemeral=True)
 
         await inter.send(
             "This server has not yet set up a channel to process channel requests.\n"
