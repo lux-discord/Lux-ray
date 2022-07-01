@@ -267,22 +267,23 @@ class Server(GeneralCog):
         server = await self.get_server(inter.guild_id)
         requestable_category = server.channel.requestable_category
 
+        # List added category
         if not category:
             return await inter.send(
-                ", ".join(
-                    [self.bot.get_channel(cid).name for cid in requestable_category]
-                )
+                ", ".join(requestable_category.values())
                 or "No requestable category have been set for this server",
                 ephemeral=True,
             )
 
+        # Add specified category to requestable category
         if (category_id := category.id) not in requestable_category:
-            requestable_category.append(category_id)
+            category_name = category.name
+            requestable_category[str(category_id)] = category_name
             await self.update_server(
                 server.Data({"channel.requestable_category": requestable_category})
             )
             return await inter.send(
-                f"Added `{category.name}` to requestable categories", ephemeral=True
+                f"Added `{category_name}` to requestable categories", ephemeral=True
             )
 
         await inter.send(
@@ -296,14 +297,13 @@ class Server(GeneralCog):
         server = await self.get_server(inter.guild_id)
         requestable_category = server.channel.requestable_category
 
-        try:
-            index = requestable_category.index(category.id)
-        except ValueError:
+        # Check if category is requestable
+        if (category_id := category.id) not in requestable_category:
             return await inter.send(
                 f"`{category.name}` not in requetable categories", ephemeral=True
             )
 
-        requestable_category.pop(index)
+        del requestable_category[category_id]
         await self.update_server(
             server.Data({"channel.requestable_category": requestable_category})
         )

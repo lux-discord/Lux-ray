@@ -86,7 +86,9 @@ class ChannelData(BaseData):
         self.channel_request_process_channel: int = items.get(
             "channel_request_process_channel", 0
         )
-        self.requestable_category: list[int] = items.get("requestable_category", [])
+        self.requestable_category: dict[str, str] = items.get(
+            "requestable_category", {}
+        )
         self.member_join: int = items.get("member_join", 0)
         self.member_leave: int = items.get("member_leave", 0)
 
