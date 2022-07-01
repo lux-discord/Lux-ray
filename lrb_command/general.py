@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from disnake import ApplicationCommandInteraction, Embed, Emoji
 from disnake.ext.commands import slash_command
+from disnake.ext.commands.errors import EmojiNotFound
 
 from core.cog import GeneralCog
 from utils.embed import BOT_COLOR
@@ -66,6 +67,14 @@ class General(GeneralCog):
                 inter, "There is no emoji in the last message of this channel"
             )
 
+    @emoji_info.error
+    async def emoji_info_error(self, inter: ApplicationCommandInteraction, error):
+        if isinstance(error, EmojiNotFound):
+            server = await self.get_server(inter.guild_id)
+            await server.send_ephemeral(
+                inter,
+                "`{emoji}` is not a valid emoji",
+                message_format={"emoji": error.argument},
             )
 
 
