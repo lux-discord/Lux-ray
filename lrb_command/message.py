@@ -62,7 +62,7 @@ class Message(GeneralCog):
             )
             await self.delete_system_message(message.channel)
 
-        async with TargetMessage(inter) as message:
+        async with TargetMessage(inter, last_message=True) as message:
             if message.pinned:
                 return await server.send_ephemeral(inter, "Message pinned")
             await pin(message)
@@ -83,7 +83,7 @@ class Message(GeneralCog):
             )
             await self.delete_system_message(message.channel)
 
-        async with TargetMessage(inter) as message:
+        async with TargetMessage(inter, last_message=True) as message:
             if not message.pinned:
                 return await server.send_ephemeral(inter, "Message not pinned")
             await unpin(message)
