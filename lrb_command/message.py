@@ -84,7 +84,7 @@ class Message(GeneralCog):
         await inter.channel.purge(limit=amount + 1)
         server = await self.get_server(inter.guild_id)
         await server.send_ephemeral(
-            "`{amount}` message(s) deleted", message_format={"amount": amount}
+            inter, "`{amount}` message(s) deleted", message_format={"amount": amount}
         )
 
     # Auto-complete

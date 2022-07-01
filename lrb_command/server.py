@@ -115,10 +115,11 @@ class Server(GeneralCog):
         # List auto-roles that have been set
         if not role:
             return await server.send_ephemeral(
+                inter,
                 str([inter.guild.get_role(role_id).name for role_id in auto_roles])[
                     1:-1
                 ].replace("'", "`")
-                or server.translate("No auto-roles have been set for this server")
+                or server.translate("No auto-roles have been set for this server"),
             )
 
         if (role_id := role.id) in auto_roles:
