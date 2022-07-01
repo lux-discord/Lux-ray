@@ -1,74 +1,96 @@
 # Bot
-# Load cog
+## Cog
 "Successfully loaded {cog_names}" = "Successfully loaded {cog_names}"
-# Unload cog
 "Successfully unloaded {cog_names}" = "Successfully unloaded {cog_names}"
-# Reload cog
 "Successfully reloaded {cog_names}" = "Successfully reloaded {cog_names}"
-# Reload all cog
 "Successfully reloaded all cogs" = "Successfully reloaded all cogs"
-# No cog name input
 "At least one cog name must be entered" = "At least one cog name must be entered"
 
-# Command error
-# Command not exists
+## Command error
 "Command `{name}` not exists" = "Command `{name}` not exists"
-# User missing permission
 "Permission denied, you need {permissions} to use this command" = "Permission denied, you need {permissions} to use this command"
-# Bot missing permission
 "Permission denied, I need {permissions} to {things}" = "Permission denied, I need {permissions} to {things}"
-# Invalid message link
 "Invalid message link: `{message_link}`" = "Invalid message link: `{message_link}`"
-# Invalid channel id
 "Invalid channel ID: `{channel_id}`" = "Invalid channel ID: `{channel_id}`"
-# Invalid message id
 "Invalid message ID: `{message_id}`" = "Invalid message ID: `{message_id}`"
 
+## General error
+"Invalid value: `{value}`" = "Invalid value: `{value}`"
+"Value not change" = "Value not change"
 
 # Command
-# admin.set_lang
+## channel.py
+### request
+"Request sent!" = "Request sent!"
+### request.category
+"New request! {author} request a category with name `{name}`" = "New request! {author} request a category with name `{name}`"
+"This server has not yet set up a channel to process category requests.\nUse `/config-channel process category-request` to set one" = "This server has not yet set up a channel to process category requests.\nUse `/config-channel process category-request` to set one"
+### request.channel
+"Category `{category_name}` is not requestable" = "Category `{category_name}` is not requestable"
+"New request! {author} request a channel with name `{name}`" = "New request! {author} request a channel with name `{name}`"
+"This server has not yet set up a channel to process channel requests.\nUse `/config-channel process channel-request` to set one" = "This server has not yet set up a channel to process channel requests.\nUse `/config-channel process channel-request` to set one"
+"This server has no category that allow request channels" = "This server has no category that allow request channels"
+
+## general.py
+### tools.emoji_info
+"`{emoji}` is not a valid emoji" = "`{emoji}` is not a valid emoji"
+"There is no emoji in the last message of this channel" = "There is no emoji in the last message of this channel"
+
+## message.py
+### message.pin
+"Successful pinning message" = "Successful pinning message"
+"Message pinned" = "Message pinned"
+### message.unpin
+"Successful unpinning message" = "Successful unpinning message"
+"Message not pinned" = "Message not pinned"
+### message.purge
+"`{amount}` message(s) deleted" = "`{amount}` message(s) deleted"
+
+## server.py
+### config_server.prefix
+"Prefix of this server if `{server_prefix}`" = "Prefix of this server if `{server_prefix}`"
+"Prefix did not change" = "Prefix did not change"
+"Successful set prefix to `{prefix}`" = "Successful set prefix to `{prefix}`"
+### config_server.language
 "Language `{lang_code}` is not support" = "Language `{lang_code}` is not support"
 "Language did not change" = "Language did not change"
 "Successful set language to `{lang_code}`" = "Successful set language to `{lang_code}`"
-# admin.set_prefix
-"Prefix did not change" = "Prefix did not change"
-"Successful set prefix to `{prefix}`" = "Successful set prefix to `{prefix}`"
-# admin.set_auto_role
-"Auto-role did not change" = "Auto-role did not change"
-"Role `{role_name}` not found" = "Role `{role_name}` not found"
-"Successful set auto-role to {roles}" = "Successful set auto-role to {roles}"
-"Auto-roles cleared" = "Auto-roles cleared"
-# admin.delete_message
-"`{amount}` message(s) deleted" = "`{amount}` message(s) deleted"
-
-# message.pin
-"Successful pinning message" = "Successful pinning message"
-"Message pinned" = "Message pinned"
-# message.unpin
-"Successful unpinning message" = "Successful unpinning message"
-"Message not pinned" = "Message not pinned"
-
-# general.emoji_info
-"`{invalid_emojis}` is not a valid emoji" = "`{invalid_emojis}` is not a valid emoji"
-"Reference message has no emoji" = "Reference message has no emoji"
-"Emoji not found" = "Emoji not found"
-
+### config_role.auto_role.add_auto_role
+"No auto-roles have been set for this server" = "No auto-roles have been set for this server"
+"Role `{role_name}(ID: {role_id})` already in auto-roles" = "Role `{role_name}(ID: {role_id})` already in auto-roles"
+"Successful add role `{role_name}(ID: {role_id})` to auto-roles" = "Successful add role `{role_name}(ID: {role_id})` to auto-roles"
+### config_role.auto.remove_auto_role
+"Role `{role_name}(ID: {role_id})` not in auto-roles" = "Role `{role_name}(ID: {role_id})` not in auto-roles"
+"Successful remove role `{role_name}(ID: {role_id})` from auto-roles" = "Successful remove role `{role_name}(ID: {role_id})` from auto-roles"
+### config_message.listen
+"Set listen message to {choose}" = "Set listen message to {choose}"
+### config_message.keyword.set_keyword
+"Set reply `{reply}` for keyword `{keyword}`" = "Set reply `{reply}` for keyword `{keyword}`"
+### config_message.keyword.remove_keyword
+"Deleted keyword `{keyword}`" = "Deleted keyword `{keyword}`"
+### config_channel.set_channel.member_join_message
+"Set `member join message` channel to {channel}" = "Set `member join message` channel to {channel}"
+### config_channel.set_channel.member_leave_message
+"Set `member leave message` channel to {channel}" = "Set `member leave message` channel to {channel}"
+### config_channel.requestable_category.add_requestable_category
+"No requestable category have been set for this server" = "No requestable category have been set for this server"
+"Added `{category_name}` to requestable categories" = "Added `{category_name}` to requestable categories"
+"`{category_name}` already in requestable categories" = "`{category_name}` already in requestable categories"
+### config_channel.requestable_category.remove_requestable_category
+"`{category_name}` not in requetable categories" = "`{category_name}` not in requetable categories"
+"Removed `{category_name}` from requestable categories" = "Removed `{category_name}` from requestable categories"
+### config_channel.process.category_request
+"Set `category request` process channel to {channel}" = "Set `category request` process channel to {channel}"
+### config_channel.process.channel_request
+"Set `channel request` process channel to {channel}" = "Set `channel request` process channel to {channel}"
 
 # Audit log reason
-"User `{user_name_with_id}` used command `{command_name}`" = "User `{user_name_with_id}` used command `{command_name}`"
+"User `{user_name_with_id}` use command `{command_name}`" = "User `{user_name_with_id}` use command `{command_name}`"
 
-
-# Event
-# on_member_join
-"{member} joined server" = "{member} joined server"
-# on_member_leave
-"{member} left server" = "{member} left server"
-
-
-# Misc
-# Embed title
+# Embed
+## Title
 "Emoji info" = "Emoji info"
-# Embed field
+## Field
 "Name" = "Name"
 "Created at" = "Created at"
 "Url" = "Url"

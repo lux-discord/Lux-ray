@@ -54,7 +54,7 @@ class Message(GeneralCog):
         async def pin(message: Msg):
             await message.pin(
                 reason=server.translate(
-                    "User `{user_name_with_id}` used command `{command_name}`"
+                    "User `{user_name_with_id}` use command `{command_name}`"
                 ).format(
                     user_name_with_id=f"{inter.author.name}(ID: {inter.author.id})",
                     command_name=inter.application_command.name,
@@ -64,17 +64,9 @@ class Message(GeneralCog):
 
         async with TargetMessage(inter) as message:
             if message.pinned:
-                return await server.send(
-                    inter,
-                    "Message pinned",
-                    ephemeral=True,
-                )
+                return await server.send_ephemeral(inter, "Message pinned")
             await pin(message)
-            await server.send(
-                inter,
-                "Successful pinning message",
-                ephemeral=True,
-            )
+            await server.send_ephemeral(inter, "Successful pinning message")
 
     @message.sub_command()
     async def unpin(self, inter: ApplicationCommandInteraction):
@@ -83,7 +75,7 @@ class Message(GeneralCog):
         async def unpin(message: Msg):
             await message.unpin(
                 reason=server.translate(
-                    "User `{user_name_with_id}` used command `{command_name}`"
+                    "User `{user_name_with_id}` use command `{command_name}`"
                 ).format(
                     user_name_with_id=f"{inter.author.name}(ID: {inter.author.id})",
                     command_name=inter.application_command.name,
@@ -93,22 +85,17 @@ class Message(GeneralCog):
 
         async with TargetMessage(inter) as message:
             if not message.pinned:
-                return await server.send(
-                    inter,
-                    "Message not pinned",
-                    ephemeral=True,
-                )
+                return await server.send_ephemeral(inter, "Message not pinned")
             await unpin(message)
-            await server.send(
-                inter,
-                "Successful unpinning message",
-                ephemeral=True,
-            )
+            await server.send_ephemeral(inter, "Successful unpinning message")
 
     @message.sub_command()
     async def purge(self, inter: ApplicationCommandInteraction, amount: int = 1):
         await inter.channel.purge(limit=amount + 1)
-        await inter.send(f"`{amount}` message(s) deleted", ephemeral=True)
+        server = await self.get_server(inter.guild_id)
+        await server.send_ephemeral(
+            "`{amount}` message(s) deleted", message_format={"amount": amount}
+        )
 
     # Auto-complete
     @keyword_reply.autocomplete("keyword")

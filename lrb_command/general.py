@@ -49,25 +49,23 @@ class General(GeneralCog):
             )
 
         if emoji:
-            return await inter.send(
-                embed=emoji_info_embed(emoji.id),
-                ephemeral=True,
-            )
+            return await server.send_ephemeral(inter, embed=emoji_info_embed(emoji.id))
 
         async with TargetMessage(
             inter, message_link=message_link, last_message=True
         ) as message:
             if match_emoji_ids := findall(emoji_pattern, message.content):
                 return [
-                    await inter.send(
-                        embed=emoji_info_embed(int(emoji_id)), ephemeral=True
+                    await server.send_ephemeral(
+                        inter, embed=emoji_info_embed(int(emoji_id))
                     )
                     for emoji_id in match_emoji_ids
                 ]
 
-            await inter.send(
-                "There is no emoji in the last message of this channel",
-                ephemeral=True,
+            await server.send_ephemeral(
+                inter, "There is no emoji in the last message of this channel"
+            )
+
             )
 
 

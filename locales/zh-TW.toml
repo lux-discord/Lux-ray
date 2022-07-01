@@ -1,74 +1,96 @@
 # Bot
-# Load cog
+## Cog
 "Successfully loaded {cog_names}" = "成功加載{cog_names}"
-# Unload cog
 "Successfully unloaded {cog_names}" = "成功卸載{cog_names}"
-# Reload cog
 "Successfully reloaded {cog_names}" = "成功重載{cog_names}"
-# Reload all cog
 "Successfully reloaded all cogs" = "成功重載所有Cogs"
-# No cog name input
 "At least one cog name must be entered" = "必須輸入至少一個Cog名稱"
 
-# Command error
-# Command not exists
+## Command error
 "Command `{name}` not exists" = "指令`{name}`不存在"
-# User missing permission
 "Permission denied, you need {permissions} to use this command" = "沒有權限, 你需要{permissions}權限才能使用此指令"
-# Bot missing permission
 "Permission denied, I need {permissions} to {things}" = "沒有權限, 我需要{permissions}權限才能{things}"
-# Invalid message link
 "Invalid message link: `{message_link}`" = "無效的訊息連結: `{message_link}`"
-# Invalid channel id
 "Invalid channel id: `{channel_id}`" = "無效的頻道ID: `{channel_id}`"
-# Invalid message id
 "Invalid message id: `{message_id}`" = "無效的訊息ID: `{message_id}`"
 
+## General error
+"Invalid value: `{value}`" = "無效值: `{value}`"
+"Value not change" = "設定值未改變"
 
 # Command
-# admin.set_lang
+## channel.py
+### request
+"Request sent!" = "請求已送出!"
+### request.category
+"New request! {author} request a category with name `{name}`" = "新請求! {author}請求了一個名為`{name}`的分類"
+"This server has not yet set up a channel to process category requests.\nUse `/config-channel process category-request` to set one" = "這個伺服器尚未設置處理分類請求的頻道\n使用`/config-channel process category-request`來設置"
+### request.channel
+"Category `{category_name}` is not requestable" = "分類`{category_name}`目前不接受請求"
+"New request! {author} request a channel with name `{name}`" = "新請求! {author}請求了一個名為`{name}`的頻道"
+"This server has not yet set up a channel to process channel requests.\nUse `/config-channel process channel-request` to set one" = "這個伺服器尚未設置處理頻道請求的頻道\n使用`/config-channel process channel-request`來設置"
+"This server has no category that allow request channels" = "這個伺服器沒有允許請求的分類"
+
+## general.py
+### tools.emoji_info
+"`{emoji}` is not a valid emoji" = "`{emoji}`不是有效的Emoji"
+"There is no emoji in the last message of this channel" = "此頻道的最後一則訊息裡沒有Emoji"
+
+## message.py
+### message.pin
+"Successful pinning message" = "成功釘選訊息"
+"Message pinned" = "訊息已釘選"
+### message.unpin
+"Successful unpinning message" = "成功解釘訊息"
+"Message not pinned" = "訊息未釘選"
+### message.purge
+"`{amount}` message(s) deleted" = "已刪除`{amount}`則訊息"
+
+## server.py
+### config_server.prefix
+"Prefix of this server if `{server_prefix}`" = "這個伺服器的前綴是`{server_prefix}`"
+"Prefix did not change" = "前綴沒有改變"
+"Successful set prefix to `{prefix}`" = "成功將前綴改為`{prefix}`"
+### config_server.language
 "Language `{lang_code}` is not support" = "不支援`{lang_code}`語言"
 "Language did not change" = "語言沒有改變"
 "Successful set language to `{lang_code}`" = "成功將語言改為`{lang_code}`"
-# admin.set_prefix
-"Prefix did not change" = "前綴沒有改變"
-"Successful set prefix to `{prefix}`" = "成功將前綴改為`{prefix}`"
-# admin.set_auto_role
-"Auto-role did not change" = "自動身分組沒有改變"
-"Role `{role_name}` not found" = "沒有找到`{role_name}`身分組"
-"Successful set auto-role to {roles}" = "成功將自動身分組改為{roles}"
-"Auto-roles cleared" = "已清除自動身份組"
-# admin.delete_message
-"`{amount}` message(s) deleted" = "已刪除`{amount}`則訊息"
-
-# message.pin
-"Successful pinning message" = "成功釘選訊息"
-"Message pinned" = "訊息已釘選"
-# message.unpin
-"Successful unpinning message" = "成功解釘訊息"
-"Message not pinned" = "訊息未釘選"
-
-# general.emoji_info
-"`{invalid_emojis}` is not a valid emoji" = "`{invalid_emojis}`不是有效的Emoji"
-"Reference message has no emoji" = "回覆的訊息沒有Emoji"
-"Emoji not found" = "找不到Emoji"
-
+### config_role.auto_role.add_auto_role
+"No auto-roles have been set for this server" = "這個伺服器尚未設置任何自動身分組"
+"Role `{role_name}(ID: {role_id})` already in auto-roles" = "身分`{role_name}(ID: {role_id})`已在自動身分組裡了"
+"Successful add role `{role_name}(ID: {role_id})` to auto-roles" = "成功將身分`{role_name}(ID: {role_id})`添加至自動身分組"
+### config_role.auto.remove_auto_role
+"Role `{role_name}(ID: {role_id})` not in auto-roles" = "身分`{role_name}(ID: {role_id})`不在自動身分組裡"
+"Successful remove role `{role_name}(ID: {role_id})` from auto-roles" = "成功將身分`{role_name}(ID: {role_id})`從自動身分組裡移除"
+### config_message.listen
+"Set listen message to {choose}" = "設置監聽訊息為{choose}"
+### config_message.keyword.set_keyword
+"Set reply `{reply}` for keyword `{keyword}`" = "設置關鍵字`{keyword}`的回覆為`{reply}`"
+### config_message.keyword.remove_keyword
+"Deleted keyword `{keyword}`" = "已刪除關鍵字`{keyword}`"
+### config_channel.set_channel.member_join_message
+"Set `member join message` channel to {channel}" = "已設置`成員加入訊息`頻道為{channel}"
+### config_channel.set_channel.member_leave_message
+"Set `member leave message` channel to {channel}" = "已設置`成員離開訊息`頻道為{channel}"
+### config_channel.requestable_category.add_requestable_category
+"No requestable category have been set for this server" = "這個伺服器尚未設置可接受請求的分類"
+"Added `{category_name}` to requestable categories" = "已添加`{category_name}`至可接受請求的分類"
+"`{category_name}` already in requestable categories" = "`{category_name}`已在可接受請求的分類裡了"
+### config_channel.requestable_category.remove_requestable_category
+"`{category_name}` not in requetable categories" = "`{category_name}`不在可接受請求的分類裡"
+"Removed `{category_name}` from requestable categories" = "已從可接受請求的分類裡移除`{category_name}`"
+### config_channel.process.category_request
+"Set `category request` process channel to {channel}" = "已設置`分類請求`的處理頻道為{channel}"
+### config_channel.process.channel_request
+"Set `channel request` process channel to {channel}" = "已設置`頻道請求`的處理頻道為{channel}"
 
 # Audit log reason
-"User `{user_name_with_id}` used command `{command_name}`" = "用戶`{user_name_with_id}`使用了指令`{command_name}`"
+"User `{user_name_with_id}` use command `{command_name}`" = "用戶`{user_name_with_id}`使用了指令`{command_name}`"
 
-
-# Event
-# on_member_join
-"{member} joined server" = "{member}加入了伺服器"
-# on_member_leave
-"{member} left server" = "{member}離開了伺服器"
-
-
-# Misc
-# Embed title
+# Embed
+# Title
 "Emoji info" = "Emoji資訊"
-# Embed field
+# Field
 "Name" = "名稱"
 "Created at" = "建立時間"
 "Url" = "Url"

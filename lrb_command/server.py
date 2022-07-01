@@ -49,23 +49,20 @@ class Server(GeneralCog):
         server_prefix = await self.bot.db.find_prefix(inter.guild_id)
 
         if not prefix:
-            return await inter.send(
-                f"Prefix of this server if `{server_prefix}`",
-                ephemeral=True,
-            )
-        if prefix == server_prefix:
-            return await server.send(
+            return await server.send_ephemeral(
                 inter,
-                "Prefix did not change",
-                ephemeral=True,
+                "Prefix of this server if `{server_prefix}`",
+                message_format={"server_prefix": server_prefix},
             )
 
+        if prefix == server_prefix:
+            return await server.send_ephemeral(inter, "Prefix did not change")
+
         await self.update_prefix(server.PrefixData(prefix))
-        await server.send(
+        await server.send_ephemeral(
             inter,
             "Successful set prefix to `{prefix}`",
             message_format={"prefix": prefix},
-            ephemeral=True,
         )
 
     @config_server.sub_command()
@@ -77,25 +74,20 @@ class Server(GeneralCog):
         server = await self.get_server(inter.guild_id)
 
         if lang_code not in GLOBAL_SUPPORT_LANGUAGE:
-            return await server.send(
+            return await server.send_ephemeral(
                 inter,
                 "Language code `{lang_code}` is not support",
                 message_format={"lang_code": lang_code},
-                ephemeral=True,
-            )
-        if server.lang_code == lang_code:
-            return await server.send(
-                inter,
-                "Language did not change",
-                ephemeral=True,
             )
 
+        if server.lang_code == lang_code:
+            return await server.send_ephemeral(inter, "Language did not change")
+
         await self.update_server(server.Data(lang_code=lang_code))
-        await server.send(
+        await server.send_ephemeral(
             inter,
             "Successful set language to `{lang_code}`",
             message_format={"lang_code": lang_code},
-            ephemeral=True,
         )
 
     ## config-role
@@ -118,47 +110,52 @@ class Server(GeneralCog):
         role: Role = None,
     ):
         server = await self.get_server(inter.guild_id)
-        auto_roles = server.role.auto or []
+        auto_roles = server.role.auto
 
+        # List auto-roles that have been set
         if not role:
-            return await inter.send(
+            return await server.send_ephemeral(
                 str([inter.guild.get_role(role_id).name for role_id in auto_roles])[
                     1:-1
                 ].replace("'", "`")
-                or "No auto-roles have been set for this server",
-                ephemeral=True,
+                or server.translate("No auto-roles have been set for this server")
             )
+
         if (role_id := role.id) in auto_roles:
-            return await inter.send(
-                f"Role `{role.name}(ID: {role_id})` Already in auto-roles",
-                ephemeral=True,
+            return await server.send_ephemeral(
+                inter,
+                "Role `{role_name}(ID: {role_id})` already in auto-roles",
+                message_format={"role_name": role.name, "role_id": role_id},
             )
 
         auto_roles.append(role_id)
         await self.update_server(server.Data({"role.auto": auto_roles}))
-        await inter.send(
-            f"Successful add role `{role.name}(ID: {role_id})` to auto-roles",
-            ephemeral=True,
+        await server.send_ephemeral(
+            inter,
+            "Successful add role `{role_name}(ID: {role_id})` to auto-roles",
+            message_format={"role_name": role.name, "role_id": role_id},
         )
 
     @auto_role.sub_command(name="remove")
     async def remove_auto_role(self, inter: ApplicationCommandInteraction, role: Role):
         server = await self.get_server(inter.guild_id)
-        auto_roles = server.role_auto or []
+        auto_roles = server.role.auto
 
         try:
             index = auto_roles.index(role_id := role.id)
         except ValueError:
-            return await inter.send(
-                f"Role `{role.name}(ID: {role_id})` not in auto-roles",
-                ephemeral=True,
+            return await server.send_ephemeral(
+                inter,
+                "Role `{role_name}(ID: {role_id})` not in auto-roles",
+                message_format={"role_name": role.name, "role_id": role_id},
             )
 
         auto_roles.pop(index)
         await self.update_server(server.Data({"role.auto": auto_roles}))
-        await inter.send(
-            f"Successful remove role `{role.name}(ID: {role_id})` from auto-roles",
-            ephemeral=True,
+        await server.send_ephemeral(
+            inter,
+            "Successful remove role `{role_name}(ID: {role_id})` from auto-roles",
+            message_format={"role_name": role.name, "role_id": role_id},
         )
 
     ## config-message
@@ -176,25 +173,24 @@ class Server(GeneralCog):
         inter: ApplicationCommandInteraction,
         choose: str = Param(autocomplete=bool_autocom),
     ):
+        server = await self.get_server(inter.guild_id)
+
         if choose not in STR_TO_BOOL:
-            return inter.send(
-                f"Invalid value: `{choose}`",
-                ephemeral=True,
+            return await server.send_ephemeral(
+                inter, "Invalid value: `{value}`", message_format={"value": choose}
             )
 
-        server = await self.get_server(inter.guild_id)
         bool_choose = STR_TO_BOOL[choose]
 
         if server.message.listen != bool_choose:
             await self.update_server(server.Data({"message.listen": bool_choose}))
-            return await inter.send(
-                f"Set listen message to {choose}",
-                ephemeral=True,
+            return await server.send_ephemeral(
+                inter,
+                "Set listen message to {choose}",
+                message_format={"choose": choose},
             )
-        await inter.send(
-            "Value not change",
-            ephemeral=True,
-        )
+
+        await server.send_ephemeral(inter, "Value not change")
 
     ### keyword
     @config_message.sub_command_group()
@@ -205,10 +201,12 @@ class Server(GeneralCog):
     async def set_keyword(
         self, inter: ApplicationCommandInteraction, keyword: str, reply: str
     ):
+        server = await self.get_server(inter.guild_id)
         await self.__set_keyword_reply(inter.guild_id, {keyword: reply})
-        await inter.send(
-            f"Set reply `{reply}` for keyword `{keyword}`",
-            ephemeral=True,
+        await server.send_ephemeral(
+            inter,
+            "Set reply `{reply}` for keyword `{keyword}`",
+            message_format={"reply": reply, "keyword": keyword},
         )
 
     @keyword.sub_command(name="remove")
@@ -217,10 +215,10 @@ class Server(GeneralCog):
         inter: ApplicationCommandInteraction,
         keyword: str,
     ):
+        server = await self.get_server(inter.guild_id)
         await self.__del_keyword_reply(inter.guild_id, keyword)
-        await inter.send(
-            f"Deleted keyword `{keyword}`",
-            ephemeral=True,
+        await server.send_ephemeral(
+            inter, "Deleted keyword `{keyword}`", message_format={"keyword": keyword}
         )
 
     ## config-channel
@@ -243,8 +241,10 @@ class Server(GeneralCog):
     ):
         server = await self.get_server(inter.guild_id)
         await self.update_server(server.Data({"channel.member_join": channel.id}))
-        await inter.send(
-            f"Set `member join message` channel to {channel.mention}", ephemeral=True
+        await server.send_ephemeral(
+            inter,
+            "Set `member join message` channel to {channel}",
+            message_format={"channel": channel.mention},
         )
 
     @set_channel.sub_command(name="member-leave-message")
@@ -253,8 +253,10 @@ class Server(GeneralCog):
     ):
         server = await self.get_server(inter.guild_id)
         await self.update_server(server.Data({"channel.member_leave": channel.id}))
-        await inter.send(
-            f"Set `member leave message` channel to {channel.mention}", ephemeral=True
+        await server.send_ephemeral(
+            inter,
+            "Set `member leave message` channel to {channel}",
+            message_format={"channel": channel.mention},
         )
 
     ### requestable
@@ -271,10 +273,12 @@ class Server(GeneralCog):
 
         # List added category
         if not category:
-            return await inter.send(
+            return await server.send_ephemeral(
+                inter,
                 ", ".join(requestable_category.values())
-                or "No requestable category have been set for this server",
-                ephemeral=True,
+                or server.translate(
+                    "No requestable category have been set for this server"
+                ),
             )
 
         # Add specified category to requestable category
@@ -284,12 +288,16 @@ class Server(GeneralCog):
             await self.update_server(
                 server.Data({"channel.requestable_category": requestable_category})
             )
-            return await inter.send(
-                f"Added `{category_name}` to requestable categories", ephemeral=True
+            return await server.send_ephemeral(
+                inter,
+                "Added `{category_name}` to requestable categories",
+                message_format={"category_name": category_name},
             )
 
-        await inter.send(
-            f"`{category.name}` already in requestable categories", ephemeral=True
+        await server.send_ephemeral(
+            inter,
+            "`{category_name}` already in requestable categories",
+            message_format={"category_name": category.name},
         )
 
     @requestable_category.sub_command(name="remove")
@@ -301,16 +309,20 @@ class Server(GeneralCog):
 
         # Check if category is requestable
         if (category_id := category.id) not in requestable_category:
-            return await inter.send(
-                f"`{category.name}` not in requetable categories", ephemeral=True
+            return await server.send_ephemeral(
+                inter,
+                "`{category_name}` not in requetable categories",
+                message_format={"category_name": category.name},
             )
 
         del requestable_category[category_id]
         await self.update_server(
             server.Data({"channel.requestable_category": requestable_category})
         )
-        await inter.send(
-            f"Removed `{category.name}` from requestable categories", ephemeral=True
+        await server.send_ephemeral(
+            inter,
+            "Removed `{category_name}` from requestable categories",
+            message_format={"category_name": category.name},
         )
 
     ### process
@@ -326,9 +338,10 @@ class Server(GeneralCog):
         await self.update_server(
             server.Data({"channel.category_request_process_channel": channel.id})
         )
-        await inter.send(
-            f"Set `category request` process channel to {channel.mention}",
-            ephemeral=True,
+        await server.send_ephemeral(
+            inter,
+            "Set `category request` process channel to {channel}",
+            message_format={"channel": channel.mention},
         )
 
     @process.sub_command(name="channel-request")
@@ -339,9 +352,10 @@ class Server(GeneralCog):
         await self.update_server(
             server.Data({"channel.channel_request_process_channel": channel.id})
         )
-        await inter.send(
-            f"Set `channel request` process channel to {channel.mention}",
-            ephemeral=True,
+        await server.send_ephemeral(
+            inter,
+            "Set `channel request` process channel to {channel}",
+            message_format={"channel": channel.mention},
         )
 
     # Auto-complete
