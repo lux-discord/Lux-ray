@@ -22,7 +22,15 @@ def load_config_data(config_path: "Union[str, Path]") -> dict:
     if not isinstance(config_path, Path):
         config_path = Path(config_path)
 
-    if config_path.exists():
+    config_path_exist = config_path.exists()
+
+    print(
+        f"Loading config data from '{config_path}'..."
+        if config_path_exist
+        else "Loading config data from envirment variable..."
+    )
+
+    if config_path_exist:
         with open(config_path, "rb") as f:
             return load(f)
     # When the environment variable contains special characters like newlines, tabs...etc
@@ -35,7 +43,6 @@ def load_config_data(config_path: "Union[str, Path]") -> dict:
 
 class Config:
     def __init__(self, config_path: "Union[str, Path]", mode: str) -> None:
-        print(f"Loading config data from '{config_path}'...")
         self.__data = load_config_data(config_path)
         self.__mode = mode
         self.__dev_mode = mode == "DEV"
