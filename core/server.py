@@ -4,7 +4,7 @@ from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, get_language
 
 if TYPE_CHECKING:
-    from utils.type_hint import SendAble
+    from utils.type_hint import EphemeralSendAble, SendAble
 
 
 class Server:
@@ -96,6 +96,16 @@ class Server:
             message = message.format(**_format)
 
         return await send_able.send(message, **options)
+
+    async def send_ephemeral(
+        self, ephemeral_send_able: "EphemeralSendAble", message: str = None, **options
+    ):
+        message = self.translate(message)
+
+        if _format := options.pop("message_format", None):
+            message = message.format(**_format)
+
+        return await ephemeral_send_able.send(message, ephemeral=True, **options)
 
     async def send_info(self, send_able: "SendAble", message: str = None, **options):
         return await self.send(send_able, message, delete_after=2, **options)
