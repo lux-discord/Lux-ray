@@ -23,29 +23,19 @@ class Message(GeneralCog):
                 break
 
     # Commands
-    @slash_command(dm_permission=False, name="keyword-reply")
-    async def keyword_reply(
-        self,
-        inter: ApplicationCommandInteraction,
-        keyword: str = None,
-    ):
-        if not keyword:
-            server = await self.get_server(inter.guild_id)
-            keywords = server.message.keywords
-            return (
-                await inter.send(
-                    str(keywords)[1:-1].replace("'", "`").replace(", ", ",\n")
-                )
-                if keywords
-                else await inter.send("No keywords have been set for this server")
-            )
-        await inter.send(keyword)
-
     ## message
     @slash_command(dm_permission=False)
     @has_permissions(manage_messages=True)
     async def message(self, inter: ApplicationCommandInteraction):
         pass
+
+    @message.sub_command()
+    async def collect(
+        self,
+        inter: ApplicationCommandInteraction,
+        name,
+    ):
+        await inter.send(name)
 
     @message.sub_command()
     async def pin(self, inter: ApplicationCommandInteraction):
@@ -98,8 +88,8 @@ class Message(GeneralCog):
         )
 
     # Auto-complete
-    @keyword_reply.autocomplete("keyword")
-    async def reply_autocom(
+    @collect.autocomplete("name")
+    async def collect_autocom(
         self, inter: ApplicationCommandInteraction, user_input: str = None
     ):
         server = await self.get_server(inter.guild_id)
