@@ -1,9 +1,10 @@
 from typing import TYPE_CHECKING
 
-from disnake import ApplicationCommandInteraction, CategoryChannel
+from disnake import ApplicationCommandInteraction
 from disnake.ext.commands import slash_command
 
 from core.cog import GeneralCog
+from utils.auto_completer import choose_mapping_generater
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
@@ -31,22 +32,25 @@ class Channel(GeneralCog):
 
     @request.sub_command()
     async def channel(
-        self, inter: ApplicationCommandInteraction, category: CategoryChannel, name: str
+        self, inter: ApplicationCommandInteraction, category: str, name: str
     ):
         server = await self.get_server(inter.guild_id)
-        rable_category_id_to_name = {
-            rable_category.id: rable_category.name
-            for cid in server.channel.requestable_category
-            if (rable_category := self.bot.get_channel(cid))
-        }
 
-        if category.id not in rable_category_id_to_name:
-            return await inter.send(
-                f"Requestable categories: `{', '.join(rable_category_id_to_name.values())}`",
-                ephemeral=True,
+        if category not in server.channel.requestable_category:
+            return await server.send_ephemeral(
+                inter,
+                "Category `{category_name}` is not requestable",
+                message_format={
+                    "category_name": self.bot.get_channel(
+                        int(category) if category.isalnum() else category
+                    ).name
+                },
             )
 
-        if channel_request_ch := self.bot.get_channel(server.channel.channel_request):
+        if channel_request_ch := self.bot.get_channel(
+            server.channel.channel_request_process_channel
+        ):
+            # TODO Add button
             await channel_request_ch.send(
                 f"New request! {inter.author.mention} request a channel with name `{name}`"
             )
@@ -56,6 +60,21 @@ class Channel(GeneralCog):
             "Use `/config-channel process channel-request` to set one",
             ephemeral=True,
         )
+
+    @channel.autocomplete("category")
+    async def channel_autocom(
+        self, inter: ApplicationCommandInteraction, user_input: str = None
+    ):
+        server = await self.get_server(inter.guild_id)
+        requestable_category = server.channel.requestable_category
+
+        if not requestable_category:
+            return ["This server has no category that allow request channels"]
+
+        requestable_category_name_to_id = dict(
+            zip(requestable_category.values(), requestable_category.keys())
+        )
+        return choose_mapping_generater(requestable_category_name_to_id, user_input)
 
 
 """
