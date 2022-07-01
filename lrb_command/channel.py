@@ -42,7 +42,7 @@ class Channel(GeneralCog):
                 "Category `{category_name}` is not requestable",
                 message_format={
                     "category_name": self.bot.get_channel(
-                        int(category) if category.isalnum() else category
+                        int(category) if category.isnumeric() else category
                     ).name
                 },
             )
