@@ -23,13 +23,15 @@ class Server(GeneralCog):
     async def __set_keyword_reply(self, guild_id: int, keywords: dict[str, str]):
         server = await self.get_server(guild_id)
         _keywords = server.message.keywords or {}
-        await self.update_server(server.Data(keywords=_keywords | keywords))
+        await self.update_server(
+            server.Data({"message.keywords": _keywords | keywords})
+        )
 
     async def __del_keyword_reply(self, guild_id: int, *keywords: str):
         server = await self.get_server(guild_id)
         _keywords = server.message.keywords or {}
         [_keywords.pop(target, None) for target in keywords]
-        await self.update_server(server.Data(keywords=_keywords))
+        await self.update_server(server.Data({"message.keywords": _keywords}))
 
     # Commands
     ## config-server
