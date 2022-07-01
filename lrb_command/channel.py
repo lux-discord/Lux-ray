@@ -19,15 +19,20 @@ class Channel(GeneralCog):
     async def category(self, inter: ApplicationCommandInteraction, name: str):
         server = await self.get_server(inter.guild_id)
 
-        if category_request_ch := self.bot.get_channel(server.channel.category_request):
-            return await category_request_ch.send(
-                f"New request! {inter.author.mention} request a category with name `{name}`"
+        if process_channel := self.bot.get_channel(
+            server.channel.category_request_process_channel
+        ):
+            await process_channel.send(
+                server.translate(
+                    "New request! {author} request a category with name `{name}`"
+                ).format(author=inter.author.mention, name=name)
             )
+            return await server.send_ephemeral(inter, "Request sent!")
 
-        await inter.send(
+        await server.send_ephemeral(
+            inter,
             "This server has not yet set up a channel to process category requests.\n"
             "Use `/config-channel process category-request` to set one",
-            ephemeral=True,
         )
 
     @request.sub_command()
@@ -36,30 +41,36 @@ class Channel(GeneralCog):
     ):
         server = await self.get_server(inter.guild_id)
 
+        # check category is valid
         if category not in server.channel.requestable_category:
             return await server.send_ephemeral(
                 inter,
                 "Category `{category_name}` is not requestable",
                 message_format={
+                    # In default category is id of category(autocom)
+                    # But user can ignore autocom, input text directly(PC only)
                     "category_name": self.bot.get_channel(
                         int(category) if category.isnumeric() else category
                     ).name
                 },
             )
 
-        if channel_request_ch := self.bot.get_channel(
+        # check if server has set up a process channel
+        if process_channel := self.bot.get_channel(
             server.channel.channel_request_process_channel
         ):
             # TODO Add button
-            await channel_request_ch.send(
-                f"New request! {inter.author.mention} request a channel with name `{name}`"
+            await process_channel.send(
+                server.translate(
+                    "New request! {author} request a channel with name `{name}`"
+                ).format(author=inter.author.mention, name=name)
             )
-            return await inter.send("Request sent!", ephemeral=True)
+            return await server.send_ephemeral(inter, "Request sent!")
 
-        await inter.send(
+        await server.send_ephemeral(
+            inter,
             "This server has not yet set up a channel to process channel requests.\n"
             "Use `/config-channel process channel-request` to set one",
-            ephemeral=True,
         )
 
     @channel.autocomplete("category")
@@ -70,7 +81,11 @@ class Channel(GeneralCog):
         requestable_category = server.channel.requestable_category
 
         if not requestable_category:
-            return ["This server has no category that allow request channels"]
+            return [
+                server.translate(
+                    "This server has no category that allow request channels"
+                )
+            ]
 
         requestable_category_name_to_id = dict(
             zip(requestable_category.values(), requestable_category.keys())
