@@ -68,7 +68,7 @@ class GeneralCog(Cog):
 
     # Prefix
     async def update_prefix(self, update: PrefixData):
-        await self.db.update_prefix(update)
+        return await self.db.update_prefix(update)
 
     # Server
     async def get_server_data(self, server_id):
@@ -113,11 +113,11 @@ class GeneralCog(Cog):
         return await self.db.find_server(server_id)
 
     async def insert_server(self, server_data: ServerData):
-        await self.db.insert_server(server_data)
+        return await self.db.insert_server(server_data)
 
     async def update_server(self, update: ServerData):
         server_cache.pop(update.id, None)
-        await self.db.update_server(update)
+        return await self.db.update_server(update)
 
     # User
     async def get_user_data(self, user_id: int):
