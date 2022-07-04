@@ -84,6 +84,7 @@ class Server(GeneralCog):
             return await server.send_ephemeral(inter, "Language did not change")
 
         await self.update_server(server.Data(lang_code=lang_code))
+        server = server.update(lang_code=lang_code)
         await server.send_ephemeral(
             inter,
             "Successful set language to `{lang_code}`",
