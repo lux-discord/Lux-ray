@@ -23,10 +23,10 @@ class BaseDriver:
     async def find(self, identifer_data: IdentiferData):
         raise NotImplementedError
 
-    async def insert(self, identifer_data: IdentiferData):
+    async def insert(self, identifer_data: IdentiferData, value):
         raise NotImplementedError
 
-    async def update(self, identifer_data: IdentiferData):
+    async def update(self, identifer_data: IdentiferData, value):
         raise NotImplementedError
 
     async def delete(self, identifer_data: IdentiferData):
