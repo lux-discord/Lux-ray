@@ -10,7 +10,7 @@ class ExtEvent(GeneralCog):
         if inter.application_command.has_error_handler():
             return
 
-        print(error)
+        raise error
 
 
 def setup(bot):
