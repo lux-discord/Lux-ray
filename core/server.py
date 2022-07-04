@@ -27,12 +27,16 @@ class Server:
                 target[key] = value
         return target
 
-    def update(self, updates: dict = None, **update):
+    def __update(self, updates: dict = None, **update):
         items = self.__items | update
 
         if updates:
-            self.__update(items, updates)
+            self.__update_dict(items, updates)
 
+        return items
+
+    def update(self, updates: dict = None, **update):
+        items = self.__update(updates, **update)
         return self.__class__(ServerData.from_items(items))
 
     def Data(self, updates=None, **update):
@@ -47,12 +51,8 @@ class Server:
         -----------
         `core.data.ServerData`
         """
-        new_items = self.__items | update
-
-        if updates:
-            self.__update(new_items, updates)
-
-        return ServerData.from_items(new_items)
+        items = self.__update(updates, **update)
+        return ServerData.from_items(items)
 
     def PrefixData(self, prefix: str):
         return PrefixData(_id=self.__id, prefix=prefix)
