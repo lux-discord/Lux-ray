@@ -23,6 +23,23 @@ class MongoDriver(BaseDriver):
     def __getitem__(self, name):
         return self.bot_db[name]
 
+    async def find(self, identifer_data: IdentiferData):
+        collection = self.bot_db.get_collection(identifer_data.category)
+        return await collection.find(identifer_data.filter)
+
+    async def insert(self, identifer_data: IdentiferData, *value):
+        collection = self.bot_db.get_collection(identifer_data.category)
+        return await collection.insert_many(value)
+
+    async def update(self, identifer_data: IdentiferData, value):
+        collection = self.bot_db.get_collection(identifer_data.category)
+        update = {"$set": value}
+        return await collection.update_many(identifer_data.filter, update)
+
+    async def delete(self, identifer_data: IdentiferData):
+        collection = self.bot_db.get_collection(identifer_data.category)
+        return await collection.delete_many(identifer_data.filter)
+
     # Prefix
     async def find_prefix(self, server_id: int) -> "Optional[str]":
         """
