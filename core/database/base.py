@@ -7,7 +7,8 @@ if TYPE_CHECKING:
 
 
 class IdentiferData(IdBaseData):
-    REQUIRE_ITEMS = ["category", "filter"]
+    REQUIRE_ITEMS = ["category"]
+    OPTIONAL_ITEMS = ["filter"]
 
     def __init__(self, **items) -> None:
         super().__init__(**items)
