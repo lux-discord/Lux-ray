@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from core.bot import LuxRay
 
 
-async def get_prefix(bot: "LuxRay", message: Message):
+async def get_prefix(bot: "LuxRay", message: "Message"):
     server_id = message.guild.id
 
     if not (prefix := await bot.db.find_prefix(server_id)):
