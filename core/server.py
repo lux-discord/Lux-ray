@@ -102,9 +102,9 @@ class Server:
     async def send(
         self, send_able: "SendAble", message: "Optional[str]" = None, **options
     ):
-        message = self.translate(message)
+        message = self.translate(message) if message else None
 
-        if _format := options.pop("message_format", None):
+        if message and (_format := options.pop("message_format", None)):
             message = message.format(**_format)
 
         return await send_able.send(message, **options)
@@ -115,9 +115,9 @@ class Server:
         message: "Optional[str]" = None,
         **options,
     ):
-        message = self.translate(message)
+        message = self.translate(message) if message else None
 
-        if _format := options.pop("message_format", None):
+        if message and (_format := options.pop("message_format", None)):
             message = message.format(**_format)
 
         return await ephemeral_send_able.send(message, ephemeral=True, **options)
