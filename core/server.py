@@ -33,7 +33,7 @@ class Server:
         if updates:
             self.__update(items, updates)
 
-        return self.__class__(items)
+        return self.__class__(ServerData.from_items(items))
 
     def Data(self, updates=None, **update):
         """
