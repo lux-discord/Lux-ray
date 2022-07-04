@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 
-class MongoDB:
+class MongoDriver:
     def __init__(self, host, *, port=None) -> None:
         self.client = AsyncIOMotorClient(host=host, port=port)
         self.bot_db: "Database" = self.client["discord-bot"]

@@ -1,6 +1,6 @@
-from .mongodb import MongoDB
+from .mongodb import MongoDriver
 
-_DRIVERS = {"mongodb": MongoDB}
+_DRIVERS = {"mongodb": MongoDriver}
 
 
 def get_driver(database_type: str):
