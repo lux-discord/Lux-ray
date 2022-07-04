@@ -1,4 +1,72 @@
-class DataProfile:
-    def __init__(self, category: str, filter: dict) -> None:
-        self.category = category
-        self.filter = filter
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Optional
+
+    from core.data import IdBaseData, PrefixData, ServerData, UserData
+
+
+class IdentiferData(IdBaseData):
+    REQUIRE_ITEMS = ["category", "filter"]
+
+    def __init__(self, **items) -> None:
+        super().__init__(**items)
+        self.category = items["category"]
+        self.filter = items["filter"]
+
+
+class BaseDriver:
+    def __init__(self, *, host: str, port: int) -> None:
+        raise NotImplementedError
+
+    # Basic method
+    async def find(self, identifer_data: IdentiferData):
+        raise NotImplementedError
+
+    async def insert(self, identifer_data: IdentiferData):
+        raise NotImplementedError
+
+    async def update(self, identifer_data: IdentiferData):
+        raise NotImplementedError
+
+    async def delete(self, identifer_data: IdentiferData):
+        raise NotImplementedError
+
+    # Prefix
+    async def find_prefix(self, server_id: int) -> "Optional[str]":
+        raise NotImplementedError
+
+    async def insert_prefix(self, prefix_data: "PrefixData") -> "PrefixData":
+        raise NotImplementedError
+
+    async def update_prefix(self, prefix_data: "PrefixData") -> "PrefixData":
+        raise NotImplementedError
+
+    async def delete_prefix(self, server_id: int) -> int:
+        raise NotImplementedError
+
+    # Server
+    async def find_server(self, server_id: int) -> "Optional[dict]":
+        raise NotImplementedError
+
+    async def insert_server(self, server_data: "ServerData") -> "ServerData":
+        raise NotImplementedError
+
+    async def update_server(self, server_data: "ServerData") -> "ServerData":
+        raise NotImplementedError
+
+    async def delete_server(self, server_id: int) -> int:
+        raise NotImplementedError
+
+    # User
+    async def find_user(self, user_id: int) -> "Optional[dict]":
+        raise NotImplementedError
+
+    async def insert_user(self, user_data: "UserData") -> "UserData":
+        raise NotImplementedError
+
+    async def update_user(self, user_data: "UserData") -> "UserData":
+        raise NotImplementedError
+
+    async def delete_user(self, user_id: int) -> int:
+        raise NotImplementedError
