@@ -15,29 +15,29 @@ if TYPE_CHECKING:
 class MongoDriver(BaseDriver):
     def __init__(self, host, *, port=None) -> None:
         self.client = AsyncIOMotorClient(host=host, port=port)
-        self.bot_db: "Database" = self.client["discord-bot"]
-        self.prefix = self.bot_db["prefix"]
-        self.server = self.bot_db["server"]
-        self.user = self.bot_db["user"]
+        self.database: "Database" = self.client["discord-bot"]
+        self.prefix = self.database["prefix"]
+        self.server = self.database["server"]
+        self.user = self.database["user"]
 
     def __getitem__(self, name):
-        return self.bot_db[name]
+        return self.database[name]
 
     async def find(self, identifer_data: IdentiferData):
-        collection = self.bot_db.get_collection(identifer_data.category)
+        collection = self.database.get_collection(identifer_data.category)
         return await collection.find(identifer_data.filter)
 
     async def insert(self, identifer_data: IdentiferData, *value):
-        collection = self.bot_db.get_collection(identifer_data.category)
+        collection = self.database.get_collection(identifer_data.category)
         return await collection.insert_many(value)
 
     async def update(self, identifer_data: IdentiferData, value):
-        collection = self.bot_db.get_collection(identifer_data.category)
+        collection = self.database.get_collection(identifer_data.category)
         update = {"$set": value}
         return await collection.update_many(identifer_data.filter, update)
 
     async def delete(self, identifer_data: IdentiferData):
-        collection = self.bot_db.get_collection(identifer_data.category)
+        collection = self.database.get_collection(identifer_data.category)
         return await collection.delete_many(identifer_data.filter)
 
     # Prefix
