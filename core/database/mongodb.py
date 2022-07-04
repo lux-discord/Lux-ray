@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from core.data import PrefixData, ServerData, UserData
+from core.database.base import BaseDriver, IdentiferData
 from core.exceptions import DatabaseError
 
 if TYPE_CHECKING:
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
     from pymongo.database import Database
 
 
-class MongoDriver:
+class MongoDriver(BaseDriver):
     def __init__(self, host, *, port=None) -> None:
         self.client = AsyncIOMotorClient(host=host, port=port)
         self.bot_db: "Database" = self.client["discord-bot"]
