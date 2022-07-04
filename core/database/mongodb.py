@@ -9,7 +9,6 @@ if TYPE_CHECKING:
     from typing import Optional
 
     from pymongo.database import Database
-    from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 
 class MongoDriver:
