@@ -4,6 +4,8 @@ from core.data import PrefixData, ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, get_language
 
 if TYPE_CHECKING:
+    from typing import Optional
+
     from utils.type_hint import EphemeralSendAble, SendAble
 
 
@@ -97,7 +99,9 @@ class Server:
     def message(self):
         return self.__message
 
-    async def send(self, send_able: "SendAble", message: str = None, **options):
+    async def send(
+        self, send_able: "SendAble", message: "Optional[str]" = None, **options
+    ):
         message = self.translate(message)
 
         if _format := options.pop("message_format", None):
@@ -106,7 +110,10 @@ class Server:
         return await send_able.send(message, **options)
 
     async def send_ephemeral(
-        self, ephemeral_send_able: "EphemeralSendAble", message: str = None, **options
+        self,
+        ephemeral_send_able: "EphemeralSendAble",
+        message: "Optional[str]" = None,
+        **options,
     ):
         message = self.translate(message)
 
@@ -115,11 +122,17 @@ class Server:
 
         return await ephemeral_send_able.send(message, ephemeral=True, **options)
 
-    async def send_info(self, send_able: "SendAble", message: str = None, **options):
+    async def send_info(
+        self, send_able: "SendAble", message: "Optional[str]" = None, **options
+    ):
         return await self.send(send_able, message, delete_after=2, **options)
 
-    async def send_warning(self, send_able: "SendAble", message: str = None, **options):
+    async def send_warning(
+        self, send_able: "SendAble", message: "Optional[str]" = None, **options
+    ):
         return await self.send(send_able, message, delete_after=6, **options)
 
-    async def send_error(self, send_able: "SendAble", message: str = None, **options):
+    async def send_error(
+        self, send_able: "SendAble", message: "Optional[str]" = None, **options
+    ):
         return await self.send(send_able, message, delete_after=10, **options)
