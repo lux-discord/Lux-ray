@@ -27,6 +27,14 @@ class Server:
                 target[key] = value
         return target
 
+    def update(self, updates: dict = None, **update):
+        items = self.__items | update
+
+        if updates:
+            self.__update(items, updates)
+
+        return self.__class__(items)
+
     def Data(self, updates=None, **update):
         """
         Generate a `ServerData` instance with `update`
