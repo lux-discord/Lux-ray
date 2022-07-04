@@ -4,10 +4,12 @@ from core.data import PrefixData
 from core.exceptions import ConfigInvalid
 
 if TYPE_CHECKING:
+    from disnake import Message
+
     from core.bot import LuxRay
 
 
-async def get_prefix(bot: "LuxRay", message):
+async def get_prefix(bot: "LuxRay", message: Message):
     server_id = message.guild.id
 
     if not (prefix := await bot.db.find_prefix(server_id)):
