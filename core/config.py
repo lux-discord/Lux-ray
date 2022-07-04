@@ -7,6 +7,7 @@ from disnake import Intents
 from disnake.utils import search_directory
 from tomli import load, loads
 
+from core.database import get_driver
 from core.exceptions import ConfigInvalid
 
 if TYPE_CHECKING:
@@ -156,8 +157,8 @@ class Config:
 
         # Maybe add a warning when port is not found?
         port = int(port) if (port := getenv(f"DB_PORT_{self.__mode}")) else None
-        _class = import_from_path(type_to_path[_type])
-        return _class(host=host, port=port)
+        driver = get_driver(_type)
+        return driver(host=host, port=port)
 
     def get_intents(self):
         print("Creating intents instance...")
