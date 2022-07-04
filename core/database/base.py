@@ -1,9 +1,11 @@
 from typing import TYPE_CHECKING
 
+from core.data import IdBaseData
+
 if TYPE_CHECKING:
     from typing import Optional
 
-    from core.data import IdBaseData, PrefixData, ServerData, UserData
+    from core.data import PrefixData, ServerData, UserData
 
 
 class IdentiferData(IdBaseData):
