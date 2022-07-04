@@ -18,11 +18,11 @@ class Server:
 
         self.language = get_language(self.__lang_code)
 
-    def __update(self, target: dict[str], update: dict[str]):
+    def __update_dict(self, target: dict[str], update: dict[str]):
         for key, value in update.items():
             if "." in key:
                 main, sub = key.split(".", 1)
-                target[main] = self.__update(target.get(main, {}), {sub: value})
+                target[main] = self.__update_dict(target.get(main, {}), {sub: value})
             else:
                 target[key] = value
         return target
