@@ -2,18 +2,42 @@ from re import findall
 from typing import TYPE_CHECKING
 
 from disnake import ApplicationCommandInteraction, Embed, Emoji
-from disnake.ext.commands import slash_command
+from disnake.ext.commands import message_command, slash_command
 from disnake.ext.commands.errors import EmojiNotFound
+from pysaucenao import SauceNao
 
 from core.cog import GeneralCog
 from utils.embed import BOT_COLOR
 from utils.message import TargetMessage
 
 if TYPE_CHECKING:
+    from pysaucenao.containers import SauceNaoResults
+
     from core.bot import LuxRay
+    from core.server import Server
 
 
 class General(GeneralCog):
+    # Internal logic
+    def __RIS_results_info_embed(self, server: "Server", results: "SauceNaoResults"):
+        embed_text = {
+            "Author": server.translate("Author"),
+            "Title": server.translate("Title"),
+            "Similarity": server.translate("Similarity"),
+        }
+        base_embed = Embed(color=BOT_COLOR)
+
+        for result in results:
+            base_embed.add_field(
+                embed_text["Author"], result.author_name, inline=False
+            ).add_field(embed_text["Title"], result.title).add_field(
+                embed_text["Similarity"], result.similarity
+            ).add_field(
+                "Url", result.url, inline=False
+            )
+
+        return base_embed.set_image(results[0].url)
+
     # Commands
     @slash_command()
     async def tools(self, inter: ApplicationCommandInteraction):
@@ -67,6 +91,46 @@ class General(GeneralCog):
             await server.send_ephemeral(
                 inter, "There is no emoji in the last message of this channel"
             )
+
+    @tools.sub_command(name="reverse-image-search")
+    async def reverse_image_search(
+        self,
+        inter: ApplicationCommandInteraction,
+        image_url: str,
+    ):
+        await inter.response.defer(with_message=True, ephemeral=True)
+        server = await self.get_server(inter.guild_id)
+        sauce = SauceNao(api_key=self.bot.config.saucenao_api_key)
+
+        results = await sauce.from_url(image_url)
+        await server.send_ephemeral(
+            inter, embed=self.__RIS_results_info_embed(server, results)
+        )
+        return await server.send_ephemeral(
+            inter,
+            "Searches remaining today: {times}",
+            message_format={"times": results.long_remaining},
+        )
+
+    # Message command
+    @message_command(name="reverse image search")
+    async def message_reverse_image_search(self, inter: ApplicationCommandInteraction):
+        await inter.response.defer(with_message=True, ephemeral=True)
+        server = await self.get_server(inter.guild_id)
+        sauce = SauceNao(api_key=self.bot.config.saucenao_api_key)
+
+        if attachments := inter.target.attachments:
+            results = await sauce.from_url(attachments[0].url)
+            await server.send_ephemeral(
+                inter, embed=self.__RIS_results_info_embed(server, results)
+            )
+            return await server.send_ephemeral(
+                inter,
+                "Searches remaining today: {times}",
+                message_format={"times": results.long_remaining},
+            )
+
+        await server.send_ephemeral(inter, "There are no pictures in this message")
 
     # Local error handler
     @emoji_info.error
