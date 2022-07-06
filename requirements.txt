@@ -3,5 +3,6 @@ disnake
 flask
 motor
 pymongo[srv]
+pysaucenao
 python-dotenv
 tomli
