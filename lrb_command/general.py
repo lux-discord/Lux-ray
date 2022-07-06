@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 
 
 class General(GeneralCog):
+    # Commands
     @slash_command()
     async def tools(self, inter: ApplicationCommandInteraction):
         pass
@@ -67,6 +68,7 @@ class General(GeneralCog):
                 inter, "There is no emoji in the last message of this channel"
             )
 
+    # Local error handler
     @emoji_info.error
     async def emoji_info_error(self, inter: ApplicationCommandInteraction, error):
         if isinstance(error, EmojiNotFound):
