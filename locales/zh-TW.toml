@@ -35,6 +35,10 @@
 ### tools.emoji_info
 "`{emoji}` is not a valid emoji" = "`{emoji}`不是有效的Emoji"
 "There is no emoji in the last message of this channel" = "此頻道的最後一則訊息裡沒有Emoji"
+### tools.reverse_image_search
+"Searches remaining today: {times}" = "今日剩餘搜尋次數: {times}"
+### message_reverse_image_search
+"There are no pictures in this message" = "該訊息中沒有圖片"
 
 ## message.py
 ### message.pin
@@ -94,3 +98,6 @@
 "Name" = "名稱"
 "Created at" = "建立時間"
 "Url" = "Url"
+"Author" = "作者"
+"Title" = "標題"
+"Similarity" = "相似度"

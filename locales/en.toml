@@ -35,6 +35,10 @@
 ### tools.emoji_info
 "`{emoji}` is not a valid emoji" = "`{emoji}` is not a valid emoji"
 "There is no emoji in the last message of this channel" = "There is no emoji in the last message of this channel"
+### tools.reverse_image_search
+"Searches remaining today: {times}" = "Searches remaining today: {times}"
+### message_reverse_image_search
+"There are no pictures in this message" = "There are no pictures in this message"
 
 ## message.py
 ### message.pin
@@ -94,3 +98,6 @@
 "Name" = "Name"
 "Created at" = "Created at"
 "Url" = "Url"
+"Author" = "Author"
+"Title" = "Title"
+"Similarity" = "Similarity"
