@@ -113,12 +113,14 @@ class Server:
         self,
         ephemeral_send_able: "EphemeralSendAble",
         message: "Optional[str]" = None,
+        *,
+        message_format: dict = None,
         **options,
     ):
         message = self.translate(message) if message else None
 
-        if message and (_format := options.pop("message_format", None)):
-            message = message.format(**_format)
+        if message and message_format:
+            message = message.format(message_format)
 
         return await ephemeral_send_able.send(message, ephemeral=True, **options)
 
