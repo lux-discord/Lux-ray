@@ -14,20 +14,6 @@ class ApiEvent(GeneralCog):
         print("Bot is ready")
 
     @Cog.listener()
-    async def on_message(self, message: Message):
-        if message.author.bot:
-            return
-
-        server = await self.get_server(message.guild.id)
-
-        if (
-            message.content
-            and server.message.listen
-            and (reply := server.message.keywords.get(message.content))
-        ):
-            await message.channel.send(reply)
-
-    @Cog.listener()
     async def on_member_join(self, member: Member):
         server = await self.get_server(member.guild.id)
 
