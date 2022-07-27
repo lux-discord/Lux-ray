@@ -63,6 +63,8 @@
 [misc]
 	owner_ids = []
 	# Owner ID(s)
+	color = "0x66E8E4"
+	# Bot color in hex, usually used for embed color
 
 [server]
 	test_guilds = []

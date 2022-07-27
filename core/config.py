@@ -60,6 +60,7 @@ class Config:
         self.__test_guilds: list[int] = self.__data["server"]["test_guilds"]
         self.__default_lang_code: str = self.__data["server"]["default_lang_code"]
         self.__owner_ids: list[int] = self.__data["misc"]["owner_ids"]
+        self.__color: int = self.__parse_color()
         self.__saucenao_api_key = getenv("SAUCENAO_API_KEY")
 
     def __get_prefix(self, data: dict) -> "Union[str, list[str], function]":
@@ -98,6 +99,15 @@ class Config:
             return token
 
         raise ValueError(f"Environment variable `TOKEN_{self.__mode}` not found")
+
+    def __parse_color(self):
+        color: str = self.__data["misc"]["color"]
+
+        if not color.startswith(("#", "0x")):
+            raise InvalidConfigValue("misc.color")
+
+        color = color.replace("#", "0x")
+        return int(color, 16)
 
     @property
     def mode(self):
@@ -142,6 +152,10 @@ class Config:
     @property
     def owner_ids(self):
         return self.__owner_ids
+
+    @property
+    def color(self):
+        return self.__color
 
     @property
     def saucenao_api_key(self):
