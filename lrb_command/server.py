@@ -11,8 +11,7 @@ from disnake.ext.commands import Param, slash_command
 
 from core.cog import GeneralCog
 from core.language import GLOBAL_SUPPORT_LANGUAGE
-from utils.auto_completer import bool_autocom, choose_list_generater, lang_code_autocom
-from utils.converter import STR_TO_BOOL
+from utils.auto_completer import choose_list_generater, lang_code_autocom
 
 if TYPE_CHECKING:
     from core.bot import LuxRay
