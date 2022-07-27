@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from disnake.ext.commands import Bot
+from disnake.ext.commands import InteractionBot
 
 from utils.cog import CogManager
 
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from core.config import Config
 
 
-class LuxRay(Bot):
+class LuxRay(InteractionBot):
     def __init__(self, config: "Config", **options):
         super().__init__(
             command_prefix=config.prefix,
