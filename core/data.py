@@ -94,12 +94,16 @@ class ChannelData(BaseData):
 
 
 class MessageData(BaseData):
-    OPTIONAL_ITEMS = ["keywords", "listen"]
+    # fmt: off
+    OPTIONAL_ITEMS = [
+        "keywords",
+        "listen" # deprecated
+    ]
+    # fmt: on
 
     def __init__(self, **items):
         super().__init__(**items)
         self.keywords: dict[str, str] = items.get("keywords", {})
-        self.listen: bool = items.get("listen", True)
 
 
 class UserData(IdBaseData):
