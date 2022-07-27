@@ -169,31 +169,6 @@ class Server(GeneralCog):
     async def config_message(self, inter: ApplicationCommandInteraction):
         pass
 
-    @config_message.sub_command()
-    async def listen(
-        self,
-        inter: ApplicationCommandInteraction,
-        choose: str = Param(autocomplete=bool_autocom),
-    ):
-        server = await self.get_server(inter.guild_id)
-
-        if choose not in STR_TO_BOOL:
-            return await server.send_ephemeral(
-                inter, "Invalid value: `{value}`", message_format={"value": choose}
-            )
-
-        bool_choose = STR_TO_BOOL[choose]
-
-        if server.message.listen != bool_choose:
-            await self.update_server(server.Data({"message.listen": bool_choose}))
-            return await server.send_ephemeral(
-                inter,
-                "Set listen message to {choose}",
-                message_format={"choose": choose},
-            )
-
-        await server.send_ephemeral(inter, "Value not change")
-
     ### keyword
     @config_message.sub_command_group()
     async def keyword(self, inter: ApplicationCommandInteraction):
