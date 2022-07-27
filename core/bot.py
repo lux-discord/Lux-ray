@@ -19,7 +19,7 @@ class LuxRay(Bot):
         )
 
         self.config = config
-        self.db = config.get_database_client()
+        self.db = config.create_database_client()
         self.cog_manager = CogManager(self)
 
     def load_cogs(self, cog_files: list[str] = None, cog_folders: list[str] = None):

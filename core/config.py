@@ -147,7 +147,7 @@ class Config:
     def saucenao_api_key(self):
         return self.__saucenao_api_key
 
-    def get_database_client(self):
+    def create_database_client(self):
         print("Creating database client...")
         type_to_path = {"mongodb": "core.database.mongodb.MongoDB"}
 

@@ -59,7 +59,7 @@ def get_default_value():
 
 def setup_db(config_path, mode):
     config = Config(config_path, mode)
-    db_client = config.get_database_client()
+    db_client = config.create_database_client()
     return db_client["discord-bot"]
 
 
