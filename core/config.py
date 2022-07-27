@@ -165,7 +165,7 @@ class Config:
         driver = get_driver(_type)
         return driver(host=host, port=port)
 
-    def get_intents(self):
+    def create_intents(self):
         print("Creating intents instance...")
         data = self.__data["intent"]
         base = data["base"]

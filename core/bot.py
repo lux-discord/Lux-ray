@@ -12,7 +12,7 @@ class LuxRay(Bot):
     def __init__(self, config: "Config", **options):
         super().__init__(
             command_prefix=config.prefix,
-            intents=config.get_intents(),
+            intents=config.create_intents(),
             owner_ids=config.owner_ids,
             test_guilds=config.test_guilds if config.dev_mode else None,
             **options,
