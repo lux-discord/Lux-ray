@@ -8,7 +8,7 @@ from disnake.utils import search_directory
 from tomli import load, loads
 
 from core.database import get_driver
-from core.exceptions import ConfigInvalid
+from core.exceptions import InvalidConfigValue
 
 if TYPE_CHECKING:
     from typing import Union
@@ -73,7 +73,7 @@ class Config:
 
         if not (key := type_to_key.get(_type)):
             config_name = f"prefix.{self.__mode}.type"
-            raise ConfigInvalid(config_name, _type)
+            raise InvalidConfigValue(config_name, _type)
 
         if key == "function_path":
             prefix = import_from_path(data[key])
@@ -83,7 +83,7 @@ class Config:
             config_name = f"prefix.{self.__mode}.{key}"
 
         if not prefix:
-            raise ConfigInvalid(config_name, "None")
+            raise InvalidConfigValue(config_name, "None")
 
         return prefix
 
@@ -174,7 +174,7 @@ class Config:
         try:
             base_intent: Intents = getattr(Intents, base)()
         except AttributeError:
-            raise ConfigInvalid("intent.base", base)
+            raise InvalidConfigValue("intent.base", base)
 
         try:
             for name, value in items.items():
@@ -183,6 +183,6 @@ class Config:
             # e.args[0] -> error message
             # split("'")[-2] -> get attribute name that not exists
             item_value = e.args[0].split("'")[-2]
-            raise ConfigInvalid("intent.item", item_value)
+            raise InvalidConfigValue("intent.item", item_value)
 
         return base_intent

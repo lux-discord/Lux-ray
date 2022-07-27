@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from core.data import PrefixData
-from core.exceptions import ConfigInvalid
+from core.exceptions import InvalidConfigValue
 
 if TYPE_CHECKING:
     from disnake import Message
@@ -18,6 +18,6 @@ async def get_prefix(bot: "LuxRay", message: "Message"):
             await bot.db.insert_prefix(default_data)
             prefix = default_data.prefix
         else:
-            raise ConfigInvalid(f"prefix.{bot.config.mode}.prefix", "None")
+            raise InvalidConfigValue(f"prefix.{bot.config.mode}.prefix", "None")
 
     return prefix + " ", prefix

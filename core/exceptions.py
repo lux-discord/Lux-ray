@@ -24,7 +24,7 @@ class LanguageNotSupport(LRBError):
         super().__init__(f"language(code) '{lang_code}' not suppot")
 
 
-class ConfigInvalid(LRBError):
+class InvalidConfigValue(LRBError):
     def __init__(self, name: str, value: str) -> None:
         self.name = name
         self.value = value
