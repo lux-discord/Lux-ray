@@ -24,13 +24,6 @@ class LanguageNotSupport(LRBError):
         super().__init__(f"language(code) '{lang_code}' not suppot")
 
 
-class InvalidConfigValue(LRBError):
-    def __init__(self, name: str, value: str) -> None:
-        self.name = name
-        self.value = value
-        super().__init__(f"Invalid config, {name} can not be {value}")
-
-
 class DatabaseError(LRBError):
     def __init__(self, operate) -> None:
         # TODO better error message

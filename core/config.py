@@ -1,121 +1,107 @@
-from importlib import import_module
 from os import getenv
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from disnake import Intents
 from disnake.utils import search_directory
 from tomli import load, loads
 
 from core.database import get_driver
-from core.exceptions import InvalidConfigValue
-
-if TYPE_CHECKING:
-    from typing import Union
-
-
-def import_from_path(import_path: str):
-    module, name = import_path.rsplit(".", 1)
-    return getattr(import_module(module), name)
-
-
-def load_config_data(config_path: "Union[str, Path]") -> dict:
-    if not isinstance(config_path, Path):
-        config_path = Path(config_path)
-
-    config_path_exist = config_path.exists()
-
-    print(
-        f"Loading config data from '{config_path}'..."
-        if config_path_exist
-        else "Loading config data from envirment variable..."
-    )
-
-    if config_path_exist:
-        with open(config_path, "rb") as f:
-            return load(f)
-    # When the environment variable contains special characters like newlines, tabs...etc
-    # getenv will return a string that has been replaced with escape character format (eg: "\\n", "\\t"...)
-    # to make it easier for users to read
-    # So we need to replace it with the original special character so that tomli can parse it correctly
-    config_data = getenv("CONFIG").replace("\\n", "\n").replace("\\t", "\t")
-    return loads(config_data)
 
 
 class Config:
-    def __init__(self, config_path: "Union[str, Path]", mode: str) -> None:
-        self.__data = load_config_data(config_path)
-        self.__mode = mode
-        self.__dev_mode = mode == "DEV"
+    DEFAULT_CONFIG: dict[str, dict] = {
+        "intents": {"base": "default", "flags": {}},
+        "server": {"default_lang_code": "en"},
+        "misc": {"owner_ids": [], "color": "0x66E8E4"},
+        "dev": {"test_guilds": []},
+    }
 
-        prefix_data: dict = self.__data["prefix"][self.__mode]
-        self.__prefix = self.__get_prefix(prefix_data)
-        self.__default_prefix = self.__get_default_prefix(prefix_data)
-        self.__cog_files: list[str] = self.__data["cogs"]["file"]
-        self.__cog_folders: list[str] = self.__data["cogs"]["folder"]
+    def __init__(self, config_path: Path, mode: str) -> None:
+        self.__path = config_path
+        self.__data = self.__load_data()
+        self.__mode = mode
+        self.__is_dev = mode == "DEV"
+
+        self.__cog_files: list[str] = self.__data["cog"]["files"]
+        self.__cog_folders: list[str] = self.__data["cog"]["folders"]
         self.__all_cog_files = self.__cog_files + [
             file for path in self.__cog_folders for file in search_directory(path)
         ]
-        self.__bot_token = self.__get_bot_token()
-        self.__test_guilds: list[int] = self.__data["server"]["test_guilds"]
-        self.__default_lang_code: str = self.__data["server"]["default_lang_code"]
-        self.__owner_ids: list[int] = self.__data["misc"]["owner_ids"]
+        self.__intents = self.__generate_intents()
+        self.__default_lang_code: str = self.__data.get(
+            "server", self.DEFAULT_CONFIG["server"]
+        ).get("default_lang_code", "en")
+        self.__owner_ids: list[int] = self.__data.get(
+            "misc", self.DEFAULT_CONFIG["misc"]
+        ).get("owner_ids", [])
         self.__color: int = self.__parse_color()
+        self.__test_guilds: list[int] = self.__data.get(
+            "dev", self.DEFAULT_CONFIG["dev"]
+        ).get("test_guilds", [])
+
         self.__saucenao_api_key = getenv("SAUCENAO_API_KEY")
 
-    def __get_prefix(self, data: dict) -> "Union[str, list[str], function]":
-        type_to_key = {
-            "string": "prefix",
-            "array": "prefixes",
-            "function": "function_path",
-        }
+    def __load_data(self):
+        if self.__path.exists():
+            print(f"Loading config data from '{self.__path}'...")
 
-        _type = data["type"]
+            with open(self.__path, "rb") as f:
+                return load(f)
 
-        if not (key := type_to_key.get(_type)):
-            config_name = f"prefix.{self.__mode}.type"
-            raise InvalidConfigValue(config_name, _type)
+        print("Loading config data from envirment variable...")
 
-        if key == "function_path":
-            prefix = import_from_path(data[key])
-            config_name = f"prefix.{self.__mode}.function_path"
-        else:
-            prefix = data[key]
-            config_name = f"prefix.{self.__mode}.{key}"
+        if data := getenv("CONFIG").replace("\\n", "\n").replace("\\t", "\t"):
+            return loads(data)
+        raise ValueError(f"Environment variable `CONFIG` not found")
 
-        if not prefix:
-            raise InvalidConfigValue(config_name, "None")
+    def __generate_intents(self):
+        data: dict = self.__data.get("intents", self.DEFAULT_CONFIG["intents"])
+        base: str = data.get("base", "default").lower()
+        flags: dict = data.get("flags", {})
 
-        return prefix
+        if base not in {"all", "default", "none"}:
+            raise ValueError(
+                "config item `intents.base` must be 'all', 'default' or 'none'(case insensitive)"
+            )
 
-    def __get_default_prefix(self, data: dict) -> str:
-        return data["prefix"]
+        base_intent: Intents = getattr(Intents, base)()
 
-    def __get_bot_token(self):
-        if token := getenv("TOKEN_ALL"):
-            return token
+        try:
+            for name, value in flags.items():
+                setattr(base_intent, name, value)
+        except AttributeError as e:
+            err_msg: str = e.args[0]
+            flag_name = err_msg.split("'")[-2]
+            raise ValueError(f"`{flag_name}` is not a valid flag for intents")
 
-        if token := getenv(f"TOKEN_{self.__mode}"):
-            return token
-
-        raise ValueError(f"Environment variable `TOKEN_{self.__mode}` not found")
+        return base_intent
 
     def __parse_color(self):
-        color: str = self.__data["misc"]["color"]
+        color = self.__data.get("misc", self.DEFAULT_CONFIG["misc"]).get(
+            "color", "0x66E8E4"
+        )
 
         if not color.startswith(("#", "0x")):
-            raise InvalidConfigValue("misc.color")
+            raise ValueError("config item `misc.color` must starts with '#' or '0x'")
 
         color = color.replace("#", "0x")
         return int(color, 16)
+
+    @property
+    def path(self):
+        return self.__path
+
+    @property
+    def data(self):
+        return self.__data
 
     @property
     def mode(self):
         return self.__mode
 
     @property
-    def dev_mode(self):
-        return self.__dev_mode
+    def is_dev(self):
+        return self.__is_dev
 
     @property
     def cog_files(self):
@@ -130,20 +116,8 @@ class Config:
         return self.__all_cog_files
 
     @property
-    def prefix(self):
-        return self.__prefix
-
-    @property
-    def default_prefix(self):
-        return self.__default_prefix
-
-    @property
-    def bot_token(self):
-        return self.__bot_token
-
-    @property
-    def test_guilds(self):
-        return self.__test_guilds
+    def intents(self):
+        return self.__intents
 
     @property
     def default_lang_code(self):
@@ -156,6 +130,10 @@ class Config:
     @property
     def color(self):
         return self.__color
+
+    @property
+    def test_guilds(self):
+        return self.__test_guilds
 
     @property
     def saucenao_api_key(self):
@@ -179,24 +157,11 @@ class Config:
         driver = get_driver(_type)
         return driver(host=host, port=port)
 
-    def create_intents(self):
-        print("Creating intents instance...")
-        data = self.__data["intent"]
-        base = data["base"]
-        items = data["items"]
+    def get_bot_token(self):
+        if token := getenv("TOKEN_ALL"):
+            return token
 
-        try:
-            base_intent: Intents = getattr(Intents, base)()
-        except AttributeError:
-            raise InvalidConfigValue("intent.base", base)
+        if token := getenv(f"TOKEN_{self.__mode}"):
+            return token
 
-        try:
-            for name, value in items.items():
-                setattr(base_intent, name, value)
-        except AttributeError as e:
-            # e.args[0] -> error message
-            # split("'")[-2] -> get attribute name that not exists
-            item_value = e.args[0].split("'")[-2]
-            raise InvalidConfigValue("intent.item", item_value)
-
-        return base_intent
+        raise ValueError(f"Environment variable `TOKEN_{self.__mode}` not found")

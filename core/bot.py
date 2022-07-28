@@ -2,25 +2,34 @@ from typing import TYPE_CHECKING
 
 from disnake.ext.commands import InteractionBot
 
+from core.config import Config
 from utils.cog import CogManager
 
 if TYPE_CHECKING:
-    from core.config import Config
+    from pathlib import Path
 
 
 class LuxRay(InteractionBot):
-    def __init__(self, config: "Config", **options):
+    def __init__(self, config_path: "Path", mode: str, **options):
+        config = Config(config_path, mode)
         super().__init__(
-            command_prefix=config.prefix,
-            intents=config.create_intents(),
+            intents=config.intents,
             owner_ids=config.owner_ids,
-            test_guilds=config.test_guilds if config.dev_mode else None,
+            test_guilds=config.test_guilds if config.is_dev else None,
             **options,
         )
 
         self.config = config
+        self.mode = mode
+        self.is_dev = config.is_dev
         self.db = config.create_database_client()
         self.cog_manager = CogManager(self)
+
+    def init(self):
+        self.load_cogs(self.config.cog_files, self.config.cog_folders)
+
+    def run(self) -> None:
+        return super().run(self.config.get_bot_token())
 
     def load_cogs(self, cog_files: list[str] = None, cog_folders: list[str] = None):
         self.cog_manager.load(files=cog_files, folders=cog_folders)

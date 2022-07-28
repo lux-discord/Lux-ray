@@ -1,6 +1,7 @@
 black
 disnake
-flask
+fastapi
+fire
 motor
 pymongo[srv]
 pysaucenao
