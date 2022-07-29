@@ -28,6 +28,11 @@ class LuxRay(InteractionBot):
     def init(self):
         self.load_cogs(self.config.cog_files, self.config.cog_folders)
 
+        if not self.is_dev:
+            from keep_alive import keep_alive
+
+            keep_alive()
+
     def run(self) -> None:
         return super().run(self.config.get_bot_token())
 
