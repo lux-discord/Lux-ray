@@ -9,12 +9,8 @@ from core.database import get_driver
 
 
 class Config:
-    DEFAULT_CONFIG: dict[str, dict] = {
-        "intents": {"base": "default", "flags": {}},
-        "server": {"default_lang_code": "en"},
-        "misc": {"owner_ids": [], "color": "0x66E8E4"},
-        "dev": {"test_guilds": []},
-    }
+    with open("sample-bot-config.toml", "rb") as f:
+        DEFAULT_CONFIG: dict[str, dict] = load(f)
 
     def __init__(self, config_path: Path, mode: str) -> None:
         self.__path = config_path
