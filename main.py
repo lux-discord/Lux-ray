@@ -11,7 +11,12 @@ if TYPE_CHECKING:
 
 
 class Main:
-    """The main program of Lux-ray"""
+    """The main program of Lux-ray
+
+    If flag `--mode` IS NOT provided, it defaults to "DEV"
+    If flag `--config_path` IS NOT provided, it default to "bot-config-dev.toml"(in "DEV" mode) or "bot-config.toml"(in "PROD" mode) in the bot root directory
+    If flag `--env_file_path` IS provided, bot will read config data from the env file if the config file is not exists
+    """
 
     def __init__(
         self,
@@ -67,6 +72,14 @@ class Main:
 
     def run(self, **options) -> None:
         """Start running Lux-ray"""
+        """Start running Lux-ray
+
+        See https://docs.disnake.dev/en/stable/api.html#disnake.Client for all avaliable flags(parameters)
+
+        Flags
+        -----
+        `--reconnect`: See https://docs.disnake.dev/en/stable/api.html?highlight=connect#disnake.Client.connect for more infomation
+        """
         bot = LuxRay(self.config_path, self.mode, **options)
         bot.init()
         bot.run()
