@@ -50,11 +50,14 @@ class Config:
 
             data = self.DEFAULT_CONFIG
 
-        print("Loading config data from envirment variable...")
+        print("Checking config overwrite in environment variable `CONFIG`...")
 
-        if data := getenv("CONFIG").replace("\\n", "\n").replace("\\t", "\t"):
-            return loads(data)
-        raise ValueError(f"Environment variable `CONFIG` not found")
+        if not (overwrite := getenv("CONFIG")):
+            print("Environment variable `CONFIG` not found, skip overwrite")
+            return data
+
+        data |= loads(overwrite.replace("\\n", "\n").replace("\\t", "\t"))
+        return data
 
     def __generate_intents(self):
         data: dict = self.__data.get("intents", self.DEFAULT_CONFIG["intents"])
