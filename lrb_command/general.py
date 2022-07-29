@@ -7,7 +7,6 @@ from disnake.ext.commands.errors import EmojiNotFound
 from pysaucenao import SauceNao
 
 from core.cog import GeneralCog
-from utils.embed import BOT_COLOR
 from utils.message import TargetMessage
 
 if TYPE_CHECKING:
@@ -25,7 +24,7 @@ class General(GeneralCog):
             "Title": server.translate("Title"),
             "Similarity": server.translate("Similarity"),
         }
-        base_embed = Embed(color=BOT_COLOR)
+        base_embed = Embed(color=self.bot.config.color)
 
         for result in results:
             base_embed.add_field(
@@ -57,7 +56,7 @@ class General(GeneralCog):
             "Created at": server.translate("Created at"),
             "Url": server.translate("Url"),
         }
-        base_embed = Embed(title=embed_text["Emoji info"], color=BOT_COLOR)
+        base_embed = Embed(title=embed_text["Emoji info"], color=self.bot.config.color)
         base_emoji_url = "https://cdn.discordapp.com/emojis/"
         emoji_pattern = r"<a?:[a-zA-Z0-9\_]{1,32}:([0-9]{15,20})>$"
 
