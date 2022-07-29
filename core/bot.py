@@ -26,7 +26,9 @@ class LuxRay(InteractionBot):
         self.cog_manager = CogManager(self)
 
     def init(self):
-        self.load_cogs(self.config.cog_files, self.config.cog_folders)
+        self.cog_manager.load(
+            files=self.config.cog_files, folders=self.config.cog_folders
+        )
 
         if not self.is_dev:
             from keep_alive import keep_alive
