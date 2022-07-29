@@ -70,8 +70,7 @@ class Main:
         self.is_dev = mode == "DEV"
         self.config_path = config_path
 
-    def run(self, **options) -> None:
-        """Start running Lux-ray"""
+    def run(self, *, reconnect: bool = True, **options) -> None:
         """Start running Lux-ray
 
         See https://docs.disnake.dev/en/stable/api.html#disnake.Client for all avaliable flags(parameters)
@@ -82,7 +81,7 @@ class Main:
         """
         bot = LuxRay(self.config_path, self.mode, **options)
         bot.init()
-        bot.run()
+        bot.run(reconnect=reconnect)
 
 
 if __name__ == "__main__":

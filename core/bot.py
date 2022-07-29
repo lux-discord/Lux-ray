@@ -33,8 +33,8 @@ class LuxRay(InteractionBot):
 
             keep_alive()
 
-    def run(self) -> None:
-        return super().run(self.config.get_bot_token())
+    def run(self, *, reconnect: bool = True) -> None:
+        return super().run(self.config.get_bot_token(), reconnect=reconnect)
 
     def load_cogs(self, cog_files: list[str] = None, cog_folders: list[str] = None):
         self.cog_manager.load(files=cog_files, folders=cog_folders)
