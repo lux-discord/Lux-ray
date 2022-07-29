@@ -15,7 +15,7 @@ class Main:
 
     If flag `--mode` IS NOT provided, it defaults to "DEV"
     If flag `--config_path` IS NOT provided, it default to "bot-config-dev.toml"(in "DEV" mode) or "bot-config.toml"(in "PROD" mode) in the bot root directory
-    If flag `--env_file_path` IS provided, bot will read config data from the env file if the config file is not exists
+    If flag `--env_file_path` IS provided and exists, bot will load it before start running
     """
 
     def __init__(
