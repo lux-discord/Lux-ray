@@ -14,8 +14,10 @@ class LuxRay(InteractionBot):
         config = Config(config_path, mode)
         super().__init__(
             intents=config.intents,
-            owner_ids=config.owner_ids,
-            test_guilds=config.test_guilds if config.is_dev else None,
+            owner_ids=options.get("owner_ids", config.owner_ids),
+            test_guilds=options.get("test_guilds", config.test_guilds)
+            if config.is_dev
+            else None,
             **options,
         )
 
