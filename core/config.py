@@ -42,7 +42,13 @@ class Config:
             print(f"Loading config data from '{self.__path}'...")
 
             with open(self.__path, "rb") as f:
-                return load(f)
+                data: dict[str, dict] = load(f)
+        else:
+            print(
+                f"Config path '{self.__path}' not exists, use default config data from 'sample-bot-config.toml'"
+            )
+
+            data = self.DEFAULT_CONFIG
 
         print("Loading config data from envirment variable...")
 
