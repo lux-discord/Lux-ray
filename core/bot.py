@@ -23,9 +23,11 @@ class LuxRay(InteractionBot):
 
         self.config = config
         self.mode = mode
-        self.is_dev = config.is_dev
         self.db = config.create_database_client()
         self.cog_manager = CogManager(self)
+
+    def is_dev(self):
+        return self.config.is_dev()
 
     def init(self):
         self.cog_manager.load(
