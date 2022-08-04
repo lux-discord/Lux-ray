@@ -67,7 +67,6 @@ class Main:
             load_dotenv(env_file_path)
 
         self.mode = mode
-        self.is_dev = mode == "DEV"
         self.config_path = config_path
 
     def run(self, *, reconnect: bool = True, **options) -> None:
