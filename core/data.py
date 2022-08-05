@@ -1,6 +1,6 @@
 class BaseData:
-    REQUIRE_ITEMS = []
-    OPTIONAL_ITEMS = []
+    REQUIRE_ITEMS: list[str] = []
+    OPTIONAL_ITEMS: list[str] = []
 
     def __init__(self, **items) -> None:
         # Valid check
@@ -29,7 +29,7 @@ class IdBaseData(BaseData):
     def __init__(self, **items) -> None:
         self.REQUIRE_ITEMS.append("_id")
         super().__init__(**items)
-        self.id = items["_id"]
+        self.id: int = items["_id"]
 
 
 class ServerData(IdBaseData):
