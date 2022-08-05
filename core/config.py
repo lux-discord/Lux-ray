@@ -16,6 +16,7 @@ class Config:
         self.__path = config_path
         self.__data = self.__load_data()
         self.__mode = mode
+        self.__is_dev = self.mode == "DEV"
 
         self.__cog_files: list[str] = self.__data["cog"]["files"]
         self.__cog_folders: list[str] = self.__data["cog"]["folders"]
@@ -91,9 +92,6 @@ class Config:
         color = color.replace("#", "0x")
         return int(color, 16)
 
-    def is_dev(self):
-        return self.mode == "DEV"
-
     @property
     def path(self):
         return self.__path
@@ -105,6 +103,10 @@ class Config:
     @property
     def mode(self):
         return self.__mode
+
+    @property
+    def is_dev(self):
+        return self.__is_dev
 
     @property
     def cog_files(self):
