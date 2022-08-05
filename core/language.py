@@ -2,8 +2,6 @@ from pathlib import Path
 
 from tomli import load
 
-from core.exceptions import LanguageNotSupport
-
 GLOBAL_LOCALES_DIR = Path("locales")
 GLOBAL_SUPPORT_LANGUAGE = {
     locale_file.stem for locale_file in GLOBAL_LOCALES_DIR.iterdir()
@@ -16,7 +14,7 @@ global_language_cache: dict[str] = {}
 class LanguageBase:
     def __init__(self, lang_code, *, support_language: set, locale_dir: Path) -> None:
         if lang_code not in support_language:
-            raise LanguageNotSupport(lang_code)
+            raise ValueError(f"Language '{lang_code}' is not supported")
 
         self.lang_code = lang_code
 

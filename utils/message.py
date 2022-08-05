@@ -1,7 +1,6 @@
 from disnake import ApplicationCommandInteraction, Message, TextChannel
 from disnake.ext.commands import Bot
 
-from core.exceptions import InvalidChannelID, InvalidMessageID, InvalidMessageLink
 from utils.checks import has_channel_permissions
 
 
@@ -32,16 +31,18 @@ async def resolve_message_link(bot: Bot, message_link: str):
             ]
 
             if not (channel := bot.get_channel(channel_id)):
-                raise InvalidChannelID(channel_id)
+                raise ValueError(f"Invalid channel ID '{channel_id}'")
             if not (message := await channel.fetch_message(message_id)):
-                raise InvalidMessageID(message_id)
+                raise ValueError(f"Invalid message ID '{message_id}'")
 
             return message
-        except ValueError:
+        except ValueError as exc:
             # Split failure
-            raise InvalidMessageLink(message_link)
+            raise ValueError(f"Invalid message link '{message_link}'") from exc
     else:
-        raise InvalidMessageLink(message_link)
+        raise ValueError(
+            f"Invalid message link '{message_link}', missing prefix '{link_prefix}'"
+        )
 
 
 async def get_last_exist_message(channel: TextChannel):
