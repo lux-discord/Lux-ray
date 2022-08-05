@@ -83,12 +83,10 @@ class ChannelData(BaseData):
 
 
 class MessageData(BaseData):
-    # fmt: off
     OPTIONAL_ITEMS = [
         "keywords",
-        "listen" # deprecated
+        "listen",  # deprecated
     ]
-    # fmt: on
 
     def __init__(self, **items):
         super().__init__(**items)
