@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from fire import Fire
 
 from core.bot import LuxRay
+from utils.enums import Mode
 
 if TYPE_CHECKING:
     from typing import Union
@@ -26,12 +27,12 @@ class Main:
     ) -> None:
         # `mode` type check
         if not mode:
-            mode = "DEV"
+            mode = Mode.DEV.value
         elif not isinstance(mode, str):
             err_msg = f"argument `mode` expected str or NoneType, not {mode.__class__.__name__}"
             raise TypeError(err_msg)
         # `mode` value check
-        if (mode := mode.upper()) not in {"DEV", "PROD"}:
+        if (mode := mode.upper()) not in Mode.__members__:
             raise ValueError(
                 "if argument `mode` is provided, it must be 'DEV' or 'PROD'(case insensitive)"
             )
@@ -40,7 +41,7 @@ class Main:
         if not config_path:
             config_path = (
                 Path("bot-config-dev.toml")
-                if mode == "DEV"
+                if mode == Mode.DEV.value
                 else Path("bot-config.toml")
             )
         elif not isinstance(config_path, Path):

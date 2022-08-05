@@ -6,6 +6,7 @@ from disnake.utils import search_directory
 from tomli import load, loads
 
 from core.database import get_driver
+from utils.enums import Mode
 
 
 class Config:
@@ -16,7 +17,7 @@ class Config:
         self.__path = config_path
         self.__data = self.__load_data()
         self.__mode = mode
-        self.__is_dev = self.mode == "DEV"
+        self.__is_dev = self.mode == Mode.DEV.value
 
         self.__cog_files: list[str] = self.__data["cog"]["files"]
         self.__cog_folders: list[str] = self.__data["cog"]["folders"]
