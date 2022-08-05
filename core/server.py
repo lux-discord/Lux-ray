@@ -120,7 +120,7 @@ class Server:
         message = self.translate(message) if message else None
 
         if message and message_format:
-            message = message.format(message_format)
+            message = message.format(**message_format)
 
         return await ephemeral_send_able.send(message, ephemeral=True, **options)
 
