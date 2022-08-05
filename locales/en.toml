@@ -51,10 +51,6 @@
 "`{amount}` message(s) deleted" = "`{amount}` message(s) deleted"
 
 ## server.py
-### config_server.prefix
-"Prefix of this server if `{server_prefix}`" = "Prefix of this server if `{server_prefix}`"
-"Prefix did not change" = "Prefix did not change"
-"Successful set prefix to `{prefix}`" = "Successful set prefix to `{prefix}`"
 ### config_server.language
 "Language `{lang_code}` is not support" = "Language `{lang_code}` is not support"
 "Language did not change" = "Language did not change"

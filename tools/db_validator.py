@@ -1,13 +1,5 @@
 from core.config import Config
 
-DEFAULT_PREFIX_VALIDATOR = {
-    "$jsonSchema": {
-        "required": ["_id", "prefix"],
-        "additionalProperties": False,
-        "properties": {"_id": {"bsonType": "long"}, "prefix": {"bsonType": "string"}},
-    }
-}
-
 DEFAULT_SERVER_VALIDATOR = {
     "$jsonSchema": {
         "required": ["_id", "lang_code", "role", "channel"],

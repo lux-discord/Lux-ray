@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from core.data import PrefixData, ServerData, UserData
+from core.data import ServerData, UserData
 from core.database.base import BaseDriver, IdentiferData
 from core.exceptions import DatabaseError
 
@@ -16,7 +16,6 @@ class MongoDriver(BaseDriver):
     def __init__(self, host, *, port=None) -> None:
         self.client = AsyncIOMotorClient(host=host, port=port)
         self.database: "Database" = self.client["discord-bot"]
-        self.prefix = self.database["prefix"]
         self.server = self.database["server"]
         self.user = self.database["user"]
 
@@ -39,97 +38,6 @@ class MongoDriver(BaseDriver):
     async def delete(self, identifer_data: IdentiferData):
         collection = self.database.get_collection(identifer_data.category)
         return await collection.delete_many(identifer_data.filter)
-
-    # Prefix
-    async def find_prefix(self, server_id: int) -> "Optional[str]":
-        """
-        Find prefix by server id
-
-        Argument
-        --------
-        server_id: `int`
-            server id
-
-        Return
-        ------
-        The prefix of server or `None` if not found
-
-        Return Type
-        -----------
-        `Optinoal[str]`
-        """
-        doc = await self.prefix.find_one(server_id)
-        return doc["prefix"] if doc else None
-
-    async def insert_prefix(self, prefix_data: PrefixData):
-        """
-        Insert prefix
-
-        Argument
-        --------
-        prefix: `PrefixData`
-            prefix data
-
-        Return
-        ------
-        The `prefix_data` you passed in
-
-        Return type
-        -----------
-        `core.data.PrefixData`
-        """
-        try:
-            await self.prefix.insert_one(prefix_data.to_dict())
-            return prefix_data
-        except Exception:
-            raise DatabaseError("insert prefix")
-
-    async def update_prefix(self, update: PrefixData):
-        """
-        Update prefix
-
-        Argument
-        --------
-        update: `PrefixData`
-            new prefix data
-
-        Return
-        ------
-        The `update` you passed in
-
-        Return Type
-        -----------
-        `core.data.PrefixData`
-        """
-        try:
-            _update = {"$set": {"prefix": update.prefix}}
-            await self.prefix.update_one({"_id": update.id}, _update)
-            return update
-        except Exception:
-            raise DatabaseError("update prefix")
-
-    async def delete_prefix(self, server_id: int):
-        """
-        Delete prefix
-
-        Argument
-        --------
-        server_id: `int`
-            server id
-
-        Return
-        ------
-        The `server_id` you passed in
-
-        Return type
-        -----------
-        `int`
-        """
-        try:
-            await self.prefix.delete_one({"_id": server_id})
-            return server_id
-        except Exception:
-            raise DatabaseError("delete prefix")
 
     # Server
     async def find_server(self, server_id: int) -> "Optional[dict]":

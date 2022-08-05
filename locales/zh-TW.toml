@@ -51,10 +51,6 @@
 "`{amount}` message(s) deleted" = "已刪除`{amount}`則訊息"
 
 ## server.py
-### config_server.prefix
-"Prefix of this server if `{server_prefix}`" = "這個伺服器的前綴是`{server_prefix}`"
-"Prefix did not change" = "前綴沒有改變"
-"Successful set prefix to `{prefix}`" = "成功將前綴改為`{prefix}`"
 ### config_server.language
 "Language `{lang_code}` is not support" = "不支援`{lang_code}`語言"
 "Language did not change" = "語言沒有改變"

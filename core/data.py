@@ -35,14 +35,6 @@ class IdBaseData(BaseData):
         self.id = items["_id"]
 
 
-class PrefixData(IdBaseData):
-    REQUIRE_ITEMS = ["prefix"]
-
-    def __init__(self, **items):
-        super().__init__(**items)
-        self.prefix = self.items["prefix"]
-
-
 class ServerData(IdBaseData):
     REQUIRE_ITEMS = ["lang_code"]
     OPTIONAL_ITEMS = [

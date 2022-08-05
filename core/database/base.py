@@ -5,7 +5,7 @@ from core.data import IdBaseData
 if TYPE_CHECKING:
     from typing import Optional
 
-    from core.data import PrefixData, ServerData, UserData
+    from core.data import ServerData, UserData
 
 
 class IdentiferData(IdBaseData):
@@ -33,19 +33,6 @@ class BaseDriver:
         raise NotImplementedError
 
     async def delete(self, identifer_data: IdentiferData):
-        raise NotImplementedError
-
-    # Prefix
-    async def find_prefix(self, server_id: int) -> "Optional[str]":
-        raise NotImplementedError
-
-    async def insert_prefix(self, prefix_data: "PrefixData") -> "PrefixData":
-        raise NotImplementedError
-
-    async def update_prefix(self, prefix_data: "PrefixData") -> "PrefixData":
-        raise NotImplementedError
-
-    async def delete_prefix(self, server_id: int) -> int:
         raise NotImplementedError
 
     # Server

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from core.data import PrefixData, ServerData
+from core.data import ServerData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, get_language
 
 if TYPE_CHECKING:
@@ -55,9 +55,6 @@ class Server:
         """
         items = self.__update(updates, **update)
         return ServerData.from_items(items)
-
-    def PrefixData(self, prefix: str):
-        return PrefixData(_id=self.__id, prefix=prefix)
 
     def translate(self, message):
         """

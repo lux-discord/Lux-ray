@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from disnake.ext.commands import Cog
 
 from core.bot import LuxRay
-from core.data import PrefixData, ServerData, UserData
+from core.data import ServerData, UserData
 from core.language import GLOBAL_DEFAULT_LANGUAGE, get_language
 from core.server import Server
 from core.user import User
@@ -65,10 +65,6 @@ class GeneralCog(Cog):
 
     async def send_error(self, send_able: "SendAble", message: str, **_format):
         return await self._send(send_able, message, delete_after=2, **_format)
-
-    # Prefix
-    async def update_prefix(self, update: PrefixData):
-        return await self.db.update_prefix(update)
 
     # Server
     async def get_server_data(self, server_id):

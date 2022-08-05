@@ -43,28 +43,6 @@ class Server(GeneralCog):
         pass
 
     @config_server.sub_command()
-    async def prefix(self, inter: ApplicationCommandInteraction, prefix: str = None):
-        server = await self.get_server(inter.guild_id)
-        server_prefix = await self.bot.db.find_prefix(inter.guild_id)
-
-        if not prefix:
-            return await server.send_ephemeral(
-                inter,
-                "Prefix of this server if `{server_prefix}`",
-                message_format={"server_prefix": server_prefix},
-            )
-
-        if prefix == server_prefix:
-            return await server.send_ephemeral(inter, "Prefix did not change")
-
-        await self.update_prefix(server.PrefixData(prefix))
-        await server.send_ephemeral(
-            inter,
-            "Successful set prefix to `{prefix}`",
-            message_format={"prefix": prefix},
-        )
-
-    @config_server.sub_command()
     async def language(
         self,
         inter: ApplicationCommandInteraction,
