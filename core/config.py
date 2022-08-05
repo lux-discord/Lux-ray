@@ -35,7 +35,8 @@ class Config:
         self.__test_guilds: list[int] = self.__data.get(
             "dev", self.DEFAULT_CONFIG["dev"]
         ).get("test_guilds", [])
-
+        self.__database = self.__create_database_client()
+        self.__bot_token = self.__get_bot_token()
         self.__saucenao_api_key = getenv("SAUCENAO_API_KEY")
 
     def __load_data(self):
@@ -93,6 +94,32 @@ class Config:
         color = color.replace("#", "0x")
         return int(color, 16)
 
+    def __create_database_client(self):
+        type_to_path = {"mongodb": "core.database.mongodb.MongoDB"}
+
+        if not (_type := getenv(f"DB_TYPE_{self.__mode}")):
+            raise ValueError(f"Environment variable `DB_TYPE_{self.__mode}` not found")
+
+        if _type not in type_to_path:
+            raise ValueError(f"Invalid database type `{_type}`")
+
+        if not (host := getenv(f"DB_HOST_{self.__mode}")):
+            raise ValueError(f"Environment variable `DB_HOST_{self.__mode}` not found")
+
+        # Maybe add a warning when port is not found?
+        port = int(port) if (port := getenv(f"DB_PORT_{self.__mode}")) else None
+        driver = get_driver(_type)
+        return driver(host=host, port=port)
+
+    def __get_bot_token(self):
+        if token := getenv("TOKEN_ALL"):
+            return token
+
+        if token := getenv(f"TOKEN_{self.__mode}"):
+            return token
+
+        raise ValueError(f"Environment variable `TOKEN_{self.__mode}` not found")
+
     @property
     def path(self):
         return self.__path
@@ -142,32 +169,13 @@ class Config:
         return self.__test_guilds
 
     @property
+    def database(self):
+        return self.__database
+
+    @property
+    def bot_token(self):
+        return self.__bot_token
+
+    @property
     def saucenao_api_key(self):
         return self.__saucenao_api_key
-
-    def create_database_client(self):
-        print("Creating database client...")
-        type_to_path = {"mongodb": "core.database.mongodb.MongoDB"}
-
-        if not (_type := getenv(f"DB_TYPE_{self.__mode}")):
-            raise ValueError(f"Environment variable `DB_TYPE_{self.__mode}` not found")
-
-        if _type not in type_to_path:
-            raise ValueError(f"Invalid database type `{_type}`")
-
-        if not (host := getenv(f"DB_HOST_{self.__mode}")):
-            raise ValueError(f"Environment variable `DB_HOST_{self.__mode}` not found")
-
-        # Maybe add a warning when port is not found?
-        port = int(port) if (port := getenv(f"DB_PORT_{self.__mode}")) else None
-        driver = get_driver(_type)
-        return driver(host=host, port=port)
-
-    def get_bot_token(self):
-        if token := getenv("TOKEN_ALL"):
-            return token
-
-        if token := getenv(f"TOKEN_{self.__mode}"):
-            return token
-
-        raise ValueError(f"Environment variable `TOKEN_{self.__mode}` not found")

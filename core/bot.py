@@ -24,7 +24,7 @@ class LuxRay(InteractionBot):
         self.config = config
         self.mode = mode
         self.is_dev = config.is_dev
-        self.db = config.create_database_client()
+        self.db = config.database
         self.cog_manager = CogManager(self)
 
     def init(self):
@@ -38,7 +38,7 @@ class LuxRay(InteractionBot):
             keep_alive()
 
     def run(self, *, reconnect: bool = True) -> None:
-        return super().run(self.config.get_bot_token(), reconnect=reconnect)
+        return super().run(self.config.bot_token, reconnect=reconnect)
 
     def load_cogs(self, cog_files: list[str] = None, cog_folders: list[str] = None):
         self.cog_manager.load(files=cog_files, folders=cog_folders)
