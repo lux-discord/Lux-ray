@@ -1,6 +1,3 @@
-from datetime import date, timedelta
-
-
 class BaseData:
     REQUIRE_ITEMS = []
     OPTIONAL_ITEMS = []
@@ -99,10 +96,10 @@ class MessageData(BaseData):
 
 
 class UserData(IdBaseData):
-    OPTIONAL_ITEMS = ["last_login", "login_days"]
+    OPTIONAL_ITEMS = [
+        "last_login",  # deprecated
+        "login_days",  # deprecated
+    ]
 
     def __init__(self, **items):
         super().__init__(**items)
-        default_last_login = str(date.today() - timedelta(days=1))
-        self.last_login: str = items.get("last_login", default_last_login)
-        self.login_days: int = items.get("login_days", 0)
