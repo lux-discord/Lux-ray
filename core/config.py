@@ -8,9 +8,11 @@ from tomli import load, loads
 from core.database import get_driver
 from utils.enums import Mode
 
+DEFAULT_CONFIG_PATH = Path("sample-bot-config.toml")
+
 
 class Config:
-    with open("sample-bot-config.toml", "rb") as f:
+    with open(DEFAULT_CONFIG_PATH, "rb") as f:
         DEFAULT_CONFIG: dict[str, dict] = load(f)
 
     def __init__(self, config_path: Path, mode: str) -> None:
@@ -53,7 +55,7 @@ class Config:
                 data: dict[str, dict] = load(f)
         else:
             print(
-                f"Config path '{self.__path}' not exists, use default config data from 'sample-bot-config.toml'"
+                f"Config path '{self.__path}' not exists, use default config data from '{DEFAULT_CONFIG_PATH}'"
             )
 
             data = self.DEFAULT_CONFIG
