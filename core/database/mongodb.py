@@ -79,8 +79,8 @@ class MongoDriver(BaseDriver):
         try:
             await self.server.insert_one(server_data.to_dict())
             return server_data
-        except Exception:
-            raise DatabaseError("insert server")
+        except Exception as exc:
+            raise DatabaseError("insert server") from exc
 
     async def update_server(self, update: ServerData):
         """
@@ -103,8 +103,8 @@ class MongoDriver(BaseDriver):
             _update = {"$set": update.to_dict()}
             await self.server.update_one({"_id": update.id}, _update)
             return update
-        except Exception:
-            raise DatabaseError("update server")
+        except Exception as exc:
+            raise DatabaseError("update server") from exc
 
     async def delete_server(self, server_id: int):
         """
@@ -126,8 +126,8 @@ class MongoDriver(BaseDriver):
         try:
             await self.server.delete_one({"_id": server_id})
             return server_id
-        except Exception:
-            raise DatabaseError("delete server")
+        except Exception as exc:
+            raise DatabaseError("delete server") from exc
 
     # User
     async def find_user(self, user_id: int) -> "Optional[dict]":
@@ -169,8 +169,8 @@ class MongoDriver(BaseDriver):
         try:
             await self.user.insert_one(user_data.to_dict())
             return user_data
-        except Exception:
-            raise DatabaseError("insert user")
+        except Exception as exc:
+            raise DatabaseError("insert user") from exc
 
     async def update_user(self, update: UserData):
         """
@@ -193,8 +193,8 @@ class MongoDriver(BaseDriver):
             _update = {"$set": update.to_dict()}
             await self.user.update_one({"_id": update.id}, _update)
             return update
-        except Exception:
-            raise DatabaseError("update user")
+        except Exception as exc:
+            raise DatabaseError("update user") from exc
 
     async def delete_user(self, user_id: int):
         """
@@ -216,5 +216,5 @@ class MongoDriver(BaseDriver):
         try:
             await self.user.delete_one({"_id": user_id})
             return user_id
-        except Exception:
-            raise DatabaseError("delete user")
+        except Exception as exc:
+            raise DatabaseError("delete user") from exc
