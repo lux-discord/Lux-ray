@@ -12,14 +12,16 @@ global_language_cache: dict[str] = {}
 
 
 class LanguageBase:
-    def __init__(self, lang_code, *, support_language: set, locale_dir: Path) -> None:
+    def __init__(
+        self, lang_code: str, *, support_language: set, locale_dir: Path
+    ) -> None:
         if lang_code not in support_language:
             raise ValueError(f"Language '{lang_code}' is not supported")
 
         self.lang_code = lang_code
 
         with open(locale_dir / (lang_code + ".toml"), "rb") as f:
-            self.data = load(f)
+            self.data: dict[str, str] = load(f)
 
     def request_message(self, token: str) -> str:
         return self.data[token]

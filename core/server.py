@@ -56,7 +56,7 @@ class Server:
         items = self.__update(updates, **update)
         return ServerData.from_items(items)
 
-    def translate(self, message):
+    def translate(self, message: str):
         """
         Argument
         --------
