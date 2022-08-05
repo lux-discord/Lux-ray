@@ -18,27 +18,33 @@ class Config:
         self.__data = self.__load_data()
         self.__mode = mode
         self.__is_dev = self.mode == Mode.DEV.value
-
+        # Cog
         self.__cog_files: list[str] = self.__data["cog"]["files"]
         self.__cog_folders: list[str] = self.__data["cog"]["folders"]
         self.__all_cog_files = self.__cog_files + [
             file for path in self.__cog_folders for file in search_directory(path)
         ]
+        # Intents
         self.__intents = self.__generate_intents()
+        # Server
         self.__default_lang_code: str = self.__data.get(
             "server", self.DEFAULT_CONFIG["server"]
         ).get("default_lang_code", "en")
+        # Misc
         self.__owner_ids: list[int] = self.__data.get(
             "misc", self.DEFAULT_CONFIG["misc"]
         ).get("owner_ids", [])
         self.__color: int = self.__parse_color()
+        # Dev
         self.__test_guilds: list[int] = self.__data.get(
             "dev", self.DEFAULT_CONFIG["dev"]
         ).get("test_guilds", [])
+        # Environment variable
         self.__database = self.__create_database_client()
         self.__bot_token = self.__get_bot_token()
         self.__saucenao_api_key = getenv("SAUCENAO_API_KEY")
 
+    # Process data
     def __load_data(self):
         if self.__path.exists():
             print(f"Loading config data from '{self.__path}'...")
@@ -94,6 +100,7 @@ class Config:
         color = color.replace("#", "0x")
         return int(color, 16)
 
+    # Process environment variable
     def __create_database_client(self):
         type_to_path = {"mongodb": "core.database.mongodb.MongoDB"}
 
@@ -120,6 +127,7 @@ class Config:
 
         raise ValueError(f"Environment variable `TOKEN_{self.__mode}` not found")
 
+    # Property
     @property
     def path(self):
         return self.__path
