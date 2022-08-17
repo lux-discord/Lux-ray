@@ -1,14 +1,10 @@
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 from fire import Fire
 
 from core.bot import LuxRay
 from utils.enums import Mode
-
-if TYPE_CHECKING:
-    from typing import Union
 
 
 class Main:
@@ -21,9 +17,9 @@ class Main:
 
     def __init__(
         self,
-        mode: str = None,
-        config_path: "Union[str, Path]" = None,
-        env_file_path: "Union[str, Path]" = None,
+        mode: None | str = None,
+        config_path: None | str | Path = None,
+        env_file_path: None | str | Path = None,
     ) -> None:
         # `mode` type check
         if not mode:
