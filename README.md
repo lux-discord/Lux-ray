@@ -1,4 +1,7 @@
 # Lux-ray, A Discord Bot Write In Python
+
+**Just keep this repo as a souvenir, there's a lot of legacy code here, not worth using as a reference**
+
 ![Minimal Support Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10-blue?style=flat-square)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-blue.svg?style=flat-square)](https://github.com/psf/black)
 [![Commit activity](https://img.shields.io/github/commit-activity/w/euxcbsks/Lux-ray?style=flat-square)](https://github.com/Euxcbsks/Lux-ray/commits/main)
