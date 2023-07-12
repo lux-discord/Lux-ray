@@ -1,0 +1,12 @@
+# Global config avaliable
+# example below
+
+# extension_directory = "extension"
+
+[development]
+# Path to the extension directory.
+extension_directory = "extension"
+test_guilds = []
+
+[production]
+extension_directory = "extension"
