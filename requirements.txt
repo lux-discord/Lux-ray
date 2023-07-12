@@ -1,8 +1,1 @@
-black
-disnake
-flask
-motor
-pymongo[srv]
-pysaucenao
-python-dotenv
-tomli
+lux-discord[dotenv, colorlog] @ git+https://github.com/Euxcbsks/lux
