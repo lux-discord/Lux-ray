@@ -441,7 +441,7 @@ description = "Lightweight Python Discord bot framework"
 optional = false
 python-versions = "^3.11"
 files = []
-develop = true
+develop = false
 
 [package.dependencies]
 beanie = {version = "^1.20.0", optional = true}
@@ -456,8 +456,10 @@ dotenv = ["python-dotenv (>=1.0.0,<2.0.0)"]
 mongodb = ["beanie (>=1.20.0,<2.0.0)"]
 
 [package.source]
-type = "directory"
-url = "../../Lux-discord-bot"
+type = "git"
+url = "https://github.com/Euxcbsks/lux.git"
+reference = "main"
+resolved_reference = "ff1f6acc1d593e075cf43b351bb461f89ef5a0a0"
 
 [[package]]
 name = "motor"
@@ -837,4 +839,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2b261eb5beb02fbe0baac19ed641e7b02eb61289138540d89f739776bc1b4c51"
+content-hash = "a990a1ac83051d4cd91ac0b4969194bb35a7d4b65a729d7021c0f59743f094cb"

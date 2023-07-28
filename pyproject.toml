@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-lux-discord = {path = "../../Lux-discord-bot", extras = ["dotenv", "colorlog", "mongodb"], develop = true}
+lux-discord = {git = "https://github.com/Euxcbsks/lux.git", rev = "main", extras = ["dotenv", "colorlog", "mongodb"]}
 
 
 [build-system]
