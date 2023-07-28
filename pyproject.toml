@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "lux-ray"
+version = "0.1.0"
+description = "Advanced permission control Discord bot"
+authors = ["Euxcbsks <hawhaw02030746@gmail.com>"]
+license = "AGPL-3.0 license"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+lux-discord = {path = "../../Lux-discord-bot", extras = ["dotenv", "colorlog", "mongodb"], develop = true}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
